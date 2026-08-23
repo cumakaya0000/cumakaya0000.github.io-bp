@@ -2,22 +2,37 @@
   {
     "term": "Algoritma",
     "category": "Programlama",
-    "definition": "Bir problemi çözmek veya bir görevi yerine getirmek için adım adım izlenen mantıksal talimatlar dizisi."
+    "definition": "Bir problemi çözmek veya belirli bir görevi yerine getirmek için adım adım izlenen mantıksal talimatlar dizisi."
   },
   {
     "term": "API (Application Programming Interface)",
     "category": "Web & Backend",
-    "definition": "İki farklı yazılım sisteminin birbiriyle veri alışverişi yapmasını sağlayan uygulama programlama arayüzü."
+    "definition": "İki farklı yazılım sisteminin veya sunucu ile istemcinin güvenli şekilde haberleşmesini sağlayan uygulama programlama arayüzü."
+  },
+  {
+    "term": "Array (Dizi)",
+    "category": "Programlama",
+    "definition": "Aynı veya farklı türdeki birden fazla veriyi tek bir değişken altında sırayla ve indeks numaraları ile saklayan veri yapısı."
+  },
+  {
+    "term": "Asenkron (Async / Await)",
+    "category": "Programlama",
+    "definition": "Ana iş parçacığını (thread) kilitlenmeden arka planda uzun süren işlemleri (veri çekme, dosya okuma vb.) yürütme yöntemi."
+  },
+  {
+    "term": "Backend",
+    "category": "Web & Backend",
+    "definition": "Kullanıcının görmediği; veritabanı, sunucu, yetkilendirme ve iş mantığının çalıştığı arka plan yazılım mimarisi."
   },
   {
     "term": "BIOS / UEFI",
     "category": "Donanım",
-    "definition": "Anakart üzerindeki çipte saklanan, bilgisayar açıldığında donanımları test eden ve işletim sistemini başlatan temel yazılım."
+    "definition": "Anakart üzerindeki çipte saklanan, bilgisayar açıldığında donanımları test eden (POST) ve işletim sistemini başlatan temel yazılım."
   },
   {
     "term": "Bool (Boolean)",
     "category": "Programlama",
-    "definition": "Sadece `true` (doğru/1) veya `false` (yanlış/0) değerini alabilen mantıksal veri tipi."
+    "definition": "Sadece `true` (doğru/1) veya `false` (yanlış/0) değerini alabilen mantıksal karar veri tipi."
   },
   {
     "term": "Box Model (Kutu Modeli)",
@@ -27,42 +42,202 @@
   {
     "term": "BUG",
     "category": "Yazılım",
-    "definition": "Yazılımın beklenmeyen, hatalı veya eksik sonuçlar üretmesine neden olan kod kusuru."
+    "definition": "Yazılımın beklenmeyen, hatalı veya eksik sonuçlar üretmesine neden olan kod kusuru veya mantık hatası."
+  },
+  {
+    "term": "C# (C-Sharp)",
+    "category": "Programlama",
+    "definition": "Microsoft tarafından geliştirilen; nesne yönelimli (OOP), modern, tip güvenli ve .NET platformunda çalışan güçlü programlama dili."
+  },
+  {
+    "term": "Class (Sınıf)",
+    "category": "Programlama",
+    "definition": "Nesne yönelimli programlamada (OOP) oluşturulacak nesnelerin durum (alanlar) ve davranışlarını (metotlar) tanımlayan şablon."
+  },
+  {
+    "term": "Compiler (Derleyici)",
+    "category": "Programlama",
+    "definition": "Yüksek seviyeli kaynak kodları (C#, Java vb.) bilgisayarın doğrudan çalıştırabileceği makine diline (0 ve 1) çeviren yazılım."
+  },
+  {
+    "term": "CPU (Central Processing Unit)",
+    "category": "Donanım",
+    "definition": "Bilgisayardaki tüm komutları işleyen, matematiksel ve mantıksal hesaplamaları yürüten ana işlemci birimi (Beyin)."
   },
   {
     "term": "CRUD",
     "category": "Veri Tabanı",
-    "definition": "Veritabanındaki 4 temel işlem: Create (INSERT), Read (SELECT), Update (UPDATE), Delete (DELETE)."
+    "definition": "Veritabanındaki 4 temel veri işlemi: Create (INSERT), Read (SELECT), Update (UPDATE), Delete (DELETE)."
+  },
+  {
+    "term": "CSS3 (Cascading Style Sheets)",
+    "category": "Web Tasarım",
+    "definition": "HTML elemanlarının renk, yazı tipi, boyut, yerleşim ve animasyon gibi görsel stillerini belirleyen stil şablonu dili."
   },
   {
     "term": "Değişken (Variable)",
     "category": "Programlama",
-    "definition": "Bilgisayarın geçici belleğinde (RAM) bir değeri saklamak için adlandırılmış veri hücresi."
+    "definition": "Bilgisayarın geçici belleğinde (RAM) veri saklamak için adlandırılmış ve türü belirlenmiş hafıza hücresi."
+  },
+  {
+    "term": "DGS (Dikey Geçiş Sınavı)",
+    "category": "Kariyer & Akademik",
+    "definition": "2 yıllık önlisans mezunlarının 4 yıllık mühendislik veya lisans fakültelerine geçiş yapmak için ÖSYM tarafından düzenlenen sınav."
+  },
+  {
+    "term": "DNS (Domain Name System)",
+    "category": "Ağ & Sistem",
+    "definition": "Alan adlarını (örn: ardahan.edu.tr) bilgisayarların anlayacağı IP adreslerine (örn: 193.255.x.x) dönüştüren telefon rehberi sistemi."
+  },
+  {
+    "term": "Docker (Konteyner)",
+    "category": "Sistem & Yazılım",
+    "definition": "Uygulamaları tüm bağımlılıklarıyla birlikte izole konteynerlar içinde paketleyip her ortamda sorunsuz çalıştırmayı sağlayan teknoloji."
+  },
+  {
+    "term": "DOM (Document Object Model)",
+    "category": "Web Tasarım",
+    "definition": "HTML belgesinin tarayıcı tarafından nesne ağacı şeklinde temsil edilmesi; JavaScript ile sayfayı dinamik değiştirme imkânı sunar."
   },
   {
     "term": "Döngü (Loop)",
     "category": "Programlama",
-    "definition": "Belirli bir kod bloğunu belirli bir sayıda veya bir şart sağlandığı sürece tekrarlayan yapı (for, while)."
+    "definition": "Belirli bir kod bloğunu belirli bir sayıda veya bir şart sağlandığı sürece tekrarlayan kontrol yapısı (for, while, foreach)."
+  },
+  {
+    "term": "Encapsulation (Kapsülleme)",
+    "category": "Programlama",
+    "definition": "Nesne verilerini doğrudan dış erişime kapatıp (private) yalnızca kontrollü metotlar (properties / getter-setter) üzerinden erişim sağlama ilkesi."
+  },
+  {
+    "term": "Exception (İstisna / Hata)",
+    "category": "Programlama",
+    "definition": "Programın çalışması esnasında (runtime) ortaya çıkan ve akışı kesintiye uğratan sıfıra bölme, null referans gibi çalışma zamanı hataları."
   },
   {
     "term": "Flexbox",
     "category": "Web Tasarım",
-    "definition": "CSS3 ile gelen, elemanları tek bir eksende (yatay veya dikey) esnek şekilde hizalamaya yarayan düzen modeli."
+    "definition": "CSS3 ile gelen, elemanları tek bir eksende (yatay veya dikey) esnek şekilde sıralamaya ve hizalamaya yarayan yerleşim modeli."
   },
   {
     "term": "Foreign Key (FK)",
     "category": "Veri Tabanı",
-    "definition": "Bir tablodaki sütunun başka bir tablonun birincil anahtarına (PK) bağlanarak iki tablo arasında ilişki kurması."
+    "definition": "Bir tablodaki sütunun başka bir tablonun birincil anahtarına (PK) bağlanarak tablolar arasında ilişkisel bütünlük kurması."
+  },
+  {
+    "term": "Frontend",
+    "category": "Web Tasarım",
+    "definition": "Kullanıcının web sitesinde doğrudan gördüğü ve etkileşime geçtiği ön yüz arayüzü (HTML, CSS, JS)."
+  },
+  {
+    "term": "Framework",
+    "category": "Yazılım",
+    "definition": "Yazılım geliştiricilere standart bir mimari, hazır kütüphaneler ve şablonlar sunan uygulama geliştirme çatısı (Bootstrap, .NET, React vb.)."
   },
   {
     "term": "Git",
     "category": "Yazılım Yönetimi",
-    "definition": "Kodlardaki değişiklikleri zaman içinde takip eden ve ekip çalışmasını sağlayan dağıtık versiyon kontrol sistemi."
+    "definition": "Kod kaynaklarındaki değişiklikleri sürüm sürüm takip eden ve ekiplerin eşzamanlı çalışmasını sağlayan dağıtık versiyon kontrol sistemi."
+  },
+  {
+    "term": "GitHub",
+    "category": "Yazılım Yönetimi",
+    "definition": "Git depolarının bulutta barındırıldığı, açık kaynak projelerin paylaşıldığı ve kod incelemesi yapılan dünya çapındaki platform."
+  },
+  {
+    "term": "GPU (Graphics Processing Unit)",
+    "category": "Donanım",
+    "definition": "Görüntü işleme, 3D grafik render alma ve yapay zeka hesaplamalarını paralelleştirerek yürüten grafik kartı işlemcisi."
+  },
+  {
+    "term": "Grid Layout",
+    "category": "Web Tasarım",
+    "definition": "CSS3 ile gelen, iki boyutlu (satır ve sütun) karmaşık sayfa düzenlerini kolayca oluşturmayı sağlayan ızgara sistemi."
+  },
+  {
+    "term": "HTML5",
+    "category": "Web Tasarım",
+    "definition": "Web sayfalarının yapısını ve içeriğini semantik etiketlerle (header, main, footer vb.) tanımlayan standart işaretleme dili."
+  },
+  {
+    "term": "HTTP / HTTPS",
+    "category": "Ağ & Web",
+    "definition": "Web tarayıcısı ile sunucu arasındaki veri iletim kuralları (HTTPS: SSL/TLS ile şifrelenmiş güvenli HTTP bağlantısı)."
+  },
+  {
+    "term": "İlişkisel Veritabanı (RDBMS)",
+    "category": "Veri Tabanı",
+    "definition": "Verilerin satır ve sütunlardan oluşan tablolarda saklandığı ve SQL ile sorgulandığı veritabanı yönetim sistemi (SQL Server, MySQL, PostgreSQL)."
+  },
+  {
+    "term": "Inheritance (Kalıtım)",
+    "category": "Programlama",
+    "definition": "Bir sınıfın (türetilmiş sınıf), başka bir sınıfın (ana sınıf) özelliklerini ve metotlarını miras alarak yeniden kullanabilmesi ilkesi."
+  },
+  {
+    "term": "IP Adresi (Internet Protocol)",
+    "category": "Ağ & Sistem",
+    "definition": "Ağa bağlı her cihazın (bilgisayar, telefon, sunucu) ağ üzerinde tanınmasını sağlayan benzersiz sayısal kimlik adresi (IPv4 / IPv6)."
+  },
+  {
+    "term": "JavaScript (JS)",
+    "category": "Programlama",
+    "definition": "Web sayfalarına dinamik işlevler, animasyonlar ve olay dinleyicileri kazandıran istemci ve sunucu tarafında çalışan betik dili."
+  },
+  {
+    "term": "JSON (JavaScript Object Notation)",
+    "category": "Web & Backend",
+    "definition": "İnsanlar ve makineler tarafından kolayca okunabilen, key-value (anahtar-değer) yapısındaki hafif veri değişim formatı."
+  },
+  {
+    "term": "JWT (JSON Web Token)",
+    "category": "Web & Backend",
+    "definition": "Kullanıcı kimlik doğrulama ve yetkilendirme işlemlerinde sunucular arası güvenli bilgi aktarımı sağlayan kompakt token standartı."
+  },
+  {
+    "term": "LINQ (Language Integrated Query)",
+    "category": "Programlama",
+    "definition": "C# dili içerisinden diziler, koleksiyonlar ve SQL veritabanları üzerinde doğrudan SQL benzeri sorgular yazmayı sağlayan teknoloji."
   },
   {
     "term": "Metot / Fonksiyon",
     "category": "Programlama",
-    "definition": "Belirli bir görevi icra eden ve ismi çağrılarak tekrar tekrar kullanılabilen modüler kod bloğu."
+    "definition": "Belirli bir görevi yerine getiren, parametre alabilen, geriye değer döndürebilen ve tekrar tekrar çağrılabilen modüler kod bloğu."
+  },
+  {
+    "term": "Middleware",
+    "category": "Web & Backend",
+    "definition": "İstemciden gelen istek (Request) ile sunucunun verdiği yanıt (Response) arasında çalışan kimlik kontrolü, loglama veya hata yakalama katmanı."
+  },
+  {
+    "term": "MVC (Model-View-Controller)",
+    "category": "Yazılım Mimarisi",
+    "definition": "Yazılımı Veri (Model), Arayüz (View) ve Kontrolcü (Controller) olarak 3 ana katmana ayıran popüler mimari tasarım deseni."
+  },
+  {
+    "term": "NoSQL",
+    "category": "Veri Tabanı",
+    "definition": "İlişkisel tablo yapısı yerine doküman (Document/JSON), anahtar-değer veya grafik yapısıyla çalışan esnek veritabanları (MongoDB, Redis)."
+  },
+  {
+    "term": "Object (Nesne)",
+    "category": "Programlama",
+    "definition": "OOP'de bir sınıfın (Class) bellekte somutlaşmış (instantiated) örneği; durum (state) ve davranış (behavior) taşır."
+  },
+  {
+    "term": "OOP (Object-Oriented Programming)",
+    "category": "Programlama",
+    "definition": "Gerçek dünyadaki nesneleri kod ortamına sınıflar ve nesneler aracılığıyla aktarmayı hedefleyen nesne yönelimli programlama yaklaşımı."
+  },
+  {
+    "term": "ORM (Object-Relational Mapping)",
+    "category": "Veri Tabanı",
+    "definition": "Veritabanı tablolarını nesne yönelimli dildeki sınıflarla (C# Class) eşleştirerek SQL yazmadan veri işlemlerini yürüten teknoloji (Entity Framework)."
+  },
+  {
+    "term": "Polymorphism (Çok Biçimlilik)",
+    "category": "Programlama",
+    "definition": "Aynı isimdeki bir metodun farklı sınıflarda farklı biçimlerde ve davranışlarda çalışabilmesi (method overriding / overloading)."
   },
   {
     "term": "Primary Key (PK)",
@@ -72,21 +247,71 @@
   {
     "term": "RAM (Random Access Memory)",
     "category": "Donanım",
-    "definition": "İşlemcinin o an kullandığı verileri çok hızlı işlediği, elektrik kesilince sıfırlanan geçici ana bellek."
+    "definition": "İşlemcinin aktif olarak kullandığı veri ve program komutlarını çok hızlı okuyup yazdığı geçici ana bellek (Elektrik kesilince sıfırlanır)."
+  },
+  {
+    "term": "Recursion (Özyineleme)",
+    "category": "Programlama",
+    "definition": "Bir fonksiyonun veya metodun bir problemi çözmek için kendi kendisini doğrudan veya dolaylı olarak tekrar çağırması tekniği."
   },
   {
     "term": "Responsive Design",
     "category": "Web Tasarım",
-    "definition": "Web sitelerinin mobil, tablet ve masaüstü tüm ekran boyutlarına otomatik uyum sağlaması."
+    "definition": "Web sitelerinin masaüstü, tablet ve mobil gibi farklı ekran çözünürlüklerine otomatik olarak kusursuz uyum sağlaması."
+  },
+  {
+    "term": "RESTful API",
+    "category": "Web & Backend",
+    "definition": "HTTP protokol metodlarını (GET, POST, PUT, DELETE) kullanarak durumsuz (stateless) veri alışverişi sağlayan web servis mimarisi."
+  },
+  {
+    "term": "Scrum / Agile",
+    "category": "Yazılım Metodolojisi",
+    "definition": "Yazılım projelerini kısa dönemli sprintler (1-4 hafta) halinde esnek, hızlı ve müşteri odaklı yönetmeyi sağlayan çevik proje yöntemi."
   },
   {
     "term": "SQL (Structured Query Language)",
     "category": "Veri Tabanı",
-    "definition": "İlişkisel veritabanlarını sorgulamak, veri eklemek ve yönetmek için kullanılan standart veritabanı dili."
+    "definition": "İlişkisel veritabanlarında veri sorgulama, ekleme, güncelleme ve veritabanı yapısını yönetme amaçlı standart dil."
   },
   {
     "term": "SSD (Solid State Drive)",
     "category": "Donanım",
-    "definition": "Mekanik hareketli parçası olmayan, yarı iletken çiplerle yüksek hızlı okuma/yazma sunan kalıcı depolama birimi."
+    "definition": "Mekanik hareketli parçası bulunmayan, flaş bellek çiplerinden oluşan yüksek okuma/yazma hızlı kalıcı depolama sürücüsü."
+  },
+  {
+    "term": "Staj (Zorunlu Yaz Stajı)",
+    "category": "Kariyer & Akademik",
+    "definition": "Bilgisayar Programcılığı öğrencilerinin 2. yarıyıl sonunda özel veya kamu bilişim sektöründe tamamlaması gereken 30 iş günü pratik eğitimi."
+  },
+  {
+    "term": "String",
+    "category": "Programlama",
+    "definition": "Metinsel verileri, karakter dizilerini veya yazıları saklamak için kullanılan temel veri tipi."
+  },
+  {
+    "term": "Thread / Multithreading",
+    "category": "Programlama & Sistem",
+    "definition": "Bir işlem (process) içerisinde eşzamanlı olarak çalışan en küçük bağımsız iş parçacığı mimarisi."
+  },
+  {
+    "term": "UBYS (Üniversite Bilgi Yönetim Sistemi)",
+    "category": "Kariyer & Akademik",
+    "definition": "Öğrencilerin ders kayıtları, not takibi, sınav sonuçları ve transkript işlemlerini gerçekleştirdiği otomasyon portalı."
+  },
+  {
+    "term": "UI / UX Tasarımı",
+    "category": "Web Tasarım",
+    "definition": "UI (User Interface) kullanıcının gördüğü arayüz tasarımı; UX (User Experience) ise kullanıcının deneyim kalitesi ve rahatlığıdır."
+  },
+  {
+    "term": "Versiyon Kontrol Sistemi (VCS)",
+    "category": "Yazılım Yönetimi",
+    "definition": "Kod değişikliklerinin kim tarafından, ne zaman ve ne amaçla yapıldığını arşivleyen yazılım takip altyapısı."
+  },
+  {
+    "term": "Web Server (Nginx / IIS / Apache)",
+    "category": "Ağ & Web",
+    "definition": "İstemcilerden gelen HTTP/HTTPS isteklerini karşılayarak web dosyalarını (HTML, CSS, JS) istemcilere sunan sunucu yazılımı."
   }
 ]

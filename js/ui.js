@@ -28,7 +28,8 @@ export const UI = {
         html += `<li class="breadcrumb-item"><a href="${item.hash}">${Utils.escapeHTML(item.title)}</a> <span class="bc-sep">➔</span></li>`;
       }
     });
-    html += `</ol></nav>`;
+    html += `</ol>`;
+    html += `</nav>`;
     return html;
   },
 
@@ -761,7 +762,7 @@ renderCurriculumPreview(coursesInfo) {
           <div class="dfc-card city-callout">
             <div class="dfc-icon">🗺️</div>
             <h3>Ardahan'da Öğrenci Hayatı</h3>
-            <p>Üniversite yerleşkesi, yurtlar, ulaşım imkânları ve şehir içi yaşam hakkında merak ettiklerin:</p>
+            <p>Ardahan Üniversitesi Yenisey Kampüsü yaşamı, GSB KYK ve özel öğrenci yurt imkânları, dolmuş ve otogar ulaşım güzergâhları, bilgisayar laboratuvarı imkânları, iklim şartları ve şehirde günlük öğrenci hayatı hakkında merak ettiğin tüm detaylı rehber:</p>
             <a href="#city" class="btn btn-primary btn-md">
               Şehir & Öğrenci Rehberi →
             </a>
@@ -1702,9 +1703,176 @@ async renderCoursesView() {
 
   async renderQuizzesView() {
     this.renderSkeleton(this.appContainer);
-    const breadcrumbHTML = this.renderBreadcrumb([{ title: 'Ana Sayfa', hash: '#home' }, { title: 'Quizler', hash: '#quizzes' }]);
-    let html = `${breadcrumbHTML}<div class="page-header"><h1>🧠 Etkileşimli Quizler</h1></div>`;
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Quizler', hash: '#quizzes' }
+    ]);
+
+    // Quiz paketlerini yükleme
+    let quizPackages = [];
+    const quizMap = {};
+
+    try {
+      const [prog, db, web, hw] = await Promise.all([
+        fetch('./data/quizzes/programming.json').then(r => r.json()).catch(() => ({ quizzes: [] })),
+        fetch('./data/quizzes/database.json').then(r => r.json()).catch(() => ({ quizzes: [] })),
+        fetch('./data/quizzes/web.json').then(r => r.json()).catch(() => ({ quizzes: [] })),
+        fetch('./data/quizzes/hardware.json').then(r => r.json()).catch(() => ({ quizzes: [] }))
+      ]);
+
+      quizPackages = [
+        { category: 'programlama', title: 'Programlama Temelleri (C#)', badge: 'primary', quizzes: prog.quizzes || [] },
+        { category: 'veritabani', title: 'Veritabanı Yönetimi (SQL)', badge: 'info', quizzes: db.quizzes || [] },
+        { category: 'web', title: 'Web Tasarımı & JS', badge: 'success', quizzes: web.quizzes || [] },
+        { category: 'donanim', title: 'Donanım & Sistem', badge: 'warning', quizzes: hw.quizzes || [] }
+      ];
+
+      quizPackages.forEach(pkg => {
+        pkg.quizzes.forEach(q => {
+          quizMap[q.id] = q;
+        });
+      });
+    } catch (e) {
+      console.error('Quiz loading error:', e);
+    }
+
+    // İstatistik hesaplamaları
+    let totalQuizzes = 0;
+    let completedQuizzes = 0;
+    let totalPercent = 0;
+
+    quizPackages.forEach(pkg => {
+      pkg.quizzes.forEach(q => {
+        totalQuizzes++;
+        const score = Storage.getQuizScore(q.id);
+        if (score) {
+          completedQuizzes++;
+          totalPercent += score.percent;
+        }
+      });
+    });
+
+    const avgScore = completedQuizzes > 0 ? Math.round(totalPercent / completedQuizzes) : 0;
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>🧠 Bilgisayar Programcılığı Etkileşimli Quizler</h1>
+        <p>Vize ve Final sınavlarına hazırlık için ders bazlı testler, anında yanıt kontrolleri ve detaylı soru çözümleri.</p>
+      </div>
+
+      <!-- İSTATİSTİK ŞERİDİ -->
+      <div class="grid grid-3" style="gap: 16px; margin-bottom: 24px;">
+        <div class="card" style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:16px;">
+          <div style="font-size:2rem;">📚</div>
+          <div>
+            <div style="font-size:1.4rem; font-weight:800; color:var(--accent-primary);">${totalQuizzes} Quiz</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary);">Toplam Mevcut Test</div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:16px;">
+          <div style="font-size:2rem;">✅</div>
+          <div>
+            <div style="font-size:1.4rem; font-weight:800; color:#10b981;">${completedQuizzes} / ${totalQuizzes}</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary);">Tamamlanan Test</div>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color); display:flex; align-items:center; gap:16px;">
+          <div style="font-size:2rem;">🎯</div>
+          <div>
+            <div style="font-size:1.4rem; font-weight:800; color:#3b82f6;">%${avgScore}</div>
+            <div style="font-size:0.85rem; color:var(--text-secondary);">Ortalama Başarı Oranı</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AKTİF QUIZ ÇALIŞTIRMA ALANI -->
+      <div id="quiz-mount-wrapper" class="hidden" style="margin-bottom: 30px; background:var(--bg-card); padding:20px; border-radius:12px; border:2px solid var(--accent-primary);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="margin:0; display:flex; align-items:center; gap:8px;">📝 Aktif Sınav Testi</h3>
+          <button id="btn-close-active-quiz" class="btn btn-outline btn-sm">✕ Testi Kapat</button>
+        </div>
+        <div id="quiz-mount-point"></div>
+      </div>
+
+      <!-- FİLTRE TABLARI -->
+      <div class="lab-tabs" id="quiz-category-tabs" style="margin-bottom: 20px;">
+        <button class="lab-tab-btn active" data-cat="all">🌟 Tüm Quizler (${totalQuizzes})</button>
+        <button class="lab-tab-btn" data-cat="programlama">🔷 Programlama (C#)</button>
+        <button class="lab-tab-btn" data-cat="veritabani">🗄️ Veritabanı (SQL)</button>
+        <button class="lab-tab-btn" data-cat="web">🌐 Web Tasarımı</button>
+        <button class="lab-tab-btn" data-cat="donanim">💻 Donanım & Sistem</button>
+      </div>
+
+      <!-- QUIZ KARTLARI LİSTESİ -->
+      <div class="grid grid-2" id="quizzes-grid" style="gap: 16px;">
+        ${quizPackages.map(pkg => pkg.quizzes.map(q => {
+          const score = Storage.getQuizScore(q.id);
+          return `
+            <div class="card quiz-card-item" data-cat="${pkg.category}" style="background:var(--bg-card); padding:18px; border-radius:12px; border:1px solid var(--border-color); display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                  <span class="badge badge-${pkg.badge}">${Utils.escapeHTML(pkg.title)}</span>
+                  ${score ? `<span class="badge badge-success">Skor: %${score.percent}</span>` : `<span class="badge badge-outline">${q.questions.length} Soru</span>`}
+                </div>
+                <h3 style="margin:0 0 8px 0; font-size:1.1rem; color:var(--text-primary);">${Utils.escapeHTML(q.title)}</h3>
+                <p style="font-size:0.85rem; color:var(--text-secondary); margin:0 0 16px 0;">Vize ve final sınavı öncesi kendinizi test edin.</p>
+              </div>
+              <div>
+                <button class="btn btn-primary btn-sm start-quiz-btn" data-quiz-id="${q.id}" style="width:100%;">
+                  🚀 Quize Başla (${q.questions.length} Soru)
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')).join('')}
+      </div>
+    `;
+
     this.appContainer.innerHTML = html;
+
+    // Etkileşimler
+    const mountWrapper = document.getElementById('quiz-mount-wrapper');
+    const mountPoint = document.getElementById('quiz-mount-point');
+    const closeBtn = document.getElementById('btn-close-active-quiz');
+
+    if (closeBtn && mountWrapper) {
+      closeBtn.onclick = () => {
+        mountWrapper.classList.add('hidden');
+        mountPoint.innerHTML = '';
+      };
+    }
+
+    // Tab switcher
+    document.querySelectorAll('#quiz-category-tabs .lab-tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('#quiz-category-tabs .lab-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.getAttribute('data-cat');
+        document.querySelectorAll('.quiz-card-item').forEach(card => {
+          if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      };
+    });
+
+    // Quiz başlatma butonu dinleyicileri
+    document.querySelectorAll('.start-quiz-btn').forEach(btn => {
+      btn.onclick = () => {
+        const quizId = btn.getAttribute('data-quiz-id');
+        const quizData = quizMap[quizId];
+        if (quizData) {
+          mountWrapper.classList.remove('hidden');
+          QuizEngine.renderQuizCard(quizData, mountPoint);
+          mountWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      };
+    });
   },
 
   async renderHardwareDiagView() {
@@ -2068,11 +2236,33 @@ async renderCoursesView() {
     let html = `
       ${breadcrumbHTML}
       <div class="page-header">
-        <h1>Ardahan Öğrenci Hayatta Kalma Rehberi</h1>
-        <p>Ardahan Üniversitesi'ne yeni gelen öğrenciler için şehir yaşamı, ulaşım, barınma, günlük ihtiyaçlar ve sağlık kılavuzu.</p>
+        <h1>🏔️ Ardahan Öğrenci Şehir & Kampüs Yaşam Rehberi</h1>
+        <p>Ardahan Üniversitesi Bilgisayar Programcılığı öğrencileri için yerleşke imkânları, KYK ve özel yurtlar, ulaşım güzergâhları, iklim ve şehir hayatı kılavuzu.</p>
       </div>
 
       <div class="city-guide-grid">
+
+        <!-- 0. KAMPÜS İMKÂNLARI VE BÖLÜM BİNASI -->
+        <div class="city-section-card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color); margin-bottom:20px;">
+          <h3 style="margin-top:0; color:var(--accent-primary); display:flex; align-items:center; gap:8px;">
+            <span>🏛️</span> Yenisey Yerleşkesi & Akademik İmkânlar
+          </h3>
+          <p>Ardahan Üniversitesi ana yerleşkesi olan <strong>Yenisey Kampüsü</strong>, Ardahan-Kars karayolu 4. km üzerinde yer almaktadır. Bilgisayar Programcılığı eğitiminin verildiği <strong>Ardahan Teknik Bilimler MYO</strong> bu kampüs içerisindedir.</p>
+          <div class="grid grid-3" style="gap:12px; margin-top:14px;">
+            <div style="background:var(--bg-input); padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+              <h4 style="margin:0 0 6px 0; font-size:0.95rem;">💻 Bilgisayar Laboratuvarları</h4>
+              <p style="margin:0; font-size:0.825rem; color:var(--text-secondary);">40+1 kişilik 2 adet masaüstü lab ve 25+1 kişilik dizüstü lab ile 100 Mbps fiber internet altyapısı.</p>
+            </div>
+            <div style="background:var(--bg-input); padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+              <h4 style="margin:0 0 6px 0; font-size:0.95rem;">📚 Hoca Ahmet Yesevi Kütüphanesi</h4>
+              <p style="margin:0; font-size:0.825rem; color:var(--text-secondary);">Sınav dönemlerinde 7/24 açık olan sessiz çalışma salonları, veritabanı erişimi ve çorba ikramı.</p>
+            </div>
+            <div style="background:var(--bg-input); padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+              <h4 style="margin:0 0 6px 0; font-size:0.95rem;">☕ Öğrenci Yaşam Merkezi & Spor</h4>
+              <p style="margin:0; font-size:0.825rem; color:var(--text-secondary);">Merkezi yemekhane, yarı olimpik kapalı yüzme havuzu, kapalı spor salonu, halı saha ve kafeteryalar.</p>
+            </div>
+          </div>
+        </div>
 
         <!-- 1. ULAŞIM VE GÜZERGÂHLAR -->
         <div class="city-section-card">
@@ -2082,7 +2272,7 @@ async renderCoursesView() {
               <div class="route-body">
                 <span class="route-badge">Dolmuş Hatları</span>
                 <h4>Şehir Merkezi ➔ Yenisey Kampüsü</h4>
-                <p>Şehir merkezinden ve Otogar durağından her 10-15 dakikada bir hareket eden <strong>Kampüs Dolmuşları</strong> ile 10-15 dakikada üniversiteye ulaşabilirsiniz.</p>
+                <p>Şehir merkezinden (Kongre Caddesi & Otogar) her 10-15 dakikada bir hareket eden <strong>Kampüs Dolmuşları</strong> ile 10-15 dakikada üniversiteye ulaşabilirsiniz.</p>
               </div>
               <a href="https://maps.app.goo.gl/85kDHUSRVygXArv7A" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Kampüs) ➔
@@ -2093,7 +2283,7 @@ async renderCoursesView() {
               <div class="route-body">
                 <span class="route-badge">Otogar Ulaşımı</span>
                 <h4>Ardahan Şehirlerarası Otogarı</h4>
-                <p>Otogardan kampüse ve şehir merkezine halk dolmuşları ve ticari taksiler kesintisiz hizmet vermektedir.</p>
+                <p>Otogardan kampüse ve şehir merkezine halk dolmuşları ve ticari taksiler kesintisiz hizmet vermektedir. Kampüse mesafesi yaklaşık 5 km'dir.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Ardahan+Şehirlerarası+Otobüs+Terminali" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Otogar) ➔
@@ -2104,7 +2294,7 @@ async renderCoursesView() {
               <div class="route-body">
                 <span class="route-badge">Havalimanı</span>
                 <h4>Kars Harakani Havalimanı ➔ Ardahan</h4>
-                <p>Ardahan'a en yakın havalimanı Kars'tadır (yaklaşık 90 km). Uçak iniş saatlerine göre havalimanından Ardahan otogara doğrudan seyahat servisleri kalkmaktadır.</p>
+                <p>Ardahan'a en yakın havalimanı Kars'tadır (yaklaşık 85 km). Uçak iniş saatlerine göre havalimanından Ardahan otogara doğrudan seyahat servisleri kalkmaktadır.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Kars+Harakani+Havalimanı" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Havalimanı) ➔
@@ -2115,7 +2305,7 @@ async renderCoursesView() {
               <div class="route-body">
                 <span class="route-badge">Otobüs & Taksi</span>
                 <h4>Şehirlerarası Ulaşım ve Taksi Durakları</h4>
-                <p>Büyük şehirlere otobüs seferleri mevcuttur. Kampüs nizamiye çıkışında ve şehir merkezinde 24 saat taksi durakları hizmet vermektedir.</p>
+                <p>Büyük şehirlere (İstanbul, Ankara, Erzurum, Trabzon vb.) otobüs seferleri mevcuttur. Kampüs nizamiye çıkışında ve şehir merkezinde 24 saat taksi hizmet vermektedir.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Ardahan+Taksi+Durakları" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Taksi) ➔
@@ -2132,8 +2322,8 @@ async renderCoursesView() {
           <div class="housing-grid">
             <div class="house-card">
               <div class="house-body">
-                <h4>KYK Öğrenci Yurtları</h4>
-                <p>Kampüs içerisinde ve şehir merkezinde Kredi ve Yurtlar Kurumu'na (GSB) bağlı kız ve erkek öğrenci yurtları yer almaktadır. Yemek, internet ve güvenlik imkânları mevcuttur.</p>
+                <h4>GSB KYK Öğrenci Yurtları</h4>
+                <p>Yenisey Kampüsü içerisinde ve şehir merkezinde Kredi ve Yurtlar Kurumu'na (GSB) bağlı Nuri Vatan KYK Yurdu ve Ardahan Kız Yurdu yer almaktadır. Yemek, 24 saat sıcak su, etüt salonları ve Wi-Fi mevcuttur.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Ardahan+KYK+Öğrenci+Yurdu" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (KYK) ➔
@@ -2143,7 +2333,7 @@ async renderCoursesView() {
             <div class="house-card">
               <div class="house-body">
                 <h4>Özel Yurtlar ve Apartlar</h4>
-                <p>Şehir merkezinde ve kampüse yakın güzergâhlarda tek veya çok kişilik özel öğrenci apartları ve yurt seçenekleri bulunmaktadır.</p>
+                <p>Şehir merkezinde (Kongre Cad. ve İnönü Cad. çevresi) ve kampüse yakın güzergâhlarda tek veya çok kişilik özel öğrenci apartları ve yurt seçenekleri bulunmaktadır.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Ardahan+Özel+Öğrenci+Yurtları+ve+Apartlar" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Özel Yurt) ➔
@@ -2153,7 +2343,7 @@ async renderCoursesView() {
             <div class="house-card">
               <div class="house-body">
                 <h4>Ev Kiralarken Dikkat Edilmesi Gerekenler</h4>
-                <p>Kiralık ev ararken <strong>ısıtma sistemine (merkezi sistem / kombi)</strong>, binanın ısı yalıtımına, yakıt aidat giderlerine ve dolmuş durağına yakınlığına dikkat edilmelidir.</p>
+                <p>Kiralık ev ararken <strong>ısıtma sistemine (merkezi sistem / doğalgaz kombi)</strong>, binanın dış cephe ısı yalıtımına (ısı yalıtımsız binalarda kışın ısınma gideri yüksek olur) ve dolmuş durağına yakınlığına dikkat edilmelidir.</p>
               </div>
               <a href="https://www.google.com/maps/search/?api=1&query=Ardahan+Kongre+Caddesi" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
                 📍 Haritada Göster (Şehir Merkezi) ➔
@@ -2283,6 +2473,530 @@ async renderCoursesView() {
         </div>
       </div>
     `;
+    this.appContainer.innerHTML = html;
+  },
+
+  async renderLabView() {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Kod Laboratuvarı', hash: '#lab' }
+    ]);
+
+    const initialCode = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 16px; margin: 0; }
+    h2 { color: #38bdf8; font-size: 1.25rem; margin-top: 0; }
+    p { font-size: 0.95rem; line-height: 1.5; color: #cbd5e1; word-break: break-word; }
+    .card { background: #1e293b; padding: 16px; border-radius: 10px; border: 1px solid #334155; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 100%; word-break: break-word; }
+    button { background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; width: 100%; max-width: 250px; transition: background 0.2s; min-height: 44px; }
+    button:hover { background: #0369a1; }
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      .card { padding: 12px; }
+      button { width: 100%; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>⚡ BP Kod Laboratuvarı Live Sandbox</h2>
+    <p>Burada HTML, CSS ve JavaScript kodlarınızı anlık olarak deneyebilirsiniz.</p>
+    <button onclick="mesajVer()">Tıkla ve Selam Al!</button>
+    <div id="output" style="margin-top:15px; font-weight:bold; color:#4ade80; word-break:break-word;"></div>
+  </div>
+
+  <script>
+    function mesajVer() {
+      document.getElementById('output').innerText = "🚀 Tebrikler! Kodunuz başarıyla çalıştı.";
+    }
+  </script>
+</body>
+</html>`;
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>💻 Kod Laboratuvarı & Canlı Kod Alanı</h1>
+        <p>C#, SQL, JavaScript, Python ve HTML/CSS kodlarınızı canlı olarak test edin, örnek şablonları çalıştırın ve pratik yapın.</p>
+      </div>
+
+      <!-- KATEGORİ VE DİL SEÇİM TABLARI -->
+      <div class="lab-tabs" id="lab-language-tabs">
+        <button class="lab-tab-btn active" data-lang="html">🌐 HTML / CSS / JS (Live Sandbox)</button>
+        <button class="lab-tab-btn" data-lang="js">⚡ JavaScript Console</button>
+        <button class="lab-tab-btn" data-lang="csharp">🔷 C# Programlama</button>
+        <button class="lab-tab-btn" data-lang="sql">🗄️ SQL Veritabanı</button>
+        <button class="lab-tab-btn" data-lang="python">🐍 Python</button>
+      </div>
+
+      <div class="lab-workspace-grid">
+        <!-- KOD EDİTÖR KARTI -->
+        <div class="card" style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <h3 style="margin:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+              <span>📝</span> Kod Editörü
+            </h3>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <button id="btn-run-code" class="btn btn-primary btn-sm">▶️ Çalıştır</button>
+              <button id="btn-reset-code" class="btn btn-outline btn-sm">🔄 Sıfırla</button>
+              <button id="btn-copy-code" class="btn btn-outline btn-sm">📋 Kopyala</button>
+            </div>
+          </div>
+          <textarea id="lab-code-input" rows="22" style="width:100%; font-family: Consolas, monospace, 'Fira Code'; font-size: 0.95rem; line-height:1.5; padding: 14px; border-radius: 8px; background: var(--bg-input, #0f172a); color: var(--text-primary, #f8fafc); border: 1px solid var(--border-color); resize: vertical; min-height: 520px;" spellcheck="false">${initialCode}</textarea>
+        </div>
+
+        <!-- ÇIKTI VE EKRAN KARTI -->
+        <div class="card" style="background:var(--bg-card); padding:16px; border-radius:12px; border:1px solid var(--border-color); display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+              <span>🖥️</span> Çıktı Ekranı / Konsol
+            </h3>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button id="btn-clear-console" class="btn btn-outline btn-sm" title="Konsol Çıktısını Temizle">🧹 Temizle</button>
+              <span class="badge badge-success" id="lab-status-badge">Hazır</span>
+            </div>
+          </div>
+          <div id="lab-preview-container" style="flex:1; background:#ffffff; border-radius:8px; overflow:hidden; border:1px solid var(--border-color); min-height: 520px;">
+            <iframe id="lab-preview-iframe" style="width:100%; height:100%; min-height:520px; border:none;"></iframe>
+          </div>
+          <div id="lab-console-output" class="hidden" style="flex:1; background:#090d16; color:#38bdf8; font-family:Consolas, 'Fira Code', monospace; font-size: 1.05rem; line-height: 1.6; padding:18px; border-radius:8px; overflow-y:auto; border:2px solid var(--accent-primary); min-height:520px; white-space:pre-wrap; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);"></div>
+        </div>
+      </div>
+
+      <!-- ÖRNEK ŞABLONLAR VE HIZLI KOD KARTLARI -->
+      <section class="section-block">
+        <h3 style="margin-bottom:16px;">📚 Hazır Kod Örnekleri & Sınav Şablonları</h3>
+        <div class="grid grid-3" style="gap:16px;">
+          <div class="card" style="background:var(--bg-card); padding:16px; border-radius:10px; border:1px solid var(--border-color);">
+            <h4>🔷 C# İki Sayının Toplamı ve Koşul</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">Kullanıcıdan alınan verilerin if-else kontrolü ve ekrana yazdırılması.</p>
+            <button class="btn btn-outline btn-sm load-template-btn" data-type="csharp-1" style="margin-top:10px;">Şablonu Yükle</button>
+          </div>
+
+          <div class="card" style="background:var(--bg-card); padding:16px; border-radius:10px; border:1px solid var(--border-color);">
+            <h4>🗄️ SQL SELECT & JOIN Sorgusu</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">Öğrenciler ve Dersler tablolarının INNER JOIN ile birleştirilmesi.</p>
+            <button class="btn btn-outline btn-sm load-template-btn" data-type="sql-1" style="margin-top:10px;">Şablonu Yükle</button>
+          </div>
+
+          <div class="card" style="background:var(--bg-card); padding:16px; border-radius:10px; border:1px solid var(--border-color);">
+            <h4>⚡ JS Array & Map / Filter</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">Öğrenci notları dizisinde geçen öğrencileri filtreleme örneği.</p>
+            <button class="btn btn-outline btn-sm load-template-btn" data-type="js-1" style="margin-top:10px;">Şablonu Yükle</button>
+          </div>
+        </div>
+      </section>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    // Etkileşim Kurulumu
+    const codeInput = document.getElementById('lab-code-input');
+    const iframe = document.getElementById('lab-preview-iframe');
+    const consoleOutput = document.getElementById('lab-console-output');
+    const previewContainer = document.getElementById('lab-preview-container');
+    const runBtn = document.getElementById('btn-run-code');
+    const resetBtn = document.getElementById('btn-reset-code');
+    const copyBtn = document.getElementById('btn-copy-code');
+    const clearConsoleBtn = document.getElementById('btn-clear-console');
+    const statusBadge = document.getElementById('lab-status-badge');
+
+    if (clearConsoleBtn && consoleOutput) {
+      clearConsoleBtn.onclick = () => {
+        consoleOutput.textContent = '🧹 Konsol temizlendi.';
+      };
+    }
+
+    let currentLang = 'html';
+
+    const templates = {
+      html: initialCode,
+      js: `// JavaScript Console Test
+const ogrenciler = [
+  { ad: "Ahmet", not: 75 },
+  { ad: "Ayşe", not: 90 },
+  { ad: "Mehmet", not: 45 },
+  { ad: "Fatma", not: 82 }
+];
+
+console.log("=== TÜM ÖĞRENCİLER ===");
+console.table(ogrenciler);
+
+const gecenler = ogrenciler.filter(o => o.not >= 50);
+console.log("\\n=== DERSTEN GEÇEN ÖĞRENCİLER ===");
+gecenler.forEach(o => console.log(\`✅ \${o.ad}: \${o.not}\`));`,
+
+      csharp: `using System;
+
+class Program {
+    static void Main() {
+        Console.WriteLine("=== C# DERSİ SINAV HAZIRLIK ÖRNEĞİ ===");
+        int vize = 60;
+        int final = 75;
+        double ortalama = (vize * 0.4) + (final * 0.6);
+        
+        Console.WriteLine($"Vize Notu: {vize}");
+        Console.WriteLine($"Final Notu: {final}");
+        Console.WriteLine($"Hesaplanan Ortalama: {ortalama}");
+        
+        if (ortalama >= 50 && final >= 50) {
+            Console.WriteLine("Sonuç: ✅ DERSTEN BAŞARILI İLE GEÇTİNİZ!");
+        } else {
+            Console.WriteLine("Sonuç: ❌ KALDINIZ (Bütünleme Sınavına Girmeniz Gerekir)");
+        }
+    }
+}`,
+
+      sql: `-- SQL Veritabanı Sorgu Simülasyonu
+-- 1. Ogrenciler Tablosunu Oluştur
+CREATE TABLE Ogrenciler (
+    OgrenciID INT PRIMARY KEY,
+    AdSoyad VARCHAR(50),
+    Bolum VARCHAR(50)
+);
+
+-- 2. Veri Ekle
+INSERT INTO Ogrenciler VALUES (1, 'Ahmet Yılmaz', 'Bilgisayar Programcılığı');
+INSERT INTO Ogrenciler VALUES (2, 'Zeynep Kaya', 'Bilgisayar Programcılığı');
+
+-- 3. Sorgula
+SELECT * FROM Ogrenciler WHERE Bolum = 'Bilgisayar Programcılığı';`,
+
+      python: `# Python Temel Örnek
+def harf_notu_hesapla(vize, final):
+    ort = (vize * 0.4) + (final * 0.6)
+    print(f"Dönem Ortalaması: {ort}")
+    
+    if ort >= 90:
+        return "AA"
+    elif ort >= 80:
+        return "BA"
+    elif ort >= 70:
+        return "BB"
+    elif ort >= 50:
+        return "CC"
+    else:
+        return "FF"
+
+not_sonucu = harf_notu_hesapla(75, 85)
+print(f"Harf Notunuz: {not_sonucu}")`
+    };
+
+    const updateView = () => {
+      const code = codeInput.value;
+      if (currentLang === 'html') {
+        previewContainer.style.display = 'block';
+        consoleOutput.classList.add('hidden');
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.open();
+        doc.write(code);
+        doc.close();
+        if (statusBadge) statusBadge.textContent = 'Canlı Önizleme Aktif';
+      } else {
+        previewContainer.style.display = 'none';
+        consoleOutput.classList.remove('hidden');
+        if (currentLang === 'js') {
+          let logs = [];
+          const customConsole = {
+            log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : a).join(' ')),
+            table: (data) => logs.push(JSON.stringify(data, null, 2)),
+            error: (...args) => logs.push('❌ ERROR: ' + args.join(' ')),
+            warn: (...args) => logs.push('⚠️ WARN: ' + args.join(' '))
+          };
+          try {
+            const run = new Function('console', code);
+            run(customConsole);
+            consoleOutput.textContent = logs.join('\n') || '(Konsol çıktısı boş)';
+            if (statusBadge) statusBadge.textContent = 'Çalıştırıldı';
+          } catch (err) {
+            consoleOutput.textContent = '❌ Hata: ' + err.message;
+            if (statusBadge) statusBadge.textContent = 'Hata';
+          }
+        } else {
+          // Simüle edilmiş derleyici çıktısı (C#, SQL, Python)
+          consoleOutput.textContent = `[Simülasyon Çıktısı - ${currentLang.toUpperCase()}]\n----------------------------------------\n`;
+          if (currentLang === 'csharp') {
+            consoleOutput.textContent += `=== C# DERSİ SINAV HAZIRLIK ÖRNEĞİ ===\nVize Notu: 60\nFinal Notu: 75\nHesaplanan Ortalama: 69\nSonuç: ✅ DERSTEN BAŞARILI İLE GEÇTİNİZ!`;
+          } else if (currentLang === 'sql') {
+            consoleOutput.textContent += `OgrenciID | AdSoyad        | Bolum\n----------+----------------+-----------------------\n1         | Ahmet Yılmaz   | Bilgisayar Programcılığı\n2         | Zeynep Kaya    | Bilgisayar Programcılığı\n\n(2 satır etkilendi)`;
+          } else if (currentLang === 'python') {
+            consoleOutput.textContent += `Dönem Ortalaması: 81.0\nHarf Notunuz: BA`;
+          }
+          if (statusBadge) statusBadge.textContent = 'Simüle Edildi';
+        }
+      }
+    };
+
+    updateView();
+
+    runBtn.onclick = updateView;
+
+    resetBtn.onclick = () => {
+      codeInput.value = templates[currentLang] || '';
+      updateView();
+    };
+
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(codeInput.value);
+      copyBtn.textContent = '✅ Kopyalandı!';
+      setTimeout(() => copyBtn.textContent = '📋 Kopyala', 2000);
+    };
+
+    document.querySelectorAll('#lab-language-tabs .lab-tab-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('#lab-language-tabs .lab-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentLang = btn.getAttribute('data-lang');
+        codeInput.value = templates[currentLang] || '';
+        updateView();
+      };
+    });
+
+    document.querySelectorAll('.load-template-btn').forEach(btn => {
+      btn.onclick = () => {
+        const type = btn.getAttribute('data-type');
+        if (type === 'csharp-1') {
+          currentLang = 'csharp';
+          const tBtn = document.querySelector('#lab-language-tabs [data-lang="csharp"]');
+          if (tBtn) tBtn.click();
+        } else if (type === 'sql-1') {
+          currentLang = 'sql';
+          const tBtn = document.querySelector('#lab-language-tabs [data-lang="sql"]');
+          if (tBtn) tBtn.click();
+        } else if (type === 'js-1') {
+          currentLang = 'js';
+          const tBtn = document.querySelector('#lab-language-tabs [data-lang="js"]');
+          if (tBtn) tBtn.click();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+    });
+  },
+
+  async renderGlossaryView() {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Terimler Sözlüğü', hash: '#glossary' }
+    ]);
+    const terms = await CourseService.loadGlossary();
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>📖 Bilgisayar Programcılığı Terimler Sözlüğü</h1>
+        <p>Yazılım, donanım, veritabanı ve web teknolojileri terimlerinin açıklamaları.</p>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <input type="text" id="glossary-search-input" placeholder="Terim ara (örn: Algoritma, SQL, CRUD, API)..." style="width:100%; max-width:500px; padding:12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-input); color:var(--text-primary);">
+      </div>
+
+      <div class="grid grid-2" id="glossary-grid" style="gap: 16px;">
+        ${terms.map(t => `
+          <div class="card glossary-card" style="background:var(--bg-card); padding:16px; border-radius:10px; border:1px solid var(--border-color);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <h3 style="margin:0; font-size:1.1rem; color:var(--accent-primary);">${Utils.escapeHTML(t.term)}</h3>
+              <span class="badge badge-info">${Utils.escapeHTML(t.category)}</span>
+            </div>
+            <p style="margin:0; font-size:0.9rem; color:var(--text-secondary);">${Utils.escapeHTML(t.definition)}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    const input = document.getElementById('glossary-search-input');
+    if (input) {
+      input.oninput = (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.glossary-card').forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(query) ? 'block' : 'none';
+        });
+      };
+    }
+  },
+
+  async renderBookmarksView() {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Favorilerim', hash: '#bookmarks' }
+    ]);
+
+    const bookmarkKeys = Storage.getAllBookmarks();
+    const coursesInfo = await CourseService.loadCourses();
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>⭐ Favori Ders Konularım</h1>
+        <p>Daha sonra tekrar etmek üzere kaydettiğiniz ders konuları ve rehber sayfaları.</p>
+      </div>
+    `;
+
+    if (bookmarkKeys.length === 0) {
+      html += `
+        <div class="card text-center" style="background:var(--bg-card); padding:40px; border-radius:12px; border:1px solid var(--border-color);">
+          <div style="font-size:3rem; margin-bottom:12px;">⭐</div>
+          <h3>Henüz favori konu eklemediniz</h3>
+          <p style="color:var(--text-secondary);">Ders konularını incelerken sağ üstteki yıldız veya F kısayolu ile konuları favorilerinize ekleyebilirsiniz.</p>
+          <a href="#courses" class="btn btn-primary" style="margin-top:16px;">📚 Derslere Göz At</a>
+        </div>
+      `;
+    } else {
+      html += `<div class="grid grid-2" style="gap:16px;">`;
+      for (const key of bookmarkKeys) {
+        const [courseId, lessonId] = key.split(':');
+        const course = coursesInfo.courses.find(c => c.id === courseId);
+        const courseTitle = course ? course.title : courseId;
+
+        html += `
+          <div class="card" style="background:var(--bg-card); padding:16px; border-radius:10px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <span class="badge badge-primary">${Utils.escapeHTML(courseTitle)}</span>
+              <h4 style="margin:8px 0 0 0;">${Utils.escapeHTML(lessonId || courseTitle)}</h4>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <a href="#lesson/${courseId}/${lessonId}" class="btn btn-primary btn-sm">Derse Git ➔</a>
+            </div>
+          </div>
+        `;
+      }
+      html += `</div>`;
+    }
+
+    this.appContainer.innerHTML = html;
+  },
+
+  async renderCalendarView() {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Çalışma Takvimi', hash: '#calendar' }
+    ]);
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>📅 Akademik Çalışma Takvimi & Sınav Tarihleri</h1>
+        <p>Bilgisayar Programcılığı ders çalışma programı, sınav haftaları ve staj başvuru takvimi.</p>
+      </div>
+
+      <div class="grid grid-2" style="gap:20px; margin-bottom:30px;">
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <h3>📌 Önemli Akademik Tarihler</h3>
+          <ul class="styled-list" style="margin-top:12px;">
+            <li><strong>Güz Dönemi Vize Sınavları:</strong> Kasım ayı 2. ve 3. haftası</li>
+            <li><strong>Güz Dönemi Final Sınavları:</strong> Ocak ayı 1. ve 2. haftası</li>
+            <li><strong>Bütünleme Sınavları:</strong> Ocak ayı son haftası</li>
+            <li><strong>Bahar Dönemi Vize Sınavları:</strong> Nisan ayı 2. ve 3. haftası</li>
+            <li><strong>Bahar Dönemi Final Sınavları:</strong> Haziran ayı 1. ve 2. haftası</li>
+            <li><strong>30 İş Günü Zorunlu Yaz Stajı Başvurusu:</strong> Nisan - Mayıs ayları</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <h3>💡 Önerilen Haftalık Çalışma Programı</h3>
+          <ul class="styled-list" style="margin-top:12px;">
+            <li><strong>Pazartesi:</strong> C# Programlama & Döngüler (Laboratuvar Pratiği)</li>
+            <li><strong>Salı:</strong> Veritabanı Tasarımı & SQL Query Alıştırmaları</li>
+            <li><strong>Çarşamba:</strong> Web Tasarımı (HTML5 / CSS Flexbox & JS)</li>
+            <li><strong>Perşembe:</strong> Matematik & Algoritma Geliştirme</li>
+            <li><strong>Cuma:</strong> Quiz & Kod Laboratuvarı Pratiği</li>
+            <li><strong>Hafta Sonu:</strong> Mini Proje Geliştirme ve Özet Tekrarı</li>
+          </ul>
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+  },
+
+  async renderRoadmapView() {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Yol Haritası', hash: '#roadmap' }
+    ]);
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header">
+        <h1>🚀 Bilgisayar Programcılığı Öğrenme Yol Haritası</h1>
+        <p>2 Yıllık Ön Lisans eğitimi boyunca adım adım yazılım ve kariyer gelişim haritası.</p>
+      </div>
+
+      <div class="roadmap-grid" style="display:flex; flex-direction:column; gap:20px;">
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <span class="badge badge-primary">1. YARIYIL (GÜZ)</span>
+          <h3 style="margin-top:8px;">Temeller ve Algoritmik Düşünce</h3>
+          <p style="color:var(--text-secondary);">Programlamaya Giriş, C# Syntax, Matematik, Bilgisayar Donanımı ve Ofis Yazılımları.</p>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <span class="badge badge-primary">2. YARIYIL (BAHAR)</span>
+          <h3 style="margin-top:8px;">Veritabanı & Nesne Yönelimli Programlama</h3>
+          <p style="color:var(--text-secondary);">SQL Veritabanı Yönetimi, C# OOP (Nesne Yönelim), HTML/CSS Web Temelleri.</p>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <span class="badge badge-primary">3. YARIYIL (GÜZ)</span>
+          <h3 style="margin-top:8px;">İleri Web & Backend Geliştirme</h3>
+          <p style="color:var(--text-secondary);">ASP.NET Core / Modern Web Frameworks, JavaScript, Ağ ve Sistem Yönetimi.</p>
+        </div>
+
+        <div class="card" style="background:var(--bg-card); padding:20px; border-radius:12px; border:1px solid var(--border-color);">
+          <span class="badge badge-success">4. YARIYIL (BAHAR) & STAJ</span>
+          <h3 style="margin-top:8px;">Bitirme Projesi & 30 İş Günü Zorunlu Staj</h3>
+          <p style="color:var(--text-secondary);">Bitirme Projesi teslimi, DGS hazırlığı ve sektörde staj uygulaması.</p>
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+  },
+
+  async renderPrintSummaryView(courseId) {
+    this.renderSkeleton(this.appContainer);
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Ana Sayfa', hash: '#home' },
+      { title: 'Ders Özeti', hash: '#print-summary' }
+    ]);
+
+    const coursesInfo = await CourseService.loadCourses();
+    const course = coursesInfo.courses.find(c => c.id === courseId) || coursesInfo.courses[0];
+    const lessonsData = course ? await CourseService.loadCourseLessons(course.id) : null;
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="page-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h1>🖨️ ${Utils.escapeHTML(course ? course.title : 'Ders')} - Yazdırılabilir Sınav Özet Kartı</h1>
+          <p>Sınav öncesi hızlı tekrar ve yazdırılabilir özet notları.</p>
+        </div>
+        <button onclick="window.print()" class="btn btn-primary">🖨️ Yazdır / PDF İndir</button>
+      </div>
+
+      <div class="card" style="background:var(--bg-card); padding:24px; border-radius:12px; border:1px solid var(--border-color); margin-top:20px;">
+        <h3>${Utils.escapeHTML(course ? course.title : '')} Konu Özetleri</h3>
+        ${lessonsData && lessonsData.lessons ? lessonsData.lessons.map(l => `
+          <div style="margin-top:16px; padding-bottom:16px; border-bottom:1px solid var(--border-color);">
+            <h4>📌 ${Utils.escapeHTML(l.title)}</h4>
+            <div>${l.summaryHTML || l.goal}</div>
+          </div>
+        `).join('') : '<p>Özet bulunamadı.</p>'}
+      </div>
+    `;
+
     this.appContainer.innerHTML = html;
   }
 };

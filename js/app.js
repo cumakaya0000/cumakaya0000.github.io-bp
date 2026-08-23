@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initSearchEvents();
   initCommandPalette();
   initKeyboardShortcuts();
+  initInfoModal();
+  initZoomToggle();
   initReadingProgressBar();
   initMobileNavEvents();
   initSidebarCollapseToggle();
@@ -101,14 +103,12 @@ function updateSidebarToggleUI(isCollapsed) {
 function initSidebarState() {
   const sidebar = document.getElementById('sidebar');
   if (sidebar) {
-    // Sayfa ilk yüklendiğinde menüyü varsayılan olarak AÇIK tut
-    const isCollapsed = Storage.isSidebarCollapsed();
-    if (isCollapsed) {
-      sidebar.classList.add('collapsed');
-      updateSidebarToggleUI(true);
-    } else {
+    // Masaüstü ekranlarda menüyü VARSAYILAN OLARAK AÇIK tut
+    if (window.innerWidth > 1024) {
       sidebar.classList.remove('collapsed');
       updateSidebarToggleUI(false);
+    } else {
+      sidebar.classList.remove('open');
     }
   }
 }
@@ -116,6 +116,7 @@ function initSidebarState() {
 function initSidebarCollapseToggle() {
   const toggleBtn = document.getElementById('btn-toggle-compact-sidebar');
   const headerToggleBtn = document.getElementById('sidebar-toggle-btn');
+  const mobileMenuBtn = document.getElementById('mobile-menu-trigger');
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('mobile-overlay');
 
@@ -136,6 +137,7 @@ function initSidebarCollapseToggle() {
 
   if (toggleBtn) toggleBtn.onclick = toggleSidebar;
   if (headerToggleBtn) headerToggleBtn.onclick = toggleSidebar;
+  if (mobileMenuBtn) mobileMenuBtn.onclick = toggleSidebar;
 
   if (overlay) {
     overlay.onclick = () => {
@@ -262,6 +264,76 @@ function renderDefaultCmdActions(container) {
   `;
 }
 
+function initInfoModal() {
+  const infoModal = document.getElementById('site-info-modal');
+
+  document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('#btn-open-info-modal, .breadcrumb-info-btn');
+    if (openBtn && infoModal) {
+      infoModal.classList.remove('hidden');
+      return;
+    }
+
+    const closeBtn = e.target.closest('#btn-close-info-modal, #btn-confirm-info-modal');
+    if (closeBtn && infoModal) {
+      infoModal.classList.add('hidden');
+      return;
+    }
+
+    if (e.target === infoModal) {
+      infoModal.classList.add('hidden');
+    }
+  });
+}
+
+/**
+ * SAYFA ÖLÇEĞİ VE METİN BÜYÜTME (A 90% ➔ A+ 100% ➔ A++ 110%)
+ */
+function initZoomToggle() {
+  const zoomLevels = [
+    { zoom: '90%', label: 'A', title: 'Varsayılan Metin Boyutu (A - %90)' },
+    { zoom: '100%', label: 'A+', title: 'Büyütülmüş Metin (A+ - %100)' },
+    { zoom: '110%', label: 'A++', title: 'Çok Büyük Metin (A++ - %110)' }
+  ];
+
+  let levelIndex = parseInt(Storage.get('site_zoom_level') || '0', 10);
+  if (isNaN(levelIndex) || levelIndex < 0 || levelIndex >= zoomLevels.length) {
+    levelIndex = 0;
+  }
+
+  const applyZoomLevel = (idx) => {
+    const level = zoomLevels[idx];
+    document.body.style.zoom = level.zoom;
+    document.documentElement.style.zoom = level.zoom;
+
+    document.querySelectorAll('.text-zoom-group').forEach(group => {
+      group.querySelectorAll('.zoom-seg-btn').forEach(btn => {
+        const btnIdx = parseInt(btn.getAttribute('data-zoom-idx'), 10);
+        if (btnIdx === idx) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    });
+  };
+
+  // Varsayılan %90 (A) açılış
+  applyZoomLevel(levelIndex);
+
+  document.addEventListener('click', (e) => {
+    const segBtn = e.target.closest('.zoom-seg-btn');
+    if (segBtn) {
+      const idx = parseInt(segBtn.getAttribute('data-zoom-idx'), 10);
+      if (!isNaN(idx) && idx >= 0 && idx < zoomLevels.length) {
+        levelIndex = idx;
+        Storage.set('site_zoom_level', levelIndex.toString());
+        applyZoomLevel(levelIndex);
+      }
+    }
+  });
+}
+
 /**
  * KLAVYE KISAYOLLARI (J, K, F, ?, ESC, Ctrl+K)
  */
@@ -367,7 +439,7 @@ function initSearchEvents() {
     const grouped = await SearchEngine.searchGrouped(query);
     if (!grouped || Object.values(grouped).every(arr => arr.length === 0)) {
       searchResultsBox.classList.remove('hidden');
-      searchResultsBox.innerHTML = `<div class="search-no-result">Sonuç bulunamadı.</div>`;
+      searchResultsBox.innerHTML = `<div class="search-no-result">🔍 Sonuç bulunamadı.</div>`;
       return;
     }
 
@@ -378,7 +450,9 @@ function initSearchEvents() {
         items.forEach(res => {
           html += `
             <a href="${res.hash}" class="search-result-item">
-              <div class="res-badge">${res.badge}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
+                <span class="res-badge">${res.icon || '📌'} ${res.badge}</span>
+              </div>
               <div class="res-title">${Utils.escapeHTML(res.title)}</div>
               <div class="res-sub">${Utils.escapeHTML(res.subtitle)}</div>
             </a>
@@ -395,6 +469,12 @@ function initSearchEvents() {
     if (e.target.closest('.search-result-item')) {
       searchResultsBox.classList.add('hidden');
       searchInput.value = '';
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.header-search')) {
+      searchResultsBox.classList.add('hidden');
     }
   });
 }

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bilgisayar Programcılığı Rehberi - BP Rehberi</title>
   <meta name="description" content="Bilgisayar Programcılığı bölüm öğrencileri için dersler, projeler, quizler ve kariyer rehberi platformu.">
+  <!-- FAVICON / TARAYICI SEKMESİ LOGOSU -->
+  <link rel="icon" type="image/png" href="aru-logo.png">
+  <link rel="apple-touch-icon" href="aru-logo.png">
   <link rel="stylesheet" href="style.css">
   <!-- LUCIDE ICONS CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,10 +23,6 @@
       <button id="sidebar-toggle-btn" class="icon-btn sidebar-header-toggle" title="Menüyü Aç/Kapat" aria-label="Menü">
         <i data-lucide="menu"></i>
       </button>
-      <a href="#home" class="brand-logo">
-        <img src="aru-logo.png" alt="ARÜ Logo" class="brand-logo-img" style="height:32px; width:auto; vertical-align:middle;">
-        <span class="logo-text">BP <strong>Rehberi</strong></span>
-      </a>
     </div>
 
     <!-- COMMAND PALETTE TRIGGER & SEARCH INPUT -->
@@ -37,7 +36,14 @@
     </div>
 
     <div class="header-right">
-
+      <div class="text-zoom-group" title="Metin Boyutu (A / A+ / A++)">
+        <button class="zoom-seg-btn active" data-zoom-idx="0">A</button>
+        <button class="zoom-seg-btn" data-zoom-idx="1">A+</button>
+        <button class="zoom-seg-btn" data-zoom-idx="2">A++</button>
+      </div>
+      <button class="breadcrumb-info-btn" id="btn-open-info-modal" title="Bilgi" aria-label="Bilgi">
+        <i data-lucide="info"></i>
+      </button>
       <button id="theme-toggle-btn" class="btn btn-outline btn-theme">
         <span>Aydınlık</span>
       </button>
@@ -49,8 +55,32 @@
 
     <!-- SOL NAVİGASYON MENÜSÜ (SIDEBAR) -->
     <aside id="sidebar" class="sidebar">
+      <!-- SİDEBAR PROFİL / LOGO ALANI -->
+      <div class="sidebar-profile-box">
+        <div class="sidebar-avatar-wrapper">
+          <img src="aru-logo.png" alt="Ardahan Üniversitesi Logo" class="sidebar-avatar-img">
+        </div>
+        <h3 class="sidebar-profile-name">ARDAHAN ÜNİVERSİTESİ</h3>
+        <p class="sidebar-profile-title">Bilgisayar Programcılığı</p>
+
+        <div class="sidebar-social-links">
+          <a href="https://www.ardahan.edu.tr/" target="_blank" rel="noopener" class="sidebar-social-btn" title="Ardahan Üniversitesi Resmî İnternet Sitesi">
+            <i data-lucide="school"></i>
+            <span class="social-btn-label">Üniversite</span>
+          </a>
+          <a href="https://tby.ardahan.edu.tr" target="_blank" rel="noopener" class="sidebar-social-btn" title="Resmî Bölüm Sayfası">
+            <i data-lucide="globe"></i>
+            <span class="social-btn-label">Bölüm</span>
+          </a>
+          <a href="https://ubys.ardahan.edu.tr" target="_blank" rel="noopener" class="sidebar-social-btn" title="UBYS Girişi">
+            <i data-lucide="graduation-cap"></i>
+            <span class="social-btn-label">UBYS</span>
+          </a>
+        </div>
+      </div>
+
       <nav class="nav-menu">
-        <a href="#home" class="nav-link active">
+        <a href="#home" class="nav-link">
           <span class="nav-icon"><i data-lucide="home"></i></span>
           <span class="nav-text">Ana Sayfa</span>
         </a>
@@ -60,39 +90,35 @@
           <span class="nav-text">Dersler</span>
         </a>
 
-
-        <a href="#lab" class="nav-link">
+        <a href="#lab" class="nav-link active">
           <span class="nav-icon"><i data-lucide="terminal"></i></span>
           <span class="nav-text">Kod Laboratuvarı</span>
-        </a>
-        <a href="#quizzes" class="nav-link">
-          <span class="nav-icon"><i data-lucide="brain"></i></span>
-          <span class="nav-text">Quizler</span>
         </a>
 
         <a href="#career" class="nav-link">
           <span class="nav-icon"><i data-lucide="rocket"></i></span>
-          <span class="nav-text">Kariyer & Staj</span>
+          <span class="nav-text">Kariyer &amp; Staj</span>
         </a>
-
 
         <a href="#university" class="nav-link">
           <span class="nav-icon"><i data-lucide="building-2"></i></span>
           <span class="nav-text">Üniversite</span>
         </a>
+
         <a href="#city" class="nav-link">
           <span class="nav-icon"><i data-lucide="map-pin"></i></span>
           <span class="nav-text">Şehir Rehberi</span>
         </a>
 
-
         <a href="#glossary" class="nav-link">
           <span class="nav-icon"><i data-lucide="book-marked"></i></span>
           <span class="nav-text">Terimler Sözlüğü</span>
         </a>
-
-
       </nav>
+
+      <div class="sidebar-footer-copy">
+        © 2026 ARÜ BP REHBERİ
+      </div>
     </aside>
 
     <!-- DİNAMİK SAYFA İÇERİK ALANI -->
@@ -118,10 +144,6 @@
     <a href="#lab" class="bottom-nav-item">
       <span class="bnav-icon"><i data-lucide="terminal"></i></span>
       <span class="bnav-label">Kod Lab</span>
-    </a>
-    <a href="#bookmarks" class="bottom-nav-item">
-      <span class="bnav-icon"><i data-lucide="star"></i></span>
-      <span class="bnav-label">Favoriler</span>
     </a>
     <button id="mobile-menu-trigger" class="bottom-nav-item">
       <span class="bnav-icon"><i data-lucide="menu"></i></span>
@@ -163,6 +185,22 @@
         <div class="shortcut-row"><kbd>F</kbd> <span>Konuyu Favorilere Ekle / Çıkar</span></div>
         <div class="shortcut-row"><kbd>?</kbd> <span>Bu Kısayol Menüsünü Aç</span></div>
         <div class="shortcut-row"><kbd>ESC</kbd> <span>Tüm Modalları Kapat</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BİLGİLENDİRME MODAL (INFO) -->
+  <div id="site-info-modal" class="cmd-modal-overlay hidden">
+    <div class="cmd-modal-dialog" style="max-width: 560px; padding: 30px; border-radius: 16px;">
+      <div class="cmd-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 style="margin:0; font-size:1.35rem; display:flex; align-items:center; gap:10px;"><i data-lucide="info" style="width:24px; height:24px; color:var(--accent-primary);"></i> Bilgilendirme</h2>
+        <button class="modal-close-btn" id="btn-close-info-modal" style="font-size:1.4rem;">✕</button>
+      </div>
+      <div style="font-size:1.1rem; line-height:1.65; color:var(--text-secondary);">
+        <p style="margin:0;">Bu web sitesi Ardahan Üniversitesi Bilgisayar Programcılığı öğrencileri için yapılmıştır ve tamamen ücretsizdir.</p>
+      </div>
+      <div style="margin-top:24px; text-align:right;">
+        <button class="btn btn-primary" id="btn-confirm-info-modal" style="padding:10px 24px; font-size:1rem;">Anladım</button>
       </div>
     </div>
   </div>
