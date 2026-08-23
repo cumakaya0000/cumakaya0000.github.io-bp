@@ -1,0 +1,101 @@
+{
+  "courseId": "web-tasariminin-temelleri",
+  "courseTitle": "Web Tasarımının Temelleri",
+  "description": "HTML5 semantik etiketleri, CSS3 stil kuralları, Box Model, Flexbox, Grid ve Responsive tasarım.",
+  "lessons": [
+    {
+      "id": "html5-temelleri-etiketler",
+      "title": "HTML5 Temelleri ve Semantik Etiket Yapısı",
+      "order": 1,
+      "goal": "Bir web sayfasının iskeletini oluşturmayı, etiket (tag) yapısını ve semantik (anlamsal) HTML5 düzenini öğrenmek.",
+      "content": "HTML (HyperText Markup Language), web sayfalarının iskeletini oluşturan işaretleme dilidir. HTML bir programlama dili değildir, içerikleri tanımlama dilidir. HTML5 ile birlikte anlamsız `<div>` yığınları yerine içeriğin ne olduğunu ifade eden semantik etiketler (`<header>`, `<nav>`, `<article>`, `<aside>`, `<footer>`) gelmiştir.",
+      "realWorldExample": "Bir gazete sayfasını düşünün. En üstteki gazete adı `<header>`, menü `<nav>`, ana haber metni `<article>`, yan reklam alanı `<aside>`, en alttaki kunye bilgisi `<footer>` etiketidir.",
+      "codeSnippet": "<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Kişisel Web Sayfam</title>\n</head>\n<body>\n    <header>\n        <h1>Ahmet Yılmaz - Portfolyo</h1>\n    </header>\n    <main>\n        <article>\n            <h2>Hakkımda</h2>\n            <p>Bilgisayar Programcılığı 1. sınıf öğrencisiyim.</p>\n        </article>\n    </main>\n</body>\n</html>",
+      "logic": "Tarayıcılar HTML dosyasını yukarıdan aşağıya doğru okur ve DOM (Document Object Model) ağacını oluşturur. Semantik etiketler Google arama motorunun (SEO) ve ekran okuyucuların (erişilebilirlik) sayfayı anlamasını sağlar.",
+      "commonMistakes": [
+        "Etiketleri kapatmayı unutmak (`<p>` açıp `</p>` kapatmamak).",
+        "Her şey için `<div>` kullanmak (Semantik HTML standartlarını es geçmek).",
+        "`<img>` etiketinde `alt` (açıklama) niteliğini yazmamak."
+      ],
+      "examTips": "Sınavda standart HTML5 sayfa şeması çizimi ve semantik etiketlerin isimleri sorulur. `<section>` ile `<article>` arasındaki farkı unutmayın!",
+      "industryTips": "HTML kodlarınızın W3C standartlarına uygunluğunu doğrulayan HTML Validator araçlarını düzenli kullanın.",
+      "exercise": "Bir blog yazısı için başlık, yazar adı, yayın tarihi, 2 paragraf ve bir görsel içeren semantik HTML5 iskeleti hazırlayın.",
+      "quizId": "quiz-web-1"
+    },
+    {
+      "id": "html-formlar-ve-tablolar",
+      "title": "HTML Formlar, Input Tipleri ve Tablolar",
+      "order": 2,
+      "goal": "Kullanıcıdan veri almak için form elemanlarını (`<input>`, `<select>`, `<button>`) ve veri sunumu için `<table` yapısını öğrenmek.",
+      "content": "Web uygulamalarında etkileşimin %90'ı formlar üzerinden yürür. HTML5 çok çeşitli girdi türleri sunar: `text`, `password`, `email`, `number`, `date`, `checkbox`, `radio`. Tablolar ise satır (`<tr>`), sütun/hücre (`<td>`) ve başlık (`<th>`) elemanlarından oluşur.",
+      "realWorldExample": "Giriş yap ekranındaki kullanıcı adı ve şifre kutuları form elemanıdır. Sınav notları listeniz veya ders programınız ise tablo yapısındadır.",
+      "codeSnippet": "<!-- İletişim Formu -->\n<form action=\"/gonder\" method=\"POST\">\n    <label for=\"ad\">Adınız:</label>\n    <input type=\"text\" id=\"ad\" name=\"user_name\" required>\n    \n    <label for=\"eposta\">E-posta:</label>\n    <input type=\"email\" id=\"eposta\" name=\"user_email\" placeholder=\"ornek@mail.com\">\n    \n    <button type=\"submit\">Gönder</button>\n</form>",
+      "logic": "Form gönderildiğinde `input` elemanlarının `name` niteliğindeki isimler backend sunucusuna anahtar-değer (key-value) çifti olarak iletilir. `name` verilmeyen input sunucuya gitmez!",
+      "commonMistakes": [
+        "`input` elemanına `name` vermeyi unutmak.",
+        "Form elemanlarını `<form>` etiketi içine almadan kullanmak.",
+        "Sayfa düzenini (layout) kurmak için tablo (`<table>`) kullanmak (Tablolar sadece veri gösterimi içindir!)."
+      ],
+      "examTips": "`GET` ile `POST` metotları arasındaki farklar sınavda kesin sorulur! (GET veriyi URL'de gösterir ve boyutu sınırlıdır, POST gövdede taşır ve güvenlidir).",
+      "industryTips": "HTML5 `required`, `pattern` ve `type=\"email\"` ile istemci taraflı doğrulama yaparak sunucu yükünü hafifletin.",
+      "exercise": "Öğrenci Kayıt Formu hazırlayın: Ad, Soyad, Doğum Tarihi (date), Cinsiyet (radio), Hobiler (checkbox), Bölüm (select) ve Kaydet Butonu.",
+      "quizId": "quiz-web-2"
+    },
+    {
+      "id": "css3-stiller-selectors-box-model",
+      "title": "CSS3 Seçiciler (Selectors) ve Kutu Modeli (Box Model)",
+      "order": 3,
+      "goal": "Sayfa elemanlarını renklendirmeyi, biçimlendirmeyi ve CSS Box Model (margin, border, padding, content) mantığını kavramak.",
+      "content": "CSS (Cascading Style Sheets), HTML elemanlarının nasıl görüneceğini belirler.\n- **Seçiciler**: Etiket (`h1`), Sınıf (`.btn`), ID (`#main-header`).\n- **Box Model (Kutu Modeli)**: HTML'deki her eleman dikdörtgen bir kutudur. İçten dışa: Content (İçerik) ➔ Padding (İç Boşluk) ➔ Border (Kenarlık) ➔ Margin (Dış Boşluk).",
+      "realWorldExample": "Bir tablo düşünün. Masanın üzerindeki tabağın içindeki yemek 'Content'tir. Tabak kenarındaki boşluk 'Padding', Tabağın porselen kenarı 'Border', Yan tabakla arasındaki mesafe 'Margin'dir.",
+      "codeSnippet": "/* CSS Kutu Modeli Örneği */\n.card {\n    width: 300px;\n    padding: 20px; /* İç boşluk */\n    border: 2px solid #3b82f6; /* Kenarlık */\n    margin: 15px auto; /* Dış boşluk & Ortala */\n    background-color: #ffffff;\n    border-radius: 8px;\n    box-sizing: border-box; /* Genişlik hesabına padding dahil et */\n}",
+      "logic": "`box-sizing: border-box;` kullanılmazsa, 300px genişliğinde kutuya 20px padding eklediğinizde toplam genişlik 340px olur ve tasarım taşar! `border-box` bu taşmayı önler.",
+      "commonMistakes": [
+        "Margin ile Padding farkını karıştırmak (Margin kutunun dışını itin, Padding içindekini iter).",
+        "Her elemana ID (`#`) seçici ile stil verip CSS karmaşası yaratmak (Sınıf `.class` tercih edilmelidir).",
+        "`box-sizing: border-box` sıfırlamasını unutmak."
+      ],
+      "examTips": "Sınav klasiği: CSS Kutu Modeli katmanlarını içten dışa doğru sırasıyla yazınız.",
+      "industryTips": "CSS dosyanızın en başına evrensel sıfırlama kuralı koyun: `* { box-sizing: border-box; margin: 0; padding: 0; }`.",
+      "exercise": "Siyah kenarlıklı, içi açık mavi, yazısı koyu mavi ve fareyle üzerine gelince (hover) arka planı sarı olan bir kart butonu tasarlayın.",
+      "quizId": "quiz-web-3"
+    },
+    {
+      "id": "css-flexbox-ve-grid",
+      "title": "Modern CSS Düzenleri (Flexbox & CSS Grid)",
+      "order": 4,
+      "goal": "Hizalama, esnek yerleşimler ve karmaşık sayfa ızgaralarını Flexbox ve CSS Grid ile profesyonelce kurabilmek.",
+      "content": "Eski CSS `float` yöntemleri yerine modern web düzeni iki güçlü araçla kurulur:\n- **Flexbox (1 Boyutlu)**: Elemanları tek bir eksende (yatay veya dikey) hizalamak ve dağıtmak için mükemmeldir (`justify-content`, `align-items`).\n- **CSS Grid (2 Boyutlu)**: Satır ve sütunlardan oluşan karmaşık sayfa ızgara şablonları için kullanılır (`grid-template-columns`).",
+      "realWorldExample": "Bir navigasyon menüsündeki linkleri yan yana dizip aralarını eşit açmak **Flexbox** işidir. Bir e-ticaret sitesindeki 4 sütunlu ürün vitrini ise **CSS Grid** işidir.",
+      "codeSnippet": "/* Flexbox ile Ortalanmış Menü */\n.navbar {\n    display: flex;\n    justify-content: space-between; /* İki uca yasla */\n    align-items: center; /* Dikeyde ortala */\n}\n\n/* CSS Grid ile 3 Sütunlu Kart Düzeni */\n.grid-container {\n    display: grid;\n    grid-template-columns: repeat(3, 1fr);\n    gap: 20px; /* Kartlar arası boşluk */\n}",
+      "logic": "Flexbox ana eksen (`justify-content`) ve çapraz eksen (`align-items`) mantığıyla çalışır. `flex-direction: column` yapılırsa ana eksen dikey olur.",
+      "commonMistakes": [
+        "Kapsayıcı ebeveyn elemana `display: flex` veya `display: grid` vermeden alt elemanlara flex/grid kuralları uygulamaya çalışmak.",
+        "Flexbox dururken basit 1D hizalamalar için aşırı karmaşık Grid yazmak."
+      ],
+      "examTips": "Sınav sorusu: `justify-content: center` ile `align-items: center` arasındaki hizalama farkını açıklayınız.",
+      "industryTips": "Görsel kart listelerinde `grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));` yazarak medya sorgusu yazmadan responsive grid elde edin!",
+      "exercise": "Flexbox kullanarak ekranın tam ortasında (hem dikeyde hem yatayda) duran bir Login kartı hizalayın.",
+      "quizId": "quiz-web-4"
+    },
+    {
+      "id": "responsive-design-media-queries",
+      "title": "Duyarlı Tasarım (Responsive Design) ve Media Queries",
+      "order": 5,
+      "goal": "Web sitelerinin cep telefonu, tablet ve masaüstü bilgisayarlarda kusursuz görüntülenmesini sağlamak.",
+      "content": "Duyarlı Web Tasarımı (Responsive Web Design), tek bir web sitesinin tüm cihaz ekran boyutlarına uyum sağlamasıdır. CSS Medya Sorguları (`@media`) sayesinde ekran genişliğine göre (örn: 768px altı telefonlar) özel stil kuralları tanımlanır.",
+      "realWorldExample": "Bilgisayarda 4 sütun halinde yan yana duran ürün kartlarının, telefondan girildiğinde ekran daraldığı için üst üste 1 sütun haline gelmesi.",
+      "codeSnippet": "/* Mobil Öncelikli Tasarım */\n.container {\n    width: 100%;\n    padding: 15px;\n}\n\n/* Masaüstü Ekranlar (768px ve üzeri) */\n@media (min-width: 768px) {\n    .container {\n        width: 750px;\n        margin: 0 auto;\n    }\n}",
+      "logic": "Responsive web sitelerinin temeli HTML head içindeki Viewport meta etiketidir: `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">`. Bu etiket olmadan mobil cihazlar sayfayı masaüstü gibi küçültüp gösterir.",
+      "commonMistakes": [
+        "`viewport` meta etiketini eklemeyi unutmak.",
+        "Elemanlara sabit piksel genişlikleri vermekten (`width: 1200px;`) kaçınmamak (Bunun yerine `max-width: 100%;` kullanılmalıdır).",
+        "Görsellerin mobilde ekrandan taşması (`img { max-width: 100%; height: auto; }` yazılmalıdır)."
+      ],
+      "examTips": "Hocalar sınavda 'Mobile-First (Mobil Öncelikli) yaklaşım nedir?' diye sorabilir. Yanıt: Önce mobil ekran CSS kurallarını yazıp `@media (min-width: ...)` ile ekran büyüdükçe stil ekleme tekniğidir.",
+      "industryTips": "Chrome DevTools (F12) Responsive cihaz simülatörünü aktif kullanarak sürekli farklı ekran genişliklerini test edin.",
+      "exercise": "Ekran genişliği 600px'in altına düştüğünde arka plan rengini mavi yapan ve yan menüyü gizleyen medya sorgusunu yazın.",
+      "quizId": "quiz-web-5"
+    }
+  ]
+}

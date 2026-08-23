@@ -1,0 +1,83 @@
+{
+  "courseId": "bilgisayar-donanimi",
+  "courseTitle": "Bilgisayar Donanımı",
+  "description": "Bilgisayar mimarisi, ana bileşenler, bellek birimleri, depolama teknolojileri, BIOS/UEFI ve arıza teşhis senaryoları.",
+  "lessons": [
+    {
+      "id": "anakart-islemci-ram-mimarisi",
+      "title": "Anakart, İşlemci (CPU) ve RAM Mimarisi",
+      "order": 1,
+      "goal": "Bilgisayarın beyin, bellek ve veri yolu bileşenlerinin çalışma prensiplerini ve soket yapılarını öğrenmek.",
+      "content": "Bir bilgisayarın ana bileşenleri birbirine Anakart (Motherboard) üzerindeki veri yolları (Bus) ile bağlanır.\n- **Anakart**: Tüm bileşenleri üzerinde barındıran ve iletişimi sağlayan ana devredir.\n- **İşlemci (CPU)**: Bilgisayarın beynidir. Aritmetik ve mantıksal işlemleri yürütür. Çekirdek (Core) sayısı ve Saat Hızı (GHz) performansını belirler.\n- **RAM (Random Access Memory)**: Geçici ana bellektir. Elektrik kesildiğinde içindeki veriler silinir. İşlemcinin anlık işlediği veriler RAM'de durur.",
+      "realWorldExample": "Bir çalışma masasını düşünün. Masa yüzeyi **RAM**'dir (Ne kadar büyükse o kadar çok evrak açabilirsiniz). Masada oturan hızlı çalışan mimar **CPU**'dur. Masanın arkasındaki kilitli çelik arşiv dolabı ise **SSD/HDD**'dir.",
+      "codeSnippet": "// İşlemci ve Bellek Metrikleri Simülasyonu\nCPU: Intel Core i7-13700K (16 Çekirdek, 5.4 GHz)\nRAM: 32 GB DDR5 6000 MHz (Dual Channel)\nAnakart: Z790 LGA1700 Soket",
+      "logic": "İşlemci veriyi SSD'den doğrudan okuyamaz çünkü SSD çok yavaştır. Önce veri SSD'den RAM'e yüklenir, İşlemci RAM'deki veriyi L1/L2/L3 önbelleğe (Cache) alır ve nanosaniyeler içinde işler.",
+      "commonMistakes": [
+        "İşlemci satın alırken anakart soket tipine (LGA1700, AM5 vs.) dikkat etmemek.",
+        "RAM'leri çift kanal (Dual Channel) takmak varken tek kanala takıp bellek bant genişliğini yarıya düşürmek.",
+        "İşlemci üzerine termal macun sürmeyi unutmak."
+      ],
+      "examTips": "Sınav klasiği: RAM (Geçici Bellek) ile ROM (Kalıcı Bellek / BIOS) arasındaki 3 farkı yazınız.",
+      "industryTips": "Sistem toplarken veya sunucu kurarken RAM seçerken sadece kapasiteye (GB) değil, MHz hızına ve CL (Latency) gecikme değerlerine de bakın.",
+      "exercise": "RAM kapasitesi yetersiz olan bir bilgisayarda yaşanacak 'paging / swaping' (Diski RAM gibi kullanma) yavaşlığını açıklayın.",
+      "quizId": "quiz-hw-1"
+    },
+    {
+      "id": "depolama-ssd-hdd-gpu-psu",
+      "title": "Depolama (SSD vs HDD), Ekran Kartı (GPU) ve Güç Kaynağı (PSU)",
+      "order": 2,
+      "goal": "SSD/HDD depolama teknolojilerini, GPU mimarisini ve PSU güç ihtiyacı hesaplamayı öğrenmek.",
+      "content": "Kalıcı veri depolama ve görüntü işleme birimleri:\n- **HDD (Hard Disk Drive)**: Mekanik dönen diskler ve okuma kafası kullanır. Yavaş ama ucuz yüksek kapasitedir (~150 MB/s).\n- **SSD (NVMe / SATA)**: Yarı iletken çip (NAND Flash) kullanır. Mekanik parça yoktur, çok hızlıdır (NVMe 7000 MB/s).\n- **GPU (Graphics Processing Unit)**: Paralel işlem kapasitesi yüksek, grafik ve yapay zeka hesaplamalarını yapan işlemcidir.\n- **PSU (Power Supply Unit)**: Şebeke cereyanını (220V AC) bilgisayar parçalarının kullandığı doğru akıma (12V, 5V, 3.3V DC) dönüştüren güç kaynağıdır.",
+      "realWorldExample": "Mekanik HDD kaset çalar gibidir (şarkı değiştirmek için bandı sarmak gerekir). NVMe SSD ise Spotify gibidir (tıkladığınız an dilediğiniz şarkı başlar).",
+      "codeSnippet": "HDD Okuma Hızı: 120 MB/s | Erişim Süresi: 12 ms\nSATA SSD Okuma Hızı: 550 MB/s | Erişim Süresi: 0.1 ms\nNVMe M.2 SSD Okuma Hızı: 7300 MB/s | Erişim Süresi: 0.02 ms",
+      "logic": "Ekran kartı (GPU) binlerce küçük çekirdek içerir. CPU karmaşık mantık işlerinde usta iken, GPU aynı anda milyonlarca pikselin rengini hesaplama gibi paralel işlerde rakipsizdir.",
+      "commonMistakes": [
+        "Güç kaynağı (PSU) seçerken ucuza kaçıp kalitesiz markalar almak (Tüm sistemi yakma riski!).",
+        "İşletim sistemini mekanik HDD'ye kurup sistem yavaşlığından şikayet etmek.",
+        "80 Plus sertifikası olmayan verimsiz PSU kullanmak."
+      ],
+      "examTips": "Sınavda M.2 NVMe SSD ile SATA SSD arasındaki veri yolu (PCIe vs SATA) ve hız farkları sorulabilir.",
+      "industryTips": "Yazılım geliştiriciler için NVMe SSD şarttır. Proje derleme (build) sürelerini yarı yarıya düşürür.",
+      "exercise": "Bir bilgisayar toplayacaksınız. Ekran kartı 250W, İşlemci 125W harcıyor. Güvenlik payıyla birlikte kaç Watt PSU seçilmelidir?",
+      "quizId": "quiz-hw-2"
+    },
+    {
+      "id": "bios-uefi-windows-kurulumu",
+      "title": "BIOS / UEFI Ayarları ve Format / İşletim Sistemi Kurulumu",
+      "order": 3,
+      "goal": "Anakart yazılımı BIOS/UEFI modlarını, Boot önceliğini ve USB ile temiz format atma adımlarını öğrenmek.",
+      "content": "BIOS (Basic Input/Output System) ve modern hali UEFI, bilgisayar açıldığında donanımları test eden (POST) ve işletim sistemini başlatan anakart yazılımıdır.\n- **POST (Power-On Self-Test)**: Açılışta RAM, CPU, GPU kontrolü.\n- **Boot Priority**: Bilgisayarın hangi sürücüden (USB, SSD) başlayacağının sırası.\n- **GPT vs MBR**: Modern UEFI sistemlerde GPT disk bölümleme tablosu kullanılır.",
+      "realWorldExample": "Arabanızın kontağını çevirdiğinizde gösterge panelinde tüm ışıkların yanıp sönmesi POST testidir. Sorun yoksa motor çalışır (İşletim sistemi başlar).",
+      "codeSnippet": "Kurulum Adımları:\n1. Rufus ile USB'ye Windows ISO yazdır (GPT / UEFI seçili).\n2. Bilgisayarı açarken F2 / DEL tuşuna basarak UEFI BIOS'a gir.\n3. Boot Menu'den USB Belleği 1. sıraya al.\n4. Disk seçim ekranında tüm bölümleri sil, SSD'yi seç ve Yükle.",
+      "logic": "UEFI, BIOS'a göre çok daha hızlı açılır, grafik arayüz sunar, 2 TB üzeri diskleri destekler ve Secure Boot ile açılış virüslerini engeller.",
+      "commonMistakes": [
+        "UEFI destekli anakartta MBR formatında USB hazırlayıp 'Boot aygıtı bulunamadı' hatası almak.",
+        "Format atarken yedek alınmamış yanlış disk bölümünü (Partition) silmek.",
+        "Kurulum bittikten sonra anakart çipset ve ekran kartı sürücülerini (Driver) kurmayı unutmak."
+      ],
+      "examTips": "Sınav soru potansiyeli: BIOS ile UEFI arasındaki 3 temel fark ve POST testinin ne anlama geldiği.",
+      "industryTips": "Sistem yöneticisi olacaksanız Ventoy aracı ile tek bir USB belleğe 10 farklı ISO (Windows, Linux, Rescue Disk) yükleyip multi-boot USB hazırlamayı öğrenin.",
+      "exercise": "Bilgisayar açılırken ekrana 'Reboot and Select proper Boot device' uyarısı geliyorsa olası 2 donanımsal/yazılımsal nedeni belirten adımları yazın.",
+      "quizId": "quiz-hw-3"
+    },
+    {
+      "id": "donanim-ariza-teshis-ve-bakim",
+      "title": "Gerçek Senaryolar ile Donanım Arıza Teşhisi ve Bakım",
+      "order": 4,
+      "goal": "Çalışmayan, ekrana görüntü vermeyen veya kapanan bilgisayarlarda arıza tespit mantığını geliştirmek.",
+      "content": "Donanım arızalarında sistematik yaklaşım esastır. Rastgele parça değiştirmek yerine sorun belirtisine göre adım adım ilerlenir.\n- **Bip Sesleri (Beep Codes)**: Anakart hoparlöründen gelen sesler arızayı haber verir (Örn: 3 kısa bip = RAM hatası).\n- **Aşırı Isınma (Thermal Throttling)**: İşlemci 90°C üzerine çıkınca kendini korumak için yavaşlar veya bilgisayar aniden kapanır.",
+      "realWorldExample": "Kullanıcı geliyor: 'Bilgisayarın kasasındaki fanlar dönüyor, ışıklar yanıyor ama ekrana hiç görüntü gelmiyor.' Nereden başlamalısın?",
+      "codeSnippet": "Teşhis Algoritması (Ekrana Görüntü Gelmiyorsa):\nAdım 1: Monitör kablosu anakarta mı yoksa ekran kartına mı takılı?\nAdım 2: RAM sökülüp silgi ile sarı uçları temizlenip tek tek denenmeli.\nAdım 3: BIOS pili çıkartılıp 5 dk beklenerek BIOS resetlenmeli.\nAdım 4: Farklı bir PSU veya GPU denenmeli.",
+      "logic": "Elektronik parçalarda zamanla statik elektrik birikir veya oksitlenme olur. BIOS resetleme ve RAM temizliği arızaların %60'ını çözer.",
+      "commonMistakes": [
+        "Monitör kablosunu ekran kartı yerine anakartın dahili çıkışına takmak.",
+        "Termal macunu diş macunu gibi çok fazla sürmek (Çok sürülürse yalıtkan katman oluşturur ve daha çok ısınır!).",
+        "Statik elektrik boşaltması yapmadan kasa içine ıslak elle müdahale etmek."
+      ],
+      "examTips": "Sınavda senaryo sorusu: 'Oyun oynarken 15 dakika sonra aniden kapanan bir bilgisayarda ilk kontrol edilmesi gereken donanım parçaları ve nedenleri.'",
+      "industryTips": "Sertifikalı donanım uzmanı olmak istiyorsanız CompTIA A+ müfredatını inceleyin.",
+      "exercise": "RAM yükseltmesi (upgrade) yapacak bir kullanıcıya yeni RAM alırken dikkat etmesi gereken 3 teknik parametreyi sıralayın.",
+      "quizId": "quiz-hw-4"
+    }
+  ]
+}

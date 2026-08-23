@@ -1,0 +1,117 @@
+{
+  "courseId": "programlama-temelleri",
+  "quizzes": [
+    {
+      "id": "quiz-prog-1",
+      "title": "Programlama ve Algoritma Quizi",
+      "questions": [
+        {
+          "question": "Aşağıdakilerden hangisi bir algoritmanın sahip olması gereken temel özelliklerden biri DEĞİLDİR?",
+          "options": [
+            "Sonlu sayıda adımdan oluşması",
+            "Kesin ve net adımlar içermesi",
+            "Sonsuz döngüye sahip olması",
+            "Belirli bir girdi ve çıktıya sahip olması"
+          ],
+          "answer": 2,
+          "explanation": "Algoritmalar sonlu sayıda adımda tamamlanmalıdır. Sonsuz döngü bir algoritma hatasıdır."
+        },
+        {
+          "question": "Akış şemalarında (Flowchart) karar/koşul kontrolü hangi geometrik sembol ile gösterilir?",
+          "options": ["Dikdörtgen", "Baklava Dilimi (Eşkenar Dörtgen)", "Elips / Oval", "Paralelkenar"],
+          "answer": 1,
+          "explanation": "Baklava dilimi sembolü 'Evet/Hayır' veya 'Doğru/Yanlış' karar noktalarını temsil eder."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-2",
+      "title": "Değişkenler ve Veri Tipleri Quizi",
+      "questions": [
+        {
+          "question": "C# dilinde 3.14 gibi ondalıklı bir sayıyı saklamak için hangi veri tipi tercih edilir?",
+          "options": ["int", "string", "double", "bool"],
+          "answer": 2,
+          "explanation": "double, C# dilinde çift duyarlıklı floating point (ondalıklı) sayı türüdür."
+        },
+        {
+          "question": "Aşağıdaki değişken tanımlamalarından hangisi SENTAKS HATASI içerir?",
+          "options": [
+            "int ogrenciNotu = 90;",
+            "string 1ciOgrenci = \"Ahmet\";",
+            "bool aktifMi = false;",
+            "double fiyat = 49.99;"
+          ],
+          "answer": 1,
+          "explanation": "C# dilinde değişken isimleri rakam/sayı ile başlayamaz! '1ciOgrenci' hatalıdır."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-3",
+      "title": "Operatörler Quizi",
+      "questions": [
+        {
+          "question": "C# dilinde `17 % 5` işleminin sonucu nedir?",
+          "options": ["3", "2", "3.4", "0"],
+          "answer": 1,
+          "explanation": "% mod operatörüdür ve bölmeden kalanı verir. 17 sayısının 5'e bölümünden kalan 2'dir."
+        },
+        {
+          "question": "İki mantıksal ifadenin HER İKİSİNİN DE doğru olması durumunda 'true' dönen bağlaç hangisidir?",
+          "options": ["|| (VEYA)", "&& (VE)", "! (DEĞİL)", "=="],
+          "answer": 1,
+          "explanation": "&& (VE) operatörü her iki şart da true olduğunda true üretir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-4",
+      "title": "Koşul Yapıları Quizi",
+      "questions": [
+        {
+          "question": "C# dilinde switch-case yapısında her case bloğunun sonuna konulması zorunlu olan kontrol komutu nedir?",
+          "options": ["stop;", "exit;", "break;", "continue;"],
+          "answer": 2,
+          "explanation": "C# switch-case yapısında sonraki case'e taşmayı önlemek için break; yazılması zorunludur."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-5",
+      "title": "Döngüler Quizi",
+      "questions": [
+        {
+          "question": "Döngü şartı ne olursa olsun koddaki bloğu EN AZ 1 KEZ mutlaka çalıştıran döngü çeşidi hangisidir?",
+          "options": ["for", "while", "do-while", "foreach"],
+          "answer": 2,
+          "explanation": "do-while döngüsünde şart kontrolü bloğun sonunda yapıldığı için ilk adım koşulsuz çalışır."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-6",
+      "title": "Diziler Quizi",
+      "questions": [
+        {
+          "question": "5 elemanlı bir dizinin son elemanına ulaşmak için hangi indeks numarası kullanılır?",
+          "options": ["5", "4", "1", "0"],
+          "answer": 1,
+          "explanation": "Dizi indeksleri 0'dan başladığı için 5 elemanlı dizinin indeksleri 0, 1, 2, 3, 4'tür. Son eleman 4'tür."
+        }
+      ]
+    },
+    {
+      "id": "quiz-prog-7",
+      "title": "Metotlar Quizi",
+      "questions": [
+        {
+          "question": "Geriye hiçbir değer döndürmeyen metotların dönüş tipi olarak hangi anahtar kelime yazılır?",
+          "options": ["null", "static", "void", "empty"],
+          "answer": 2,
+          "explanation": "void anahtar kelimesi metodun geriye değer döndürmediğini (return etmediğini) belirtir."
+        }
+      ]
+    }
+  ]
+}

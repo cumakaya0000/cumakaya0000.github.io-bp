@@ -1,0 +1,877 @@
+{
+  "categories": {
+    "A": {
+      "title": "Temel Meslek Dersleri",
+      "description": "Yazılım geliştirme, veritabanı ve web dünyasının omurgasını oluşturan temel dersler.",
+      "badge": "primary"
+    },
+    "B": {
+      "title": "Sistem / Donanım / Altyapı",
+      "description": "Bilgisayar mimarisi, ağ teknolojileri, işletim sistemleri ve donanım yönetimi.",
+      "badge": "info"
+    },
+    "C": {
+      "title": "Destekleyici Meslek Dersleri & Staj",
+      "description": "Grafik, ofis yazılımları, kalite, iş sağlığı, mevzuat ve staj uygulamaları.",
+      "badge": "warning"
+    },
+    "D": {
+      "title": "Genel Üniversite Dersleri",
+      "description": "Matematik, Türk dili, yabancı dil, inkılap tarihi ve üniversite kültür dersleri.",
+      "badge": "secondary"
+    }
+  },
+  "semesters": [
+    {
+      "id": 1,
+      "title": "1. Yarıyıl (Güz)",
+      "description": "Yazılım dünyasına ilk adım, algoritmik düşünce, veritabanı, web temelleri ve donanım."
+    },
+    {
+      "id": 2,
+      "title": "2. Yarıyıl (Bahar)",
+      "description": "Nesne tabanlı programlama, gelişmiş veritabanı, ağ temelleri ve staj."
+    },
+    {
+      "id": 3,
+      "title": "3. Yarıyıl (Güz)",
+      "description": "Görsel programlama, internet programcılığı, yazılım yönetimi ve meslek seçmeli dersler."
+    },
+    {
+      "id": 4,
+      "title": "4. Yarıyıl (Bahar)",
+      "description": "Full-stack web geliştirme, mobil programlama, grafik-animasyon ve mezuniyet aşaması."
+    }
+  ],
+  "courses": [
+    {
+      "id": "programlama-temelleri",
+      "code": "BT103",
+      "title": "Programlama Temelleri",
+      "semester": 1,
+      "akts": 6,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "Algoritmik düşünme, değişkenler, koşullar, döngüler ve fonksiyonlar.",
+      "topics": [
+        "Algoritma ve Akış Şemaları",
+        "C# Temel Yapı ve Değişkenler",
+        "Karar Yapıları (if-else, switch)",
+        "Döngüler (for, while)",
+        "Fonksiyonlar ve Metotlar"
+      ],
+      "credits": 6,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)",
+      "dataFile": "programming.json"
+    },
+    {
+      "id": "veri-tabani-1",
+      "code": "BT105",
+      "title": "Veri Tabanı I",
+      "semester": 1,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Veritabanı",
+      "summary": "İlişkisel veritabanı tasarımı, SQL sorguları, SELECT, INSERT, UPDATE, DELETE.",
+      "topics": [
+        "İlişkisel Veritabanı Mantığı",
+        "ER Diyagramları",
+        "SQL SELECT ve WHERE Sorguları",
+        "DML (INSERT, UPDATE, DELETE)",
+        "Primary & Foreign Key"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)",
+      "dataFile": "database.json"
+    },
+    {
+      "id": "web-tasariminin-temelleri",
+      "code": "BT101",
+      "title": "Web Tasarımın Temelleri",
+      "semester": 1,
+      "akts": 4,
+      "type": "Zorunlu",
+      "category": "Web",
+      "summary": "HTML5 semantik yapısı, CSS3 grid/flexbox ve modern web arayüz tasarımı.",
+      "topics": [
+        "HTML5 Etiket Yapısı",
+        "CSS3 Stil Oluşturma",
+        "Flexbox & Grid Düzenleri",
+        "Duyarlı (Responsive) Tasarım",
+        "Web Yayınlama"
+      ],
+      "credits": 4,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)",
+      "dataFile": "web.json"
+    },
+    {
+      "id": "matematik-1",
+      "code": "TB101",
+      "title": "Matematik I",
+      "semester": 1,
+      "akts": 4,
+      "type": "Zorunlu",
+      "category": "Temel Bilim",
+      "summary": "Temel matematiksel kavramlar, fonksiyonlar, küme teorisi ve mantık.",
+      "topics": [
+        "Mantar ve Mantıksal Bağlaçlar",
+        "Kümeler ve Bağıntılar",
+        "Fonksiyonlar ve Grafikler",
+        "Matrisler ve Determinantlar",
+        "Lineer Denklem Sistemleri"
+      ],
+      "credits": 4,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "bilgisayar-donanimi",
+      "code": "BT107",
+      "title": "Bilgisayar Donanımı",
+      "semester": 1,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Donanım",
+      "summary": "İşlemci, RAM, anakart, depolama birimleri ve donanım altyapısı mantığı.",
+      "topics": [
+        "Anakart, İşlemci (CPU) ve RAM Mimarisi",
+        "Depolama (SSD vs HDD), Ekran Kartı (GPU) ve Güç Kaynağı (PSU)",
+        "BIOS/UEFI, Windows Kurulumu ve Donanım Arıza Tespiti"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)",
+      "dataFile": "hardware.json"
+    },
+    {
+      "id": "ataturk-ilke-inkilap-1",
+      "code": "ATA101.2",
+      "title": "Atatürk İlkeleri ve İnkılap Tarihi I",
+      "semester": 1,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "Cumhuriyet tarihi, milli mücadele ve inkılap ilkeleri.",
+      "topics": [
+        "Osmanlı Son Dönemi",
+        "Milli Mücadele Dönemi",
+        "Kongreler ve TBMM Açılışı"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "turk-dili-1",
+      "code": "TRKÇ101.2",
+      "title": "Türk Dili I",
+      "semester": 1,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "Dil bilgisi, anlatım türleri ve akademik yazım kuralları.",
+      "topics": [
+        "Dil ve Kültür İlişkisi",
+        "Yazım Kuralları",
+        "Noktalama İşaretleri"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "yabanci-dil-1",
+      "code": "YAB101.2",
+      "title": "Yabancı Dil I",
+      "semester": 1,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Yabancı Dil",
+      "summary": "Temel İngilizce gramer ve okuma-yazma becerileri.",
+      "topics": [
+        "Basic Grammar & Tenses",
+        "Vocabulary Building",
+        "Reading Comprehension"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "universite-kulturu",
+      "code": "TB111",
+      "title": "Üniversite Kültürü",
+      "semester": 1,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "Üniversite yaşamına uyum, akademik kültür ve etik.",
+      "topics": [
+        "Üniversite Kavramı",
+        "Akademik Etik",
+        "Öğrenci Hakları ve Sorumluluklar"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "nesne-tabanli-programlama",
+      "code": "BT104",
+      "title": "Nesne Tabanlı Programlama",
+      "semester": 2,
+      "akts": 6,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "C# ile OOP, sınıflar, nesneler, kalıtım, kapsülleme ve polimorfizm.",
+      "topics": [
+        "Sınıf (Class) ve Nesne (Object) Mantığı",
+        "Kapsülleme (Encapsulation)",
+        "Kalıtım (Inheritance)",
+        "Polimorfizm (Polymorphism)",
+        "Soyutlama ve Arayüzler (Interface)"
+      ],
+      "credits": 6,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "veri-tabani-2",
+      "code": "BT106",
+      "title": "Veri Tabanı II",
+      "semester": 2,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Veritabanı",
+      "summary": "Gelişmiş SQL, JOIN işlemleri, View, Stored Procedure ve Trigger mantığı.",
+      "topics": [
+        "Inner & Outer JOIN İşlemleri",
+        "Subquery (Alt Sorgular)",
+        "View Oluşturma",
+        "Stored Procedure Mantığı",
+        "Trigger Yapıları"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "yaz-staji",
+      "code": "YZS102",
+      "title": "Zorunlu Yaz Stajı (30 İş Günü)",
+      "semester": 2,
+      "akts": 5,
+      "type": "Zorunlu Staj",
+      "category": "Staj",
+      "summary": "Sektördeki firmalarda 30 gün boyunca yapılan mesleki uygulama stajı.",
+      "topics": [
+        "Staj Başvuru Süreci",
+        "30 İş Günü Saha Uygulaması",
+        "Staj Defteri Doldurma",
+        "Mülakat ve Sunum"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "web-projesi-yonetimi",
+      "code": "BT102",
+      "title": "Web Projesi Yönetimi",
+      "semester": 2,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Web",
+      "summary": "JavaScript temelleri, DOM manipülasyonu ve duyarlı web geliştirme.",
+      "topics": [
+        "JavaScript Temelleri",
+        "DOM Manipülasyonu",
+        "Event Listener Kullanımı",
+        "AJAX ve Fetch API",
+        "Web Proje Süreçleri"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "ag-temelleri",
+      "code": "BT108",
+      "title": "Ağ Temelleri",
+      "semester": 2,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Ağ & Donanım",
+      "summary": "Ağ protokolleri, IP adresleme, OSI modeli ve ağ cihazları.",
+      "topics": [
+        "OSI ve TCP/IP Modelleri",
+        "IP v4 / IP v6 Adresleme",
+        "Subnetting (Alt Ağ Oluşturma)",
+        "Switch ve Router Yapılandırması",
+        "Ağ Güvenliği Temelleri"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "is-sagligi-ve-guvenligi",
+      "code": "TB102",
+      "title": "İş Sağlığı ve Güvenliği",
+      "semester": 2,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "İş güvenliği mevzuatı, risk analizi ve acil durum yönetimi.",
+      "topics": [
+        "6331 Sayılı İSG Kanunu",
+        "Risk Değerlendirmesi",
+        "Ergonomi ve Ofis Sağlığı",
+        "Acil Durum Yönetimi"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "ataturk-ilke-inkilap-2",
+      "code": "ATA102.2",
+      "title": "Atatürk İlkeleri ve İnkılap Tarihi II",
+      "semester": 2,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "Yakın dönem Türkiye tarihi ve Türkiye Cumhuriyeti yapısı.",
+      "topics": [
+        "Siyasi ve Toplumsal İnkılaplar",
+        "Atatürk Dönemi Dış Politikası",
+        "Atatürk İlkeleri"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "turk-dili-2",
+      "code": "TRKÇ102.2",
+      "title": "Türk Dili II",
+      "semester": 2,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Genel Kültür",
+      "summary": "Sözlü anlatım, topluluk önünde konuşma ve raporlama.",
+      "topics": [
+        "Yazılı Anlatım Türleri",
+        "Sözlü İletişim Becerileri",
+        "Rapor Hazırlama"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "yabanci-dil-2",
+      "code": "YAB102.2",
+      "title": "Yabancı Dil II",
+      "semester": 2,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Yabancı Dil",
+      "summary": "Gelişmiş İngilizce iletişim ve mesleki terimler.",
+      "topics": [
+        "Technical English",
+        "Grammar Revision",
+        "Writing Business Emails"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "gorsel-programlama-1",
+      "code": "BT201",
+      "title": "Görsel Programlama I",
+      "semester": 3,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "C# Windows Forms ve .NET ile masaüstü otomasyon yazılımları.",
+      "topics": [
+        "Windows Forms Kontrolleri",
+        "Event-Driven Programming",
+        "Arayüz Tasarımı",
+        "Veritabanı Bağlantısı (ADO.NET)"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "internet-programciligi-1",
+      "code": "BT203",
+      "title": "İnternet Programcılığı I",
+      "semester": 3,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Web",
+      "summary": "ASP.NET Core ve Backend API mimarilerine giriş.",
+      "topics": [
+        "ASP.NET Core MVC Mimarisi",
+        "Controller ve Routing",
+        "Razor Views",
+        "Entity Framework Core Giriş"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "yazilim-kurulum-ve-yonetimi",
+      "code": "BT205",
+      "title": "Yazılım Kurulum ve Yönetimi",
+      "semester": 3,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "İşletim sistemi ve yazılım kurulumları, konfigürasyon yönetimi.",
+      "topics": [
+        "Yazılım Kurulum Paketleri",
+        "Lisanslama Modelleri",
+        "Sistem Konfigürasyonu",
+        "Sürüm Kontrol (Git Temelleri)"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "ofis-yazilimlari",
+      "code": "BT207",
+      "title": "Ofis Yazılımları",
+      "semester": 3,
+      "akts": 3,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "Gelişmiş Excel, Word ve verimlilik araçları kullanımı.",
+      "topics": [
+        "İleri Excel Formülleri",
+        "Makrolar ve VBA Giriş",
+        "Akademik Rapor Hazırlama (Word)",
+        "Sunum Becerileri (PowerPoint)"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "elektronik-devre-ve-elemanlari",
+      "code": "BT209",
+      "title": "Elektronik Devre ve Elemanları",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Donanım",
+      "summary": "Temel devre elemanları, direnç, kondansatör, diyot ve lojik devreler.",
+      "topics": [
+        "Direnç, Kondansatör, Bobin",
+        "Diyot ve Transistör Yapısı",
+        "Lojik Kapılar ve Devre Tasarımı"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "bilisim-hukuku-ve-etigi",
+      "code": "BT211",
+      "title": "Bilişim Hukuku ve Etiği",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Genel Kültür",
+      "summary": "Siber suçlar, KVKK, lisanslama, telif hakları ve bilişim etiği.",
+      "topics": [
+        "KVKK Mevzuatı",
+        "Siber Suçlar ve Ceza Hukuku",
+        "Telif Hakları ve Lisanslama",
+        "Yazılım Etiği"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "acik-kaynak-isletim-sistemleri",
+      "code": "BT213",
+      "title": "Açık Kaynak İşletim Sistemleri",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Ağ & Donanım",
+      "summary": "Linux temelleri, bash komut satırı ve sistem yönetimi.",
+      "topics": [
+        "Linux Dağıtımları (Ubuntu, Pardus)",
+        "Bash Komut Satırı",
+        "Dosya İzinleri ve Kullanıcı Yönetimi",
+        "Paket Yöneticileri"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "veritabani-yonetimi",
+      "code": "BT215",
+      "title": "Veritabanı Yönetimi",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Veritabanı",
+      "summary": "SQL Server yönetimi, yedekleme, yetkilendirme ve performans optimizasyonu.",
+      "topics": [
+        "Database Administration",
+        "Backup & Restore Stratejileri",
+        "Index ve Performance Tuning",
+        "Security & Permissions"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "gomulu-sistemler",
+      "code": "BT217",
+      "title": "Gömülü Sistemler",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Donanım",
+      "summary": "Microcontroller, Arduino, sensörler ve IoT projelendirme.",
+      "topics": [
+        "Arduino ve C/C++ Gömülü Kodlama",
+        "Sensör Okuma (Sıcaklık, Mesafe)",
+        "Motor Kontrolü",
+        "IoT İletişim Protokolleri"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "kalite-yonetim-sistemleri",
+      "code": "TB201",
+      "title": "Kalite Yönetim Sistemleri",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Genel Kültür",
+      "summary": "ISO 9001 kalite standartları, süreç yönetimi ve kalite güvence.",
+      "topics": [
+        "ISO 9001 Kalite Standardı",
+        "Süreç İyileştirme",
+        "Toplam Kalite Yönetimi"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "gonulluluk-calismalari",
+      "code": "GNÇ",
+      "title": "Gönüllülük Çalışmaları",
+      "semester": 3,
+      "akts": 4,
+      "type": "Seçmeli",
+      "category": "Sosyal",
+      "summary": "Toplumsal duyarlılık ve sivil toplum projelerinde aktif görev alma.",
+      "topics": [
+        "Sivil Toplum Kuruluşları",
+        "Gönüllü Proje Geliştirme",
+        "Sosyal Sorumluluk"
+      ],
+      "credits": 4,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "rusca-1",
+      "code": "SKS201",
+      "title": "Rusça I",
+      "semester": 3,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Yabancı Dil",
+      "summary": "Temel Rusça alfabesi, tanışma ve günlük iletişim kalıpları.",
+      "topics": [
+        "Kiril Alfabesi",
+        "Temel Tanışma Cümleleri",
+        "Günlük İletişim"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "gorsel-programlama-2",
+      "code": "BT202",
+      "title": "Görsel Programlama II",
+      "semester": 4,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "Gelişmiş masaüstü mimarisi, katmanlı mimari (N-Tier) ve veritabanı bağlama.",
+      "topics": [
+        "N-Tier Architecture (DAL, BLL, UI)",
+        "LINQ to SQL / Entity Framework",
+        "Gelişmiş Raporlama",
+        "Deployment (Setup Hazırlama)"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "internet-programciligi-2",
+      "code": "BT204",
+      "title": "İnternet Programcılığı II",
+      "semester": 4,
+      "akts": 5,
+      "type": "Zorunlu",
+      "category": "Web",
+      "summary": "Full-stack web geliştirme, Entity Framework Core ve REST API.",
+      "topics": [
+        "ASP.NET Core Web API",
+        "JSON Serialization",
+        "JWT Authentication",
+        "Single Page App (SPA) Entegrasyonu"
+      ],
+      "credits": 5,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "mobil-programlama",
+      "code": "BT206",
+      "title": "Mobil Programlama",
+      "semester": 4,
+      "akts": 4,
+      "type": "Zorunlu",
+      "category": "Yazılım",
+      "summary": "Mobil uygulama geliştirme prensipleri ve arayüz tasarımları.",
+      "topics": [
+        "Mobil Uygulama Yaşam Döngüsü",
+        "UI Component'leri ve Layout'lar",
+        "Local Data Storage",
+        "REST API Entegrasyonu"
+      ],
+      "credits": 4,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "grafik-ve-animasyon",
+      "code": "BT208",
+      "title": "Grafik ve Animasyon",
+      "semester": 4,
+      "akts": 2,
+      "type": "Zorunlu",
+      "category": "Tasarım",
+      "summary": "Vektörel grafik tasarımı, UI/UX animasyonları ve görsel içerik üretimi.",
+      "topics": [
+        "Vektörel Çizim Temelleri",
+        "UI/UX İkonografi ve Tipografi",
+        "CSS & SVG Animasyonları"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "robotige-giris",
+      "code": "BT210",
+      "title": "Robotiğe Giriş",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Donanım",
+      "summary": "Otonom robotik sistemler, sensör okuma ve motor kontrolü.",
+      "topics": [
+        "Kinematik Temelleri",
+        "Sensör Füzyonu",
+        "Çizgi İzleyen ve Engel Tanıyan Robotlar"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "sistem-analizi-ve-tasarimi",
+      "code": "BT212",
+      "title": "Sistem Analizi ve Tasarımı",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Yazılım",
+      "summary": "Yazılım yaşam döngüsü (SDLC), UML diyagramları ve gereksinim analizi.",
+      "topics": [
+        "Yazılım Yaşam Döngüsü (SDLC)",
+        "Gereksinim Analizi",
+        "UML Use Case, Class & Sequence Diyagramları"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "sunucu-isletim-sistemleri",
+      "code": "BT214",
+      "title": "Sunucu İşletim Sistemleri",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Ağ & Donanım",
+      "summary": "Windows Server & Linux Server kurulumu, Active Directory ve DNS/DHCP.",
+      "topics": [
+        "Active Directory & Domain Controller",
+        "DNS ve DHCP Sunucu Kurulumu",
+        "Group Policy (GPO)",
+        "IIS Entegrasyonu"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "yazilim-mimarileri",
+      "code": "BT216",
+      "title": "Yazılım Mimarileri",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Yazılım",
+      "summary": "Tasarım kalıpları (Design Patterns), Microservices ve clean architecture.",
+      "topics": [
+        "Creational, Structural, Behavioral Patterns",
+        "Repository & Unit of Work Pattern",
+        "Clean Architecture & Dependency Injection"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "arastirma-yontem-ve-teknikleri",
+      "code": "BT218",
+      "title": "Araştırma Yöntem ve Teknikleri",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Genel Kültür",
+      "summary": "Akademik ve teknik araştırma raporlama metodolojisi.",
+      "topics": [
+        "Literatür Taraması",
+        "Hipotez Oluşturma",
+        "Veri Toplama ve Raporlama"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "rusca-2",
+      "code": "SKS202",
+      "title": "Rusça II",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Yabancı Dil",
+      "summary": "Gelişmiş Rusça dil bilgisi ve mesleki terimler.",
+      "topics": [
+        "Orta Seviye Rusça Gramer",
+        "Okuma ve Konuşma Pratiği"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "resim",
+      "code": "SKS204",
+      "title": "Resim",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Sanat",
+      "summary": "Görsel sanatlar, desen ve renk teorisi.",
+      "topics": [
+        "Temel Sanat Eğitimi",
+        "Kompozisyon ve Perspektif"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "iletisim-becerileri",
+      "code": "SKS206",
+      "title": "İletişim Becerileri",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Sosyal",
+      "summary": "Etkili sunum teknikleri, beden dili ve kurumsal iletişim.",
+      "topics": [
+        "Sözsüz İletişim & Beden Dili",
+        "İkna Teknikleri",
+        "Hitabet"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "girisimcilik",
+      "code": "SKS212",
+      "title": "Girişimcilik",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Sosyal",
+      "summary": "İş fikri geliştirme, fizibilite ve startup ekosistemi.",
+      "topics": [
+        "İş Modeli Kanvası (Business Model Canvas)",
+        "Fizibilite Analizi",
+        "Girişimcilik Teşvikleri"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "topluma-hizmet-uygulamalari",
+      "code": "SKS210",
+      "title": "Topluma Hizmet Uygulamaları",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Sosyal",
+      "summary": "Toplumsal fayda odaklı sosyal sorumluluk projeleri.",
+      "topics": [
+        "Sosyal İhtiyaç Tespiti",
+        "Proje Geliştirme",
+        "Saha Çalışmaları"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "isaret-dili",
+      "code": "SKS207",
+      "title": "İşaret Dili",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Sosyal",
+      "summary": "Türk işaret dili alfabe ve temel iletişim becerileri.",
+      "topics": [
+        "İşaret Dili Alfabesi",
+        "Günlük Yaşam Diyalogları"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "kariyer-planlama",
+      "code": "KRY-999",
+      "title": "Kariyer Planlama",
+      "semester": 4,
+      "akts": 2,
+      "type": "Seçmeli",
+      "category": "Genel Kültür",
+      "summary": "Özgeçmiş hazırlama, mülakat teknikleri ve kariyer haritası.",
+      "topics": [
+        "CV Hazırlama",
+        "LinkedIn Kullanımı",
+        "Mülakat Simülasyonları"
+      ],
+      "credits": 2,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    },
+    {
+      "id": "universite-ortak-secmeli",
+      "code": "OSD001",
+      "title": "Üniversite Ortak Seçmeli Havuzu",
+      "semester": 4,
+      "akts": 3,
+      "type": "Seçmeli",
+      "category": "Genel Kültür",
+      "summary": "İlk Yardım, Ekoloji, E-Ticaret, Dijital Okuryazarlık vb. ortak dersler.",
+      "topics": [
+        "Ortak Seçmeli Ders Seçenekleri",
+        "Disiplinler Arası Konular"
+      ],
+      "credits": 3,
+      "instructor": "Öğr. Gör. (TBMYO Akademik Kadro)"
+    }
+  ]
+}

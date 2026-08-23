@@ -1,0 +1,102 @@
+{
+  "courseId": "veri-tabani-1",
+  "courseTitle": "Veri Tabanı I",
+  "description": "İlişkisel veritabanı mantığı, SQL temelleri, veri tanımlama, ekleme, sorgulama ve filtreleme.",
+  "lessons": [
+    {
+      "id": "veri-tabani-nedir-dbms",
+      "title": "Veri Tabanı ve VTYS (DBMS) Nedir?",
+      "order": 1,
+      "goal": "Verilerin nerede ve nasıl saklandığını, dosya sistemi ile veritabanı farkını ve ilişkisel VTYS mimarisini öğrenmek.",
+      "content": "Veri tabanı (Database), bilgilerin düzenli, erişilebilir ve güvenli bir şekilde saklandığı elektronik depolama alanıdır. Veri Tabanı Yönetim Sistemi (VTYS / DBMS) ise bu verileri oluşturmamızı, sorgulamamızı, güncellememizi ve yönetmemizi sağlayan yazılımdır (Örn: SQL Server, PostgreSQL, MySQL, SQLite).",
+      "realWorldExample": "Excel dosyasında müşteri verisi tutmak ile veritabanında tutmak arasındaki fark: Excel'de 1 milyon satır olunca dosya çöker ve aynı anda 5 kişi düzenleyemez. Veritabanı ise milyonlarca veriyi milisaniyeler içinde milyonlarca kullanıcıya güvenle sunar.",
+      "codeSnippet": "-- Veritabanı Oluşturma Komutu\nCREATE DATABASE OgrenciBilgiSistemi;\nUSE OgrenciBilgiSistemi;",
+      "logic": "VTYS, verileri disk üzerinde indekslenmiş dosyalarda tutar ve ACID (Atomicity, Consistency, Isolation, Durability) kuralları ile veri bütünlüğünü garanti eder.",
+      "commonMistakes": [
+        "Veritabanı ile veritabanı yönetim sistemini aynı şey sanmak.",
+        "Önemli verileri veritabanı yerine düz .txt dosyalarında saklamaya çalışmak.",
+        "Yedekleme (backup) stratejisi olmadan canlı veritabanı işletmek."
+      ],
+      "examTips": "Sınavlarda VTYS'nin avantajları sorulur: Veri tekrarını (redundancy) önleme, Veri tutarlılığı (consistency), Veri güvenliği ve Eşzamanlı erişim yönetimi.",
+      "industryTips": "Sektörde ilişkisel (RDBMS) veritabanlarının yanında NoSQL (MongoDB, Redis) veritabanları da yaygındır. Ancak veritabanı temeli her zaman RDBMS ile atılır.",
+      "exercise": "RDBMS (İlişkisel Veritabanı) ile NoSQL arasındaki 3 temel farkı araştırıp listeleyin.",
+      "quizId": "quiz-db-1"
+    },
+    {
+      "id": "tablo-satir-sutun-pk-fk",
+      "title": "Tablo, Satır, Sütun, Primary Key & Foreign Key",
+      "order": 2,
+      "goal": "İlişkisel veri modelini, birincil anahtar (PK) ve yabancıl anahtar (FK) ile tablolar arası ilişki kurmayı anlamak.",
+      "content": "İlişkisel veritabanında veriler **Tablolar (Tables)** halinde tutulur.\n- **Sütun (Column / Field)**: Saklanan verinin niteliğidir (Ad, Soyad, OgrenciNo).\n- **Satır (Row / Record)**: Tek bir kayda ait veriler kümesidir.\n- **Primary Key (PK - Birincil Anahtar)**: Her satırı eşsiz (unique) kılan koddur (TC Kimlik No, OgrenciId). Boş (NULL) olamaz.\n- **Foreign Key (FK - Yabancıl Anahtar)**: Bir tablodaki sütunun başka bir tablonun PK sütununa bağlanarak ilişki kurmasıdır.",
+      "realWorldExample": "Öğrenci tablosundaki `BölümId` sütunu, Bölümler tablosundaki `Id` (PK) sütununa bağlanır. Böylece öğrencinin bölümünün adı değişirse tüm öğrencileri tek tek güncellemek zorunda kalmayız!",
+      "codeSnippet": "-- Öğrenciler Tablosu Oluşturma\nCREATE TABLE Students (\n    StudentId INT PRIMARY KEY IDENTITY(1,1),\n    FirstName VARCHAR(50) NOT NULL,\n    LastName VARCHAR(50) NOT NULL,\n    Email VARCHAR(100) UNIQUE,\n    DepartmentId INT FOREIGN KEY REFERENCES Departments(DepartmentId)\n);",
+      "logic": "Primary Key veri erişim hızını indeksleme sayesinde yüzlerce kat artırır. Foreign Key ise var olmayan bir bölüme öğrenci kaydetmeyi engelleyerek Veri Bütünlüğünü (Referential Integrity) korur.",
+      "commonMistakes": [
+        "Primary Key kullanmadan tablo oluşturmak.",
+        "Foreign Key ilişkilerini unutup yetim kayıtlara (orphan records) sebebiyet vermek.",
+        "TC Kimlik veya Telefon gibi değişebilecek değerleri PK yapmak (Otomatik artan IDENTITY id kullanmak daha sağlıklıdır)."
+      ],
+      "examTips": "Sınav klasiği: 1-1 (Bire-Bir), 1-N (Bire-Çok) ve N-M (Çoka-Çok) ilişkilerini açıklayın. Çoka-Çok ilişkiler (Örn: Öğrenci - Ders) araya üçüncü bir 'Kesişim Tablosu' (Junction Table) konularak çözülür!",
+      "industryTips": "Tablo ve sütun isimlerini her zaman tekil/çoğul kuralına sadık kalarak ve İngilizce olarak adlandırın (`Students`, `CourseId`).",
+      "exercise": "Kütüphane otomasyonu için `Kitaplar`, `Yazarlar` ve `OduncIslemleri` tablolarının PK ve FK sütunlarını kağıt üzerinde çizin.",
+      "quizId": "quiz-db-2"
+    },
+    {
+      "id": "sql-temelleri-crud-select-insert-update-delete",
+      "title": "SQL Temelleri ve CRUD (SELECT, INSERT, UPDATE, DELETE)",
+      "order": 3,
+      "goal": "Veritabanına veri eklemeyi (Create), okumayı (Read), güncellemeyi (Update) ve silmeyi (Delete) öğrenmek.",
+      "content": "SQL (Structured Query Language), veritabanı ile iletişim kurduğumuz standart dildir. Temel veri işlemleri CRUD olarak adlandırılır:\n- **C (Create)** ➔ `INSERT INTO` (Yeni kayıt ekler)\n- **R (Read)** ➔ `SELECT` (Verileri sorgular ve getirir)\n- **U (Update)** ➔ `UPDATE` (Mevcut kaydı günceller)\n- **D (Delete)** ➔ `DELETE` (Kaydı siler)",
+      "realWorldExample": "Bir e-ticaret sitesine üye olduğunuzda arka planda `INSERT` çalışır, Giriş yaparken profiliniz `SELECT` ile getirilir, Adres değiştirdiğinizde `UPDATE`, Hesabı kapattığınızda `DELETE` çalışır.",
+      "codeSnippet": "-- 1. INSERT (Veri Ekleme)\nINSERT INTO Students (FirstName, LastName, Email, DepartmentId)\nVALUES ('Ahmet', 'Yılmaz', 'ahmet@mail.com', 1);\n\n-- 2. SELECT (Veri Okuma)\nSELECT StudentId, FirstName, LastName FROM Students;\n\n-- 3. UPDATE (Güncelleme)\nUPDATE Students\nSET Email = 'ahmet.yilmaz@yeni.com'\nWHERE StudentId = 1;\n\n-- 4. DELETE (Silme)\nDELETE FROM Students\nWHERE StudentId = 1;",
+      "logic": "SQL ifadelerinde `WHERE` şartı hayati önem taşır. `WHERE` yazmadan `UPDATE` yaparsanız TÜM TABLODAKİ veriler güncellenir! `WHERE` olmadan `DELETE` yaparsanız TABLODAKİ TÜM VERİLER SİLİNİR!",
+      "commonMistakes": [
+        "WHERE şartı yazmadan UPDATE veya DELETE çalıştırmak (Gece yarısı kabusu!).",
+        "INSERT yaparken sütun sırası ile VALUES sırasını karıştırmak.",
+        "Metinsel ifadeleri tırnak içine almayı unutmak (`'Ahmet'` yerine `Ahmet`)."
+      ],
+      "examTips": "Sınavlarda hocaların en sevdiği tuzak sorulardan biri `WHERE`siz UPDATE sorarak kaç satırın etkileneceğini sormaktır. Cevap: Tüm tablo!",
+      "industryTips": "Canlı sistemlerde gerçek `DELETE` yapmak yerine genellikle `IsDeleted = 1` (Soft Delete) mantığı kullanılır. Böylece yanlışlıkla silinen veri kurtarılabilir.",
+      "exercise": "Fiyatı 100 TL üzeri olan tüm ürünlerin fiyatını %10 artıran SQL UPDATE komutunu yazın.",
+      "quizId": "quiz-db-3"
+    },
+    {
+      "id": "sql-filtreleme-where-order-by-like",
+      "title": "SQL Sorgularında Filtreleme (WHERE, ORDER BY, LIKE)",
+      "order": 4,
+      "goal": "İstenen verileri süzmeyi, sıralamayı ve metin bazlı arama yapmayı öğrenmek.",
+      "content": "Veritabanındaki milyonlarca kayıt arasından sadece ihtiyacımız olanları çekmek için filtreleme kullanırız.\n- **WHERE**: Koşul belirtir (`Age > 18`, `City = 'İstanbul'`).\n- **ORDER BY**: Sonuçları sıralar (`ASC` artan, `DESC` azalan).\n- **LIKE**: Metin kalıbı araması yapar (`%` joker karakterdir).",
+      "realWorldExample": "Google arama çubuğuna 'Yazılım' yazıp enter'a bastığınızda arka planda `WHERE Title LIKE '%Yazılım%' ORDER BY CreatedDate DESC` sorgusu çalışır.",
+      "codeSnippet": "-- Adı 'A' ile başlayan ve yaşı 20'den büyük öğrencileri z'den a'ya sırala\nSELECT * FROM Students\nWHERE FirstName LIKE 'A%'\n  AND Age > 20\nORDER BY LastName DESC;\n\n-- Fiyatı 100 ile 500 arasında olan ürünler\nSELECT * FROM Products\nWHERE Price BETWEEN 100 AND 500;",
+      "logic": "VTYS sorguyu çalıştırırken önce `FROM` ile tabloya bakar, sonra `WHERE` ile filteler, en son `ORDER BY` ile sıralayıp `SELECT` ile ekrana basar.",
+      "commonMistakes": [
+        "`LIKE 'A%'` (A ile başlayan) ile `LIKE '%A'` (A ile biten) veya `LIKE '%A%'` (İçinde A geçen) kalıplarını karıştırmak.",
+        "Sıralamada varsayılanın `ASC` (küçükten büyüğe) olduğunu unutmak.",
+        "`NULL` değerleri `=` ile aramak (`WHERE Email IS NULL` yazılmalıdır, `WHERE Email = NULL` çalışmaz!)."
+      ],
+      "examTips": "Sınav sorusu: 'Email alanı boş olmayan ve yaşı 18 ile 25 arasında olan öğrencileri ada göre alfabetik sıralayan SQL sorgusunu yazınız.'",
+      "industryTips": "`LIKE '%kelime%'` sorgusu tablo taraması (Table Scan) yapacağı için büyük veritabanlarında yavaştır. İleri seviye aramalar için Full-Text Search kullanılır.",
+      "exercise": "Soyadı 'Kaya' veya 'Demir' olan öğrencileri numaralarına göre küçükten büyüğe sıralayan SQL sorgusunu yazın.",
+      "quizId": "quiz-db-4"
+    },
+    {
+      "id": "gruplama-ve-agregasyon-count-sum-avg-group-by",
+      "title": "Gruplama ve Agregasyon (COUNT, SUM, AVG, GROUP BY)",
+      "order": 5,
+      "goal": "Veriler üzerinden istatistik, toplam, ortalama hesaplamayı ve gruplandırarak raporlamayı öğrenmek.",
+      "content": "Veritabanından tek tek satır çekmek yerine toplu istatistiksel sonuçlar üretmeye Agregasyon denir.\n- **COUNT()**: Kayıt sayısını verir.\n- **SUM()**: Sayısal sütun toplamını verir.\n- **AVG()**: Ortalama değeri hesaplar.\n- **MIN() / MAX()**: En küçük ve en büyük değeri bulur.\n- **GROUP BY**: Verileri belirli sütunlara göre gruplara ayırır.",
+      "realWorldExample": "Bir okulda her bölümün kaç öğrencisi olduğunu ve bölüm ortalamasını bulmak için bölümlere göre `GROUP BY` yaparız.",
+      "codeSnippet": "-- Her bölümdeki öğrenci sayısı ve yaş ortalaması\nSELECT DepartmentId, COUNT(*) AS OgrenciSayisi, AVG(Age) AS YasOrtalamasi\nFROM Students\nGROUP BY DepartmentId\nHAVING COUNT(*) > 5; -- Sadece 5'ten fazla öğrencisi olan bölümler",
+      "logic": "Gruplanmış verilerde filtreleme yapmak için `WHERE` yerine `HAVING` kullanılır! `WHERE` satırları süzmeden önce filtreler, `HAVING` ise gruplama yapıldıktan sonra küme üzerinde filtreleme yapar.",
+      "commonMistakes": [
+        "`SELECT` kısmında grup fonksiyonu dışında yazılan her sütunun mutlaka `GROUP BY` içine eklenmesi gerekliliğini unutmak.",
+        "`HAVING` ile `WHERE` arasındaki farkı bilmemek.",
+        "COUNT(*) ile NULL değer içeren sütun sayısını karıştırmak."
+      ],
+      "examTips": "Hocaların sınavda kesin sorduğu kural: 'HAVING ne zaman kullanılır?' Cevap: GROUP BY yapıldıktan sonra grup sonuçlarını filtrelemek için kullanılır.",
+      "industryTips": "Raporlama veritabanlarında ağır `GROUP BY` sorguları ana veritabanını yormasın diye ayrı okuma sunucularına (Read Replica / Data Warehouse) yönlendirilir.",
+      "exercise": "Şehirlere göre müşteri sayılarını ve toplam harcama miktarlarını listeleyen SQL sorgusunu yazın.",
+      "quizId": "quiz-db-5"
+    }
+  ]
+}

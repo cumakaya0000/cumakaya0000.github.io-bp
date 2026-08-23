@@ -1,0 +1,148 @@
+[
+  {
+    "id": "proj-hesap-makinesi",
+    "title": "Konsol Hesap Makinesi",
+    "level": "easy",
+    "levelTitle": "Başlangıç",
+    "levelBadge": "success",
+    "category": "Programlama Temelleri",
+    "summary": "Kullanıcıdan iki sayı ve işlem türü (+, -, *, /) alarak sonucu ekrana yazdıran C# konsol uygulaması.",
+    "objectives": [
+      "Değişken tanımlama ve tür dönüşümü (Convert.ToDouble)",
+      "if / else veya switch-case yapısı kullanımı",
+      "Sıfıra bölünme hatası kontrolü (Hata yönetimi)"
+    ],
+    "tech": ["C#", "Console App", "Algoritma"],
+    "requirements": [
+      "Toplama, Çıkarma, Çarpma, Bölme işlemleri desteklenmeli.",
+      "Kullanıcı 'çıkış' yazana kadar döngü devam etmeli.",
+      "Geçersiz girdi alındığında uyarı mesajı verilmeli."
+    ],
+    "sampleOutput": "=== HESAP MAKİNESİ ===\nBirinci sayı: 15\nİkinci sayı: 3\nİşlem (+,-,*,/): *\nSonuç: 45\nDevam etmek istiyor musunuz? (e/h): h"
+  },
+  {
+    "id": "proj-not-hesaplama",
+    "title": "Vize-Final Not ve Harf Notu Hesaplayıcı",
+    "level": "easy",
+    "levelTitle": "Başlangıç",
+    "levelBadge": "success",
+    "category": "Programlama Temelleri",
+    "summary": "%40 Vize ve %60 Final ağırlığına göre ortalama hesaplayan ve harf notunu belirleyen uygulama.",
+    "objectives": [
+      "Ondalıklı sayı aritmetiği (float/double)",
+      "Mantlemsal koşul zincirleri (>= 90 AA, >= 85 BA vs.)",
+      "Geçti / Kaldı durum tespiti"
+    ],
+    "tech": ["C#", "Math Logic"],
+    "requirements": [
+      "Vize notu 0-100 arasında olmalı.",
+      "Final notu 0-100 arasında olmalı.",
+      "Final 50'nin altındaysa ortalama ne olursa olsun 'FF (Kaldı)' vermeli."
+    ],
+    "sampleOutput": "Öğrenci Adı: Ahmet Yılmaz\nVize: 70 (%40 = 28)\nFinal: 80 (%60 = 48)\nOrtalama: 76.0\nHarf Notu: BB (Başarılı)"
+  },
+  {
+    "id": "proj-kisisel-kart",
+    "title": "Kişisel Portfolyo / Tanıtım Kartı",
+    "level": "easy",
+    "levelTitle": "Başlangıç",
+    "levelBadge": "success",
+    "category": "Web Tasarımı",
+    "summary": "HTML5 ve CSS3 kullanarak kendinizi, yeteneklerinizi ve sosyal medya linklerinizi tanıtan şık kart arayüzü.",
+    "objectives": [
+      "Semantik HTML etiketleri (header, main, section, footer)",
+      "CSS Box Model, Border-radius, Shadow, Flexbox hizalama",
+      "Mobil uyumlu responsive tasarım"
+    ],
+    "tech": ["HTML5", "CSS3", "Flexbox"],
+    "requirements": [
+      "Profil fotoğrafı, ad-soyad, unvan, biyografi alanı olmalı.",
+      "Yetenekler (Skills) rozetler halinde listelenmeli.",
+      "GitHub ve LinkedIn bağlantıları ikonlarla yer almalı."
+    ],
+    "sampleOutput": "[Arayüz Önizlemesi: Ortalanmış kart, yumuşak gölgeler, hover efektli butonlar]"
+  },
+  {
+    "id": "proj-ogrenci-otomasyonu",
+    "title": "Öğrenci Bilgi Sistemi (CRUD)",
+    "level": "medium",
+    "levelTitle": "Orta Seviye",
+    "levelBadge": "warning",
+    "category": "Görsel Programlama & Veri Tabanı",
+    "summary": "C# Windows Forms ve SQL Server (veya SQLite) kullanarak öğrenci ekleme, silme, güncelleme ve arama otomasyonu.",
+    "objectives": [
+      "ADO.NET veya Dapper ile veritabanı bağlantısı",
+      "DataGridView nesnesi üzerine veri bağlama",
+      "Parametreli SQL sorguları (SQL Injection önleme)"
+    ],
+    "tech": ["C# WinForms", "MS SQL / SQLite", "CRUD"],
+    "requirements": [
+      "Öğrenci No, Ad, Soyad, Bölüm, Sinif alanları tutulmalı.",
+      "Arama çubuğu ile ad veya numaraya göre anlık filtreleme yapılmalı.",
+      "Öğrenci silinirken onay penceresi (MessageBox) çıkmalı."
+    ],
+    "sampleOutput": "Form Arayüzü: Üstte Metin Kutuları + Ekle/Güncelle/Sil Butonları, Altta DataGridView Tablosu."
+  },
+  {
+    "id": "proj-kutup-otomasyonu",
+    "title": "Kütüphane Kitap ve Ödünç Takip Sistemi",
+    "level": "medium",
+    "levelTitle": "Orta Seviye",
+    "levelBadge": "warning",
+    "category": "Veri Tabanı & OOP",
+    "summary": "Kitapların, üyelerin ve ödünç alma süreçlerinin veritabanında yönetildiği sistem.",
+    "objectives": [
+      "Çoklu tablo ilişkileri (Primary Key & Foreign Key)",
+      "JOIN sorguları ile teslim tarihi geçmiş kitapları listeleme",
+      "Stok miktarı otomatik düşürme/artırma"
+    ],
+    "tech": ["C#", "SQL Server", "Relational DB"],
+    "requirements": [
+      "Books, Members, Loans tabloları oluşturulmalı.",
+      "Geciken kitaplar için günlük ceza puanı/ücreti hesaplanmalı."
+    ],
+    "sampleOutput": "Veritabanı ER Diyagramı + WinForms Teslim Takip Ekranı"
+  },
+  {
+    "id": "proj-e-ticaret-api",
+    "title": "RESTful E-Ticaret backend API",
+    "level": "hard",
+    "levelTitle": "İleri Seviye",
+    "levelBadge": "danger",
+    "category": "İnternet Programcılığı & Backend",
+    "summary": "ASP.NET Core Web API ile ürün kataloğu, sepet yönetimi ve JWT kimlik doğrulamalı backend mimarisi.",
+    "objectives": [
+      "REST standartlarına uygun HTTP endpoint'leri (GET, POST, PUT, DELETE)",
+      "Entity Framework Core ORM ve Migration kullanımı",
+      "JWT (JSON Web Token) tabanlı yetkilendirme"
+    ],
+    "tech": ["ASP.NET Core", "EF Core", "JWT", "Swagger"],
+    "requirements": [
+      "Kullanıcı kaydı ve login endpoint'leri.",
+      "Rol tabanlı erişim (Admin ürün ekler, Kullanıcı satın alır).",
+      "Swagger UI dokümantasyonu."
+    ],
+    "sampleOutput": "JSON Yanıtları + Postman / Swagger test sonuçları"
+  },
+  {
+    "id": "proj-mobil-ders-takip",
+    "title": "Mobil Ders ve Devamsızlık Takip Uygulaması",
+    "level": "hard",
+    "levelTitle": "İleri Seviye",
+    "levelBadge": "danger",
+    "category": "Mobil Programlama",
+    "summary": "React Native ve Expo kullanarak öğrencilerin ders programını, notlarını ve devamsızlık haklarını takip ettiği mobil uygulama.",
+    "objectives": [
+      "React Native bileşenleri, Navigation (Tab & Stack Router)",
+      "AsyncStorage / SQLite ile yerel veri saklama",
+      "Anlık bildirimler (Local Notifications)"
+    ],
+    "tech": ["React Native", "Expo", "AsyncStorage", "JavaScript/TypeScript"],
+    "requirements": [
+      "Ders ekleme, ders saati ve devamsızlık sayacı.",
+      "Kalan devamsızlık kritik seviyeye gelince kırmızı uyarı kartı.",
+      "Ortalama hesaplama aracı."
+    ],
+    "sampleOutput": "Mobil Ekran Görüntüleri: Derslerim Sekmesi, Devamsızlık Grafiği, Ayarlar"
+  }
+]

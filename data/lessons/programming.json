@@ -1,0 +1,140 @@
+{
+  "courseId": "programlama-temelleri",
+  "courseTitle": "Programlama Temelleri",
+  "description": "Yazılım dünyasına giriş, algoritmik düşünce yapısı, veri yapıları ve C# ile kodlama esasları.",
+  "lessons": [
+    {
+      "id": "programlama-nedir-algoritma",
+      "title": "Programlama ve Algoritma Nedir?",
+      "order": 1,
+      "goal": "Bilgisayara talimat verme mantığını, algoritmik düşünmeyi ve akış şemalarının temellerini kavramak.",
+      "content": "Programlama, bir bilgisayara belirli bir problemi çözmesi veya bir görevi yerine getirmesi için adım adım talimatlar dizisi (kod) verme sürecidir. Algoritma ise bu sürecin mantıksal planıdır. Bir algoritma sonlu sayıda adımdan oluşur, net (belirsiz olmayan) ifadeler içerir ve belirli bir girdiyi alıp beklenen çıktıyı üretir.",
+      "realWorldExample": "Yemek tarifi hazırlamak tam bir algoritmadır! Örneğin çay demleme algoritması: 1. Çaydanlığa su koy. 2. Ocağı yak ve suyu kaynat. 3. Su kaynadı mı? Evet ise çayı demle, Hayır ise bekle. 4. 10 dk demlenmesini bekle. 5. Servis et.",
+      "codeSnippet": "// C# İki Sayının Toplamı Algoritması\nint sayi1 = 15;\nint sayi2 = 25;\nint toplam = sayi1 + sayi2;\nConsole.WriteLine(\"Toplam: \" + toplam);",
+      "logic": "Bilgisayar işlemcisi (CPU) sırayla satır satır talimatları okur. Önce verileri RAM bellekte saklar (`sayi1`, `sayi2`), ardından ALU (Aritmetik Mantık Birimi) ile toplama yapar ve sonucu ekrana (standart çıktı) yazar.",
+      "commonMistakes": [
+        "Adımları sırasız yazmak (Örn: Suyu kaynatmadan demliğe dökmeye çalışmak).",
+        "Sonsuz döngüye giren, bitiş noktası olmayan algoritmalar tasarlamak.",
+        "Girdi ve çıktıları net tanımlamamak."
+      ],
+      "examTips": "Vize ve finallerde hocalar genellikle 'Verilen problemin akış şemasını (flowchart) çizin' veya 'Adım adım algoritmasını yazın' derler. Karar yapılarında baklava dilimi, işlem adımlarında dikdörtgen sembolü kullanıldığını unutmayın!",
+      "industryTips": "Sektörde kod yazmadan önce mutlaka pseudocode (sözde kod) veya akış diyagramı çıkarılır. Algoritması iyi kurgulanmamış kodlar ileride çok ciddi performans ve bakım sorunları yaratır.",
+      "exercise": "Kullanıcıdan alınan yaş bilgisine göre ehliyet alıp alamayacağını kontrol eden algoritmanın adımlarını madde madde yazın.",
+      "quizId": "quiz-prog-1"
+    },
+    {
+      "id": "degiskenler-ve-veri-tipleri",
+      "title": "Değişkenler ve Veri Tipleri",
+      "order": 2,
+      "goal": "RAM bellekte veri saklamayı, C# tip sistemini (int, double, string, bool) ve değişken tanımlama kurallarını öğrenmek.",
+      "content": "Değişkenler, bilgisayarın geçici belleğinde (RAM) değer saklamak için kullandığımız etiketli kutulardır. Her değişkenin bir türü (data type) vardır. Türler, kutunun içine ne tür bir veri koyabileceğimizi belirler: Tamsayılar için `int`, ondalıklı sayılar için `double` veya `float`, metinler için `string`, doğru/yanlış durumu için `bool` kullanılır.",
+      "realWorldExample": "Bir e-ticaret sitesindeki ürün kutusunu düşünün. Ürün adı metindir (`string ad = \"Kablosuz Kulaklık\"`), Fiyatı ondalıklıdır (`double fiyat = 1499.90`), Stok adedi tamsayıdır (`int stok = 45`), İndirimde mi bilgisi doğru/yanlıştır (`bool indirimdeMi = true`).",
+      "codeSnippet": "int ogrenciYasi = 20;\ndouble dersOrtalamasi = 3.45;\nstring ogrenciAdi = \"Ayşe Yılmaz\";\nbool kayitAktifMi = true;\nchar harfNotu = 'A';\n\nConsole.WriteLine($\"Öğrenci: {ogrenciAdi}, Ort: {dersOrtalamasi}\");",
+      "logic": "C# strongly-typed (katı tipli) bir dildir. `int` türünde tanımlanan bir değişkene metin `\"Ahmet\"` atayamazsınız. Bellekte `int` 32-bit (4 byte), `double` 64-bit (8 byte) yer kaplar.",
+      "commonMistakes": [
+        "Değişken isimlerinde Türkçe karakter (ğ, ş, ı, ö, ü, ç) veya boşluk kullanmak.",
+        "Değişken isminin sayı ile başlaması (`int 1sayi = 5;` hatalıdır, `int sayi1 = 5;` doğrudur).",
+        "String ifadeleri tırnak içine almayı unutmak."
+      ],
+      "examTips": "Sınavlarda tip dönüşümleri (Type Casting) çok sorulur. `Convert.ToInt32(\"123\")` veya `int.Parse(\"123\")` ile metinden sayıya dönüşüm mantığını iyi bilin!",
+      "industryTips": "Değişken isimlerini camelCase yapısıyla anlamlı verin. `int x = 5;` yerine `int activeUserCount = 5;` yazmak kod okunabilirliği için şarttır.",
+      "exercise": "Bir ürünün KDV hariç fiyatı verilmiştir. %20 KDV dahil fiyatını hesaplayıp ekrana bastıran değişkenleri ve formülü kurgulayın.",
+      "quizId": "quiz-prog-2"
+    },
+    {
+      "id": "operatorler",
+      "title": "Operatörler (Aritmetik, İlişkisel, Mantıksal)",
+      "order": 3,
+      "goal": "Aritmetik işlemleri (+, -, *, /, %), karşılaştırmaları (==, !=, >, <) ve mantıksal bağlaçları (&&, ||, !) kullanabilmek.",
+      "content": "Operatörler, değişkenler ve değerler üzerinde matematiksel veya mantıksal işlem yapmamızı sağlayan özel sembollerdir.\n- **Aritmetik**: `+`, `-`, `*`, `/`, `%` (Mod alma - kalan bulma)\n- **İlişkisel**: `==` (eşit mi), `!=` (eşit değil mi), `>`, `<`, `>=`, `<=`\n- **Mantıksal**: `&&` (VE - ikisi de doğru olmalı), `||` (VEYA - en az biri doğru olmalı), `!` (DEĞİL - tersini alır)",
+      "realWorldExample": "Sistemde oturum açma mantığı: Kullanıcı adı doğru VE şifre doğru ise giriş yap (`username == \"admin\" && password == \"1234\"`). İkisinden biri yanlışsa sistem kapıyı açmaz!",
+      "codeSnippet": "int sayi = 17;\nbool ciftMi = (sayi % 2 == 0);\n\nint vize = 60;\nint finalNotu = 70;\nbool gectiMi = (vize * 0.4 + finalNotu * 0.6 >= 60) && (finalNotu >= 50);\n\nConsole.WriteLine($\"Çift mi: {ciftMi}, Geçti mi: {gectiMi}\");",
+      "logic": "Tamsayı bölmesinde C# küsuratı atar! `5 / 2` işleminin sonucu `2` çıkar. Eğer `2.5` almak istiyorsanız sayılardan en az birini double yazmalısınız (`5.0 / 2`). Mod operatörü `%` ise kalanı verir (`17 % 2 = 1`).",
+      "commonMistakes": [
+        "Eşitlik kontrolü olan `==` yerine atama operatörü olan `=` kullanmak.",
+        "VE (`&&`) ile VEYA (`||`) bağlaçlarını karıştırmak.",
+        "İşlem önceliğinde parantez kullanmayı unutmak."
+      ],
+      "examTips": "Sınav sorusu: `int x = 5; int y = x++;` ile `int y = ++x;` arasındaki farkı açıklayınız. (Post-increment vs Pre-increment).",
+      "industryTips": "Karmaşık mantıksal ifadeleri tek satıra sıkıştırmak yerine anlaşılır parantezlerle gruplayın veya ara bool değişkenlerine atayın.",
+      "exercise": "Bir sayının hem 3'e hem de 5'e tam bölünüp bölünmediğini kontrol eden mantıksal ifadeyi yazın.",
+      "quizId": "quiz-prog-3"
+    },
+    {
+      "id": "kosul-yapilari-if-else-switch",
+      "title": "Koşul Yapıları (if / else / switch)",
+      "order": 4,
+      "goal": "Programın akışını belirli şartlara göre yönlendirmeyi ve karar mekanizmaları kurmayı öğrenmek.",
+      "content": "Programlar her zaman dümdüz satır satır çalışmaz. Bazen bir şartın doğru veya yanlış olmasına göre farklı kod blokları çalıştırılır. `if / else if / else` genel şart kontrollerinde kullanılır. `switch / case` ise tek bir değişkenin belirli sabit değerlerle eşleşmesini kontrol ederken tercih edilir.",
+      "realWorldExample": "ATM'den para çekme işlemi: İstenen tutar bakiyeden küçük veya eşitse parayı ver ve bakiyeyi düş. İstenen tutar bakiyeden büyükse 'Yetersiz Bakiye' uyarısı göster.",
+      "codeSnippet": "// if-else yapısı\nint bakiye = 500;\nint cekilmekIstenen = 750;\n\nif (cekilmekIstenen <= bakiye)\n{\n    bakiye -= cekilmekIstenen;\n    Console.WriteLine(\"Para çekildi.\");\n}\nelse\n{\n    Console.WriteLine(\"Yetersiz Bakiye!\");\n}\n\n// switch-case yapısı\nint gunNo = 3;\nswitch (gunNo)\n{\n    case 1: Console.WriteLine(\"Pazartesi\"); break;\n    case 2: Console.WriteLine(\"Salı\"); break;\n    case 3: Console.WriteLine(\"Çarşamba\"); break;\n    default: Console.WriteLine(\"Geçersiz Gün\"); break;\n}",
+      "logic": "`if` şartı `true` dönerse if bloğu çalışır ve else atlanır. `switch-case` yapısında her case sonuna `break;` konulmalıdır, aksi halde C# derleyicisi hata verir.",
+      "commonMistakes": [
+        "if şartından hemen sonra noktalı virgül koymak (`if (x > 5); { ... }` bloğu şarttan bağımsız çalışır!).",
+        "switch case bloklarında `break;` komutunu unutmak.",
+        "Gereksiz yere üst üste tekli `if` kullanıp `else if` yapısını es geçmek."
+      ],
+      "examTips": "Hocalar sınavda 'Ternary Operator' sorabilir: `string durum = (not >= 50) ? \"Geçti\" : \"Kaldı\";` tek satırlık pratik if yapısıdır.",
+      "industryTips": "İç içe 4-5 tane `if` (Nested IF) yazmak koda 'Spaghetti Code' kokusu katar. Şartları erken dönen (Guard Clauses) yapılarla basitleştirin.",
+      "exercise": "Kullanıcının girdiği sıcaklık değerine göre (-10 ve altı 'Buzlanma', 0-15 arası 'Soğuk', 16-25 'Ilık', 26 üstü 'Sıcak') uyarı veren program yazın.",
+      "quizId": "quiz-prog-4"
+    },
+    {
+      "id": "donguler-for-while-do-while",
+      "title": "Döngüler (for, while, do-while)",
+      "order": 5,
+      "goal": "Tekrarlayan işleri otomatikleşmeyi, sayaç mantığını ve döngü çeşitlerini doğru yerde kullanmayı öğrenmek.",
+      "content": "Bir kod bloğunu belirli bir sayıda veya bir şart sağlandığı sürece tekrar tekrar çalıştırmak için döngüler (loops) kullanılır.\n- **for**: Kaç kere döneceği önceden bilinen durumlar için idealdir.\n- **while**: Şart sağlandığı sürece döner (kaç kere döneceği belirsiz olabilir).\n- **do-while**: Şart ne olursa olsun koda en az 1 kez girer, sonra şartı kontrol eder.",
+      "realWorldExample": "Instagram akışını aşağı doğru kaydırdıkça yeni gönderilerin yüklenmesi `while (kullaniciKaydirmayaDevamEdiyor)` döngüsüdür. 100 kişilik sınıfta herkese mail atmak `for (int i = 0; i < 100; i++)` döngüsüdür.",
+      "codeSnippet": "// 1'den 10'a kadar olan çift sayıları yazdırma\nfor (int i = 1; i <= 10; i++)\n{\n    if (i % 2 == 0)\n    {\n        Console.WriteLine(\"Çift sayı: \" + i);\n    }\n}\n\n// While ile şifre doğrulama\nstring sifre = \"\";\nwhile (sifre != \"1234\")\n{\n    Console.Write(\"Şifreyi giriniz: \");\n    sifre = Console.ReadLine();\n}",
+      "logic": "Döngülerde 3 ana eleman vardır: Başlangıç değeri, Bitiş koşulu ve Değişim miktarı (artırma/azaltma). Bunlardan biri hatalı olursa döngü ya hiç çalışmaz ya da sonsuz döngüye (infinite loop) girer.",
+      "commonMistakes": [
+        "Döngü sayacını güncellemeyi unutup sonsuz döngüye girmek (`i++` yapmamak).",
+        "Döngü sınırlarını karıştırmak (`<` ile `<=` farkı off-by-one hatası yaratır).",
+        "Döngü içinde gereksiz ağır işlemler yapmak."
+      ],
+      "examTips": "`break` döngüyü tamamen sonlandırır, `continue` ise o anki adımı atlayıp bir sonraki tura geçer. Sınavlarda bu ikisinin çıktı soruları sıklıkla sorulur!",
+      "industryTips": "Sonsuz döngü riskine karşı `while` döngülerinde her zaman bir güvenlik sayacı (max timeout / iteration limit) bulundurun.",
+      "exercise": "1'den 100'e kadar olan sayılardan 3'e ve 5'e tam bölünen sayıların toplamını hesaplayan bir for döngüsü yazın.",
+      "quizId": "quiz-prog-5"
+    },
+    {
+      "id": "diziler-arrays",
+      "title": "Diziler (Arrays)",
+      "order": 6,
+      "goal": "Aynı türden birden fazla veriyi tek bir değişken altında indeksleyerek saklamayı öğrenmek.",
+      "content": "Diziler (Arrays), aynı veri tipindeki birden fazla değeri bellekte sıralı ve bitişik hücrelerde saklamamızı sağlayan veri yapılarıdır. Dizi elemanlarına sıfırdan başlayan indeks (index) numarası ile erişilir. İlk eleman `[0]`, son eleman `[Length - 1]` indeksindedir.",
+      "realWorldExample": "Bir haftanın 7 gününün isimlerini 7 ayrı değişken (`gun1`, `gun2`...) tanımlamak yerine `string[] gunler = new string[7]` şeklinde tek bir dizide tutmak çok daha düzenlidir.",
+      "codeSnippet": "int[] notlar = new int[] { 85, 90, 70, 100, 60 };\n\n// Elemana erişim ve değiştirme\nConsole.WriteLine(\"İlk not: \" + notlar[0]); // 85\nnotlar[2] = 75; // 70 olan 3. elemanı 75 yaptık\n\n// Diziyi döngüyle gezme\nint toplam = 0;\nfor (int i = 0; i < notlar.Length; i++)\n{\n    toplam += notlar[i];\n}\ndouble ortalama = (double)toplam / notlar.Length;\nConsole.WriteLine(\"Sınıf Ortalaması: \" + ortalama);",
+      "logic": "Dizilerin boyutu tanımlandığı anda sabittir. Bellekte yan yana bloklar olarak ayrılır. Örneğin 5 elemanlı `int` dizisi bellekte 5 x 4 = 20 byte alan kaplar.",
+      "commonMistakes": [
+        "Sınır dışı indeks hatası (`IndexOutOfRangeException`): 5 elemanlı bir dizinin 5. indeksine erişmeye çalışmak (indeksler 0, 1, 2, 3, 4'tür!).",
+        "Dizi boyutunu sonradan direkt değiştirmeye çalışmak.",
+        "Diziyi başlatmadan (initialize) kullanmak."
+      ],
+      "examTips": "Sınavlarda dizinin en büyük (MAX) veya en küçük (MIN) elemanını bulan algoritmayı yazmanız istenebilir. İlk elemanı max kabul edip döngüyle karşılaştırma mantığı ezberlenmeli!",
+      "industryTips": "Boyutu dinamik değişen veriler için gerçek projelerde `Array` yerine C# `List<T>` koleksiyonları tercih edilir.",
+      "exercise": "10 elemanlı tamsayı dizisi tanımlayın. Rastgele sayılarla doldurup içindeki tek sayıların kaç adet olduğunu bulun.",
+      "quizId": "quiz-prog-6"
+    },
+    {
+      "id": "metotlar-functions",
+      "title": "Metotlar ve Fonksiyonlar",
+      "order": 7,
+      "goal": "Kodu modüler hale getirmeyi, DRY (Don't Repeat Yourself) prensibini ve parametre/geriye değer döndürme mantığını anlamak.",
+      "content": "Metotlar (fonksiyonlar), belirli bir görevi yerine getiren ve ihtiyaç duyulduğunda adı çağrılarak tekrar tekrar çalıştırılabilen kod bloklarıdır. Metotlar parametre alabilir ve işlem sonucunda geriye değer döndürebilir (`return`) ya da sadece verilen görevi icra eder (`void`).",
+      "realWorldExample": "Karekok alma fonksiyonu `Math.Sqrt(16)` bize `4` değerini döndürür. İçinde hangi karmaşık formülün çalıştığını bilmemize gerek yoktur, girdiyi veririz ve çıktıyı alırız.",
+      "codeSnippet": "// Geriye değer döndürmeyen metot (void)\nstatic void Selamla(string isim)\n{\n    Console.WriteLine($\"Merhaba {isim}, hoş geldin!\");\n}\n\n// Geriye değer döndüren metot (int)\nstatic int Topla(int sayi1, int sayi2)\n{\n    return sayi1 + sayi2;\n}\n\n// Metotların çağrılması\nSelamla(\"Ahmet\");\nint sonuc = Topla(25, 40);\nConsole.WriteLine(\"Sonuç: \" + sonuc);",
+      "logic": "Metot çağrıldığında programın akışı ilgili metodun gövdesine atlar. Metottaki kodlar bittiğinde veya `return` görüldüğünde kaldığı yere geri döner.",
+      "commonMistakes": [
+        "Geriye değer döndüren bir metotta `return` ifadesini unutmak.",
+        "`void` metottan değer döndürmeye çalışmak.",
+        "Metot parametre tipleri ve sırasıyla çağırırken gönderilen argümanların uyuşmaması."
+      ],
+      "examTips": "Metot aşırı yükleme (Method Overloading) nedir? Aynı isimde fakat farklı parametre sayısına veya tiplerine sahip metotlar tanımlamaktır. Sınavlarda mutlaka sorulur!",
+      "industryTips": "Bir metot tek bir iş yapmalıdır (Single Responsibility Principle). 200 satırlık devasa metotlar yazmak yerine küçük, okuması kolay metotlara bölün.",
+      "exercise": "Parametre olarak aldığı yarıçapa göre dairenin alanını hesaplayıp döndüren `DaireAlaniHesapla(double yaricap)` metodunu yazın.",
+      "quizId": "quiz-prog-7"
+    }
+  ]
+}

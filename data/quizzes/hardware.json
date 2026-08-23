@@ -1,0 +1,58 @@
+{
+  "courseId": "bilgisayar-donanimi",
+  "quizzes": [
+    {
+      "id": "quiz-hw-1",
+      "title": "Anakart, CPU ve RAM Quizi",
+      "questions": [
+        {
+          "question": "Elektrik kesildiğinde içindeki verileri kaybeden geçici ana bellek hangisidir?",
+          "options": ["SSD", "ROM", "RAM", "HDD"],
+          "answer": 2,
+          "explanation": "RAM (Random Access Memory) geçici bellektir ve elektrik gittiğinde sıfırlanır."
+        }
+      ]
+    },
+    {
+      "id": "quiz-hw-2",
+      "title": "Depolama ve Ekran Kartı Quizi",
+      "questions": [
+        {
+          "question": "Aşağıdaki depolama teknolojilerinden hangisi en yüksek okuma/yazma hızına sahiptir?",
+          "options": ["NVMe M.2 SSD", "SATA SSD", "7200 RPM HDD", "USB 2.0 Flash Bellek"],
+          "answer": 0,
+          "explanation": "PCIe veriyolunu kullanan NVMe M.2 SSD'ler 7000 MB/s ve üzeri hızlara ulaşabilir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-hw-3",
+      "title": "BIOS / UEFI ve Yükleme Quizi",
+      "questions": [
+        {
+          "question": "Bilgisayar ilk açıldığında donanımları test eden açılış kontrolünün adı nedir?",
+          "options": ["POST (Power-On Self-Test)", "BOOT", "BIOS RESET", "GPT"],
+          "answer": 0,
+          "explanation": "POST testi açılışta donanım parçalarının çalışabilir durumda olup olmadığını kontrol eder."
+        }
+      ]
+    },
+    {
+      "id": "quiz-hw-4",
+      "title": "Arıza Teşhisi ve Bakım Quizi",
+      "questions": [
+        {
+          "question": "Açılan kasada fanlar döndüğü halde ekrana hiç görüntü gelmiyorsa yapılabilecek İLK pratik müdahale nedir?",
+          "options": [
+            "İşlemciyi çöpe atmak",
+            "RAM bellekleri söküp sarı pinlerini temizleyip tekrar denemek",
+            "Monitörü kırmak",
+            "Diski biçimlendirmek"
+          ],
+          "answer": 1,
+          "explanation": "RAM temas sorunları ve oksitlenme ekrana görüntü gelmeme arızalarının en sık nedenidir."
+        }
+      ]
+    }
+  ]
+}

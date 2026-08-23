@@ -1,0 +1,92 @@
+[
+  {
+    "term": "Algoritma",
+    "category": "Programlama",
+    "definition": "Bir problemi çözmek veya bir görevi yerine getirmek için adım adım izlenen mantıksal talimatlar dizisi."
+  },
+  {
+    "term": "API (Application Programming Interface)",
+    "category": "Web & Backend",
+    "definition": "İki farklı yazılım sisteminin birbiriyle veri alışverişi yapmasını sağlayan uygulama programlama arayüzü."
+  },
+  {
+    "term": "BIOS / UEFI",
+    "category": "Donanım",
+    "definition": "Anakart üzerindeki çipte saklanan, bilgisayar açıldığında donanımları test eden ve işletim sistemini başlatan temel yazılım."
+  },
+  {
+    "term": "Bool (Boolean)",
+    "category": "Programlama",
+    "definition": "Sadece `true` (doğru/1) veya `false` (yanlış/0) değerini alabilen mantıksal veri tipi."
+  },
+  {
+    "term": "Box Model (Kutu Modeli)",
+    "category": "Web Tasarım",
+    "definition": "CSS'te her HTML elemanının içerik (content), iç boşluk (padding), kenarlık (border) ve dış boşluktan (margin) oluşan dikdörtgen yapısı."
+  },
+  {
+    "term": "BUG",
+    "category": "Yazılım",
+    "definition": "Yazılımın beklenmeyen, hatalı veya eksik sonuçlar üretmesine neden olan kod kusuru."
+  },
+  {
+    "term": "CRUD",
+    "category": "Veri Tabanı",
+    "definition": "Veritabanındaki 4 temel işlem: Create (INSERT), Read (SELECT), Update (UPDATE), Delete (DELETE)."
+  },
+  {
+    "term": "Değişken (Variable)",
+    "category": "Programlama",
+    "definition": "Bilgisayarın geçici belleğinde (RAM) bir değeri saklamak için adlandırılmış veri hücresi."
+  },
+  {
+    "term": "Döngü (Loop)",
+    "category": "Programlama",
+    "definition": "Belirli bir kod bloğunu belirli bir sayıda veya bir şart sağlandığı sürece tekrarlayan yapı (for, while)."
+  },
+  {
+    "term": "Flexbox",
+    "category": "Web Tasarım",
+    "definition": "CSS3 ile gelen, elemanları tek bir eksende (yatay veya dikey) esnek şekilde hizalamaya yarayan düzen modeli."
+  },
+  {
+    "term": "Foreign Key (FK)",
+    "category": "Veri Tabanı",
+    "definition": "Bir tablodaki sütunun başka bir tablonun birincil anahtarına (PK) bağlanarak iki tablo arasında ilişki kurması."
+  },
+  {
+    "term": "Git",
+    "category": "Yazılım Yönetimi",
+    "definition": "Kodlardaki değişiklikleri zaman içinde takip eden ve ekip çalışmasını sağlayan dağıtık versiyon kontrol sistemi."
+  },
+  {
+    "term": "Metot / Fonksiyon",
+    "category": "Programlama",
+    "definition": "Belirli bir görevi icra eden ve ismi çağrılarak tekrar tekrar kullanılabilen modüler kod bloğu."
+  },
+  {
+    "term": "Primary Key (PK)",
+    "category": "Veri Tabanı",
+    "definition": "Bir tablodaki her satırı eşsiz/benzersiz kılan ve boş (NULL) bırakılamayan birincil anahtar sütunu."
+  },
+  {
+    "term": "RAM (Random Access Memory)",
+    "category": "Donanım",
+    "definition": "İşlemcinin o an kullandığı verileri çok hızlı işlediği, elektrik kesilince sıfırlanan geçici ana bellek."
+  },
+  {
+    "term": "Responsive Design",
+    "category": "Web Tasarım",
+    "definition": "Web sitelerinin mobil, tablet ve masaüstü tüm ekran boyutlarına otomatik uyum sağlaması."
+  },
+  {
+    "term": "SQL (Structured Query Language)",
+    "category": "Veri Tabanı",
+    "definition": "İlişkisel veritabanlarını sorgulamak, veri eklemek ve yönetmek için kullanılan standart veritabanı dili."
+  },
+  {
+    "term": "SSD (Solid State Drive)",
+    "category": "Donanım",
+    "definition": "Mekanik hareketli parçası olmayan, yarı iletken çiplerle yüksek hızlı okuma/yazma sunan kalıcı depolama birimi."
+  }
+]

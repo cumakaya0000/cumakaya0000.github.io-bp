@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark" data-density="comfortable">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilgisayar Programcılığı Rehberi - BP Rehberi</title>
+  <meta name="description" content="Bilgisayar Programcılığı bölüm öğrencileri için dersler, projeler, quizler ve kariyer rehberi platformu.">
+  <link rel="stylesheet" href="style.css">
+  <!-- LUCIDE ICONS CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- MOBİL ARKA PLAN OVERLAY -->
+  <div id="mobile-overlay" class="mobile-overlay"></div>
+
+  <!-- ÜST NAVİGASYON (HEADER) -->
+  <header class="main-header">
+    <div class="header-left">
+      <button id="sidebar-toggle-btn" class="icon-btn sidebar-header-toggle" title="Menüyü Aç/Kapat" aria-label="Menü">
+        <i data-lucide="menu"></i>
+      </button>
+      <a href="#home" class="brand-logo">
+        <img src="aru-logo.png" alt="ARÜ Logo" class="brand-logo-img" style="height:32px; width:auto; vertical-align:middle;">
+        <span class="logo-text">BP <strong>Rehberi</strong></span>
+      </a>
+    </div>
+
+    <!-- COMMAND PALETTE TRIGGER & SEARCH INPUT -->
+    <div class="header-search">
+      <div class="search-input-wrapper" id="cmd-palette-trigger" title="Command Palette Aç (Ctrl+K)">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="global-search-input" placeholder="Ara... veya Command Palette (Ctrl + K)" autocomplete="off">
+        <kbd class="cmd-kbd">Ctrl K</kbd>
+      </div>
+      <div id="search-results-box" class="search-results-box hidden"></div>
+    </div>
+
+    <div class="header-right">
+
+      <button id="theme-toggle-btn" class="btn btn-outline btn-theme">
+        <span>Aydınlık</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- UYGULAMA GÖVDESİ (SIDEBAR + CONTENT) -->
+  <div class="app-layout">
+
+    <!-- SOL NAVİGASYON MENÜSÜ (SIDEBAR) -->
+    <aside id="sidebar" class="sidebar">
+      <nav class="nav-menu">
+        <a href="#home" class="nav-link active">
+          <span class="nav-icon"><i data-lucide="home"></i></span>
+          <span class="nav-text">Ana Sayfa</span>
+        </a>
+
+        <a href="#courses" class="nav-link">
+          <span class="nav-icon"><i data-lucide="book-open"></i></span>
+          <span class="nav-text">Dersler</span>
+        </a>
+
+
+        <a href="#lab" class="nav-link">
+          <span class="nav-icon"><i data-lucide="terminal"></i></span>
+          <span class="nav-text">Kod Laboratuvarı</span>
+        </a>
+        <a href="#quizzes" class="nav-link">
+          <span class="nav-icon"><i data-lucide="brain"></i></span>
+          <span class="nav-text">Quizler</span>
+        </a>
+
+        <a href="#career" class="nav-link">
+          <span class="nav-icon"><i data-lucide="rocket"></i></span>
+          <span class="nav-text">Kariyer & Staj</span>
+        </a>
+
+
+        <a href="#university" class="nav-link">
+          <span class="nav-icon"><i data-lucide="building-2"></i></span>
+          <span class="nav-text">Üniversite</span>
+        </a>
+        <a href="#city" class="nav-link">
+          <span class="nav-icon"><i data-lucide="map-pin"></i></span>
+          <span class="nav-text">Şehir Rehberi</span>
+        </a>
+
+
+        <a href="#glossary" class="nav-link">
+          <span class="nav-icon"><i data-lucide="book-marked"></i></span>
+          <span class="nav-text">Terimler Sözlüğü</span>
+        </a>
+
+
+      </nav>
+    </aside>
+
+    <!-- DİNAMİK SAYFA İÇERİK ALANI -->
+    <main id="app-content" class="main-content">
+      <div class="loading-spinner-box">
+        <div class="spinner"></div>
+        <p>Yükleniyor...</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- MOBİL BOTTOM NAVIGATION (MOBİL ALT BAR) -->
+  <nav class="bottom-nav-bar mobile-only">
+    <a href="#home" class="bottom-nav-item active">
+      <span class="bnav-icon"><i data-lucide="home"></i></span>
+      <span class="bnav-label">Ana Sayfa</span>
+    </a>
+    <a href="#courses" class="bottom-nav-item">
+      <span class="bnav-icon"><i data-lucide="book-open"></i></span>
+      <span class="bnav-label">Dersler</span>
+    </a>
+    <a href="#lab" class="bottom-nav-item">
+      <span class="bnav-icon"><i data-lucide="terminal"></i></span>
+      <span class="bnav-label">Kod Lab</span>
+    </a>
+    <a href="#bookmarks" class="bottom-nav-item">
+      <span class="bnav-icon"><i data-lucide="star"></i></span>
+      <span class="bnav-label">Favoriler</span>
+    </a>
+    <button id="mobile-menu-trigger" class="bottom-nav-item">
+      <span class="bnav-icon"><i data-lucide="menu"></i></span>
+      <span class="bnav-label">Menü</span>
+    </button>
+  </nav>
+
+  <!-- COMMAND PALETTE MODAL (CTRL+K) -->
+  <div id="command-palette-modal" class="cmd-modal-overlay hidden">
+    <div class="cmd-modal-dialog">
+      <div class="cmd-search-input-box">
+        <i data-lucide="search"></i>
+        <input type="text" id="cmd-input" placeholder="Ne yapmak veya ne aramak istiyorsun? (örn: SQL, for, Quiz, Lab)" autocomplete="off">
+        <span class="cmd-esc-tag">ESC</span>
+      </div>
+      <div class="cmd-results-list" id="cmd-results-list">
+        <div class="cmd-section-title">HIZLI AKSİYONLAR</div>
+        <a href="#courses" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="book-open"></i></span> Derslere Git</a>
+        <a href="#lab" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="terminal"></i></span> Kod Laboratuvarı</a>
+        <a href="#quizzes" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="brain"></i></span> Quizler</a>
+        <a href="#bookmarks" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="star"></i></span> Favorilerim</a>
+        <a href="#glossary" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="book-marked"></i></span> Terimler Sözlüğü</a>
+        <a href="#calendar" class="cmd-item"><span class="cmd-item-icon"><i data-lucide="calendar"></i></span> Çalışma Takvimi</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- KLAVYE KISAYOLLARI MODAL (?) -->
+  <div id="shortcuts-modal" class="cmd-modal-overlay hidden">
+    <div class="cmd-modal-dialog shortcuts-dialog">
+      <div class="cmd-header">
+        <h2><i data-lucide="keyboard"></i> Klavye Kısayolları</h2>
+        <button class="modal-close-btn" id="btn-close-shortcuts">✕</button>
+      </div>
+      <div class="shortcuts-list">
+        <div class="shortcut-row"><kbd>Ctrl</kbd> + <kbd>K</kbd> <span>Command Palette / Arama</span></div>
+        <div class="shortcut-row"><kbd>J</kbd> <span>Sonraki Konu (Ders İçinde)</span></div>
+        <div class="shortcut-row"><kbd>K</kbd> <span>Önceki Konu (Ders İçinde)</span></div>
+        <div class="shortcut-row"><kbd>F</kbd> <span>Konuyu Favorilere Ekle / Çıkar</span></div>
+        <div class="shortcut-row"><kbd>?</kbd> <span>Bu Kısayol Menüsünü Aç</span></div>
+        <div class="shortcut-row"><kbd>ESC</kbd> <span>Tüm Modalları Kapat</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UYGULAMA JS (ES MODULE) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "courseId": "web-tasariminin-temelleri",
+  "quizzes": [
+    {
+      "id": "quiz-web-1",
+      "title": "HTML5 Temelleri Quizi",
+      "questions": [
+        {
+          "question": "Aşağıdakilerden hangisi bir HTML5 semantik (anlamsal) etiketidir?",
+          "options": ["<div>", "<span>", "<header>", "<b>"],
+          "answer": 2,
+          "explanation": "<header> sayfanın veya bölümün üst alanını ifade eden semantik HTML5 etiketidir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-web-2",
+      "title": "HTML Form ve Tablolar Quizi",
+      "questions": [
+        {
+          "question": "Form verisinin backend sunucusuna iletilmesi için <input> etiketinde bulunması zorunlu nitelik (attribute) hangisidir?",
+          "options": ["id", "class", "name", "style"],
+          "answer": 2,
+          "explanation": "Sunucuya form verisi iletilirken anahtar ismi olarak 'name' niteliğindeki değer kullanılır."
+        }
+      ]
+    },
+    {
+      "id": "quiz-web-3",
+      "title": "CSS3 Kutu Modeli Quizi",
+      "questions": [
+        {
+          "question": "CSS Kutu Modelinde bir elemanın kenarlığı (border) ile içerik metni arasındaki iç boşluk hangisidir?",
+          "options": ["Margin", "Padding", "Outline", "Gap"],
+          "answer": 1,
+          "explanation": "Padding elemanın iç boşluğunu, Margin ise elemanlar arasındaki dış mesafeyi düzenler."
+        }
+      ]
+    },
+    {
+      "id": "quiz-web-4",
+      "title": "Flexbox ve Grid Quizi",
+      "questions": [
+        {
+          "question": "Flexbox düzeninde ana eksendeki (horizontal) elemanları hizalamak için kullanılan CSS özelliği hangisidir?",
+          "options": ["align-items", "justify-content", "grid-template", "flex-wrap"],
+          "answer": 1,
+          "explanation": "justify-content ana eksendeki hizalamayı (center, flex-end, space-between vb.) yönetir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-web-5",
+      "title": "Responsive Design Quizi",
+      "questions": [
+        {
+          "question": "Web sayfasının mobil cihazlarda ekran boyutuna uygun ölçeklenmesi için <head> içine eklenen meta etiket hangisidir?",
+          "options": ["charset", "description", "viewport", "author"],
+          "answer": 2,
+          "explanation": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> duyarlı tasarımın temelidir."
+        }
+      ]
+    }
+  ]
+}

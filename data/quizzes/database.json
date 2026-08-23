@@ -1,0 +1,65 @@
+{
+  "courseId": "veri-tabani-1",
+  "quizzes": [
+    {
+      "id": "quiz-db-1",
+      "title": "Veri Tabanı ve VTYS Quizi",
+      "questions": [
+        {
+          "question": "Aşağıdakilerden hangisi bir İlişkisel Veri Tabanı Yönetim Sistemi (RDBMS) örneğidir?",
+          "options": ["PostgreSQL", "HTML5", "C#", "Docker"],
+          "answer": 0,
+          "explanation": "PostgreSQL popüler ve güçlü bir RDBMS veritabanı yönetim sistemidir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-db-2",
+      "title": "Tablo ve Anahtar Yapıları Quizi",
+      "questions": [
+        {
+          "question": "Bir tablodaki her satırı benzersiz/eşsiz kılan ve 'NULL' olamayan anahtar türü hangisidir?",
+          "options": ["Foreign Key", "Primary Key", "Index Key", "Super Key"],
+          "answer": 1,
+          "explanation": "Primary Key (Birincil Anahtar) tablodaki satırları eşsiz tanımlar ve boş olamaz."
+        }
+      ]
+    },
+    {
+      "id": "quiz-db-3",
+      "title": "SQL CRUD İşlemleri Quizi",
+      "questions": [
+        {
+          "question": "Veritabanındaki mevcut bir kaydı güncellemek için hangi SQL komutu kullanılır?",
+          "options": ["MODIFY", "ALTER", "UPDATE", "CHANGE"],
+          "answer": 2,
+          "explanation": "Veri güncelleme işlemi UPDATE komutu ve WHERE şartı ile yapılır."
+        }
+      ]
+    },
+    {
+      "id": "quiz-db-4",
+      "title": "SQL Filtreleme ve Sıralama Quizi",
+      "questions": [
+        {
+          "question": "SQL'de adının ilk harfi 'M' olan kayıtları bulmak için kullanılan filtreleme ifadesi hangisidir?",
+          "options": ["WHERE Ad = 'M'", "WHERE Ad LIKE 'M%'", "WHERE Ad LIKE '%M'", "WHERE Ad IN ('M')"],
+          "answer": 1,
+          "explanation": "LIKE 'M%' ifadesi 'M' harfi ile başlayan kelimeleri eşleştirir."
+        }
+      ]
+    },
+    {
+      "id": "quiz-db-5",
+      "title": "Gruplama ve Agregasyon Quizi",
+      "questions": [
+        {
+          "question": "GROUP BY ile gruplanmış veriler üzerinde filtreleme yapmak için hangi anahtar sözcük kullanılır?",
+          "options": ["WHERE", "HAVING", "ORDER BY", "FILTER"],
+          "answer": 1,
+          "explanation": "Gruplanmış küme üzerinde şart kontrolü WHERE ile değil HAVING ile yapılır."
+        }
+      ]
+    }
+  ]
+}
