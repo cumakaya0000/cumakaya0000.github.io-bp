@@ -127,18 +127,7 @@ BP-Rehberi/
         └── hardware.json
 ```
 
----
 
-## 🚀 GitHub Repository & Yayınlama
-
-- **GitHub Reposu:** [https://github.com/cumakaya0000/cumakaya0000.github.io-bp.git](https://github.com/cumakaya0000/cumakaya0000.github.io-bp.git)
-
-Proje tamamen istemci taraflı olduğu için GitHub Pages üzerinde doğrudan yayınlanabilir:
-```bash
-git add .
-git commit -m "BP Rehberi tüm güncellemeler ve detaylı README eklendi"
-git push origin main
-```
 
 ---
 
