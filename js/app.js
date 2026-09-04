@@ -1,21 +1,36 @@
 /**
  * BP Rehberi - Ana Başlatıcı Modül (app.js)
- * V1.3: Command Palette (Ctrl+K), Keyboard Shortcuts, Reading Progress, Collapsible Sidebar & Mobile Bottom Nav
+ * V2.0: Türkiye Geneli Çoklu Üniversite, Dinamik Sidebar Profil & Onboarding Akışı
  */
 import { Router } from './router.js';
 import { UI } from './ui.js';
 import { Storage } from './storage.js';
 import { SearchEngine } from './search.js';
 import { Utils } from './utils.js';
+import { UniversityService } from './university.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   UI.init();
   initTheme();
   initDensity();
   initSidebarState();
+  window.updateSidebarProfileUI = updateSidebarProfileUI;
+  updateSidebarProfileUI();
 
-  // Rotalar
+  // ROTALAR
   Router.addRoute('home', () => UI.renderHomeView());
+  Router.addRoute('dashboard', () => UI.renderHomeView());
+  Router.addRoute('onboarding', () => UI.renderOnboardingView());
+  Router.addRoute('universities', () => UI.renderUniversitiesView());
+  Router.addRoute('curriculum', (universityId) => UI.renderCurriculumView(universityId));
+  Router.addRoute('weekly-plan', (universityId) => UI.renderWeeklyPlanView(universityId));
+  Router.addRoute('compare', () => UI.renderCompareView());
+  Router.addRoute('cities', () => UI.renderCitiesView());
+  Router.addRoute('exams', () => UI.renderExamsView());
+  Router.addRoute('settings', () => UI.renderSettingsView());
+  Router.addRoute('profile', () => UI.renderSettingsView());
+
+  // MEVCUT ROTALAR (GERİYE DÖNÜK UYUMLULUK)
   Router.addRoute('courses', () => UI.renderCoursesView());
   Router.addRoute('course', (courseId) => UI.renderCourseDetailView(courseId));
   Router.addRoute('lesson', (courseId, lessonId) => UI.renderLessonView(courseId, lessonId));
@@ -25,17 +40,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   Router.addRoute('quizzes', () => UI.renderQuizzesView());
   Router.addRoute('hardware-diag', () => UI.renderHardwareDiagView());
   Router.addRoute('city', () => UI.renderCityGuideView());
-    Router.addRoute('learning-city-section', () => UI.renderCityGuideView());
-    Router.addRoute('stats-section', () => UI.renderCityGuideView());
-    Router.addRoute('university', () => UI.renderUniversityView());
-    Router.addRoute('academic-section', () => UI.renderUniversityView());
-    Router.addRoute('career', () => UI.renderCareerView());
+  Router.addRoute('learning-city-section', () => UI.renderCityGuideView());
+  Router.addRoute('stats-section', () => UI.renderCityGuideView());
+  Router.addRoute('university', () => UI.renderUniversityView());
+  Router.addRoute('academic-section', () => UI.renderUniversityView());
+  Router.addRoute('career', () => UI.renderCareerView());
   Router.addRoute('glossary', () => UI.renderGlossaryView());
   Router.addRoute('calendar', () => UI.renderCalendarView());
   Router.addRoute('bookmarks', () => UI.renderBookmarksView());
   Router.addRoute('print-summary', (courseId) => UI.renderPrintSummaryView(courseId));
 
-  // Menüler ve İnteraktivite
+  // MENÜLER VE İNTERAKTİVİTE
   initCollapsibleNav();
   initSearchEvents();
   initCommandPalette();
@@ -50,6 +65,84 @@ document.addEventListener('DOMContentLoaded', async () => {
   Router.init();
   await Router.handleRoute();
 });
+
+/**
+ * Sidebar Profil ve Üniversite Bilgilerini Dinamik Güncelleme
+ */
+export async function updateSidebarProfileUI() {
+  const profile = Storage.getUserProfile();
+  const isOnboarded = Storage.isOnboarded();
+
+  // Kullanıcı üniversitesini seçip onaylamadığı sürece (<aside id="sidebar">) ve menü butonu tamamen gizli olmalıdır
+  const sidebar = document.getElementById('sidebar');
+  const headerToggleBtn = document.getElementById('sidebar-toggle-btn');
+  const bottomNav = document.querySelector('.bottom-nav-bar');
+  const headerChangeUniBtn = document.getElementById('btn-header-change-uni');
+
+  if (!isOnboarded) {
+    if (sidebar) sidebar.classList.add('hidden');
+    if (headerToggleBtn) {
+      headerToggleBtn.classList.add('hidden');
+      headerToggleBtn.style.setProperty('display', 'none', 'important');
+    }
+    if (bottomNav) bottomNav.style.setProperty('display', 'none', 'important');
+    if (headerChangeUniBtn) headerChangeUniBtn.style.display = 'none';
+  } else {
+    if (sidebar) sidebar.classList.remove('hidden');
+    if (headerToggleBtn) {
+      headerToggleBtn.classList.remove('hidden');
+      headerToggleBtn.style.removeProperty('display');
+    }
+    if (bottomNav) bottomNav.style.removeProperty('display');
+    if (headerChangeUniBtn) headerChangeUniBtn.style.display = 'inline-flex';
+  }
+
+  const uniNameEl = document.getElementById('sidebar-uni-name');
+  const deptNameEl = document.getElementById('sidebar-dept-name');
+  const avatarImgEl = document.getElementById('sidebar-avatar-img');
+  const avatarContainer = document.getElementById('sidebar-avatar-container');
+  const uniLinksContainer = document.getElementById('sidebar-uni-links');
+
+  if (uniNameEl) uniNameEl.textContent = profile.university ? profile.university.toUpperCase() : 'ÜNİVERSİTENİ SEÇ';
+  if (deptNameEl) deptNameEl.textContent = profile.department || 'Bilgisayar Programcılığı';
+
+  if (profile.universityId) {
+    const uni = await UniversityService.getUniversityById(profile.universityId);
+    if (uni && uni.logo && avatarImgEl) {
+      avatarImgEl.src = uni.logo;
+      avatarImgEl.style.display = 'block';
+    } else if (avatarContainer) {
+      const initials = (profile.university || 'BP').split(' ').map(w => w[0]).join('').substring(0, 3);
+      if (avatarImgEl) avatarImgEl.style.display = 'none';
+      avatarContainer.setAttribute('data-initials', initials);
+    }
+
+    if (uniLinksContainer && uni) {
+      const uniWebsite = uni.website || '#';
+      const deptWebsite = uni.departmentUrl || uni.website || '#';
+      const ubysWebsite = uni.ubysUrl || '#';
+
+      uniLinksContainer.innerHTML = `
+        <a href="${uniWebsite}" target="_blank" rel="noopener" class="sidebar-social-btn" title="${Utils.escapeHTML(uni.name)} Resmî İnternet Sitesi">
+          <i data-lucide="school"></i>
+          <span class="social-btn-label">Üniversite</span>
+        </a>
+        <a href="${deptWebsite}" target="_blank" rel="noopener" class="sidebar-social-btn" title="Resmî Bölüm Sayfası">
+          <i data-lucide="globe"></i>
+          <span class="social-btn-label">Bölüm</span>
+        </a>
+        <a href="${ubysWebsite}" target="_blank" rel="noopener" class="sidebar-social-btn" title="UBYS / OBS Girişi">
+          <i data-lucide="graduation-cap"></i>
+          <span class="social-btn-label">UBYS</span>
+        </a>
+      `;
+      Utils.refreshLucideIcons();
+    }
+  } else {
+    if (avatarImgEl) avatarImgEl.style.display = 'none';
+    if (avatarContainer) avatarContainer.setAttribute('data-initials', 'BP');
+  }
+}
 
 /**
  * Tema Yönetimi (Dark / Light / System)
@@ -81,8 +174,12 @@ function applyThemeMode(mode) {
 }
 
 function updateThemeIcon(btn, mode) {
-  const labels = { dark: '🌙 Koyu', light: '☀️ Açık', system: '💻 Sistem' };
-  btn.innerHTML = `<span>${labels[mode] || 'Aydınlık'}</span>`;
+  const icons = { dark: '🌙', light: '☀️', system: '💻' };
+  const labels = { dark: 'Koyu', light: 'Açık', system: 'Sistem' };
+  const icon = icons[mode] || '☀️';
+  const label = labels[mode] || 'Açık';
+  btn.innerHTML = `<span class="theme-btn-icon">${icon}</span><span class="theme-btn-label desktop-only">${label}</span>`;
+  btn.setAttribute('title', `Tema: ${label}`);
 }
 
 function initDensity() {
@@ -103,7 +200,6 @@ function updateSidebarToggleUI(isCollapsed) {
 function initSidebarState() {
   const sidebar = document.getElementById('sidebar');
   if (sidebar) {
-    // Masaüstü ekranlarda menüyü VARSAYILAN OLARAK AÇIK tut
     if (window.innerWidth > 1024) {
       sidebar.classList.remove('collapsed');
       updateSidebarToggleUI(false);
@@ -124,6 +220,9 @@ function initSidebarCollapseToggle() {
 
   const toggleSidebar = (e) => {
     if (e) e.stopPropagation();
+    if (!Storage.isOnboarded()) {
+      return; // Kullanıcı üniversitesini seçmediği sürece menü toggle pasiftir
+    }
     if (window.innerWidth <= 1024) {
       sidebar.classList.toggle('open');
       if (overlay) overlay.classList.toggle('open', sidebar.classList.contains('open'));
@@ -172,17 +271,6 @@ function initCollapsibleNav() {
         header.classList.add('active');
         body.classList.remove('collapsed');
       }
-    });
-  });
-
-  const dropdownBtns = document.querySelectorAll('.dropdown-arrow-btn');
-  dropdownBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const dropdownItem = btn.closest('.nav-dropdown-item');
-      if (!dropdownItem) return;
-
-      dropdownItem.classList.toggle('open');
     });
   });
 }
@@ -255,12 +343,14 @@ function initCommandPalette() {
 function renderDefaultCmdActions(container) {
   container.innerHTML = `
     <div class="cmd-section-title">HIZLI AKSİYONLAR</div>
+    <a href="#home" class="cmd-item"><span class="cmd-item-icon">🏠</span> Ana Sayfa</a>
+    <a href="#universities" class="cmd-item"><span class="cmd-item-icon">🏛️</span> Üniversite Seçimi</a>
+    <a href="#compare" class="cmd-item"><span class="cmd-item-icon">⚖️</span> Müfredat Karşılaştır</a>
+    <a href="#weekly-plan" class="cmd-item"><span class="cmd-item-icon">📅</span> Haftalık Ders Planı</a>
+    <a href="#exams" class="cmd-item"><span class="cmd-item-icon">📝</span> Sınav Sistemi</a>
     <a href="#courses" class="cmd-item"><span class="cmd-item-icon">📚</span> Derslere Git</a>
     <a href="#lab" class="cmd-item"><span class="cmd-item-icon">💻</span> Kod Laboratuvarı</a>
-    <a href="#quizzes" class="cmd-item"><span class="cmd-item-icon">🧠</span> Quizler</a>
-    <a href="#bookmarks" class="cmd-item"><span class="cmd-item-icon">⭐</span> Favorilerim</a>
-    <a href="#glossary" class="cmd-item"><span class="cmd-item-icon">📖</span> Terimler Sözlüğü</a>
-    <a href="#calendar" class="cmd-item"><span class="cmd-item-icon">📅</span> Çalışma Takvimi</a>
+    <a href="#settings" class="cmd-item"><span class="cmd-item-icon">⚙️</span> Ayarlar</a>
   `;
 }
 
@@ -286,9 +376,6 @@ function initInfoModal() {
   });
 }
 
-/**
- * SAYFA ÖLÇEĞİ VE METİN BÜYÜTME (A 90% ➔ A+ 100% ➔ A++ 110%)
- */
 function initZoomToggle() {
   const zoomLevels = [
     { zoom: '90%', label: 'A', title: 'Varsayılan Metin Boyutu (A - %90)' },
@@ -318,7 +405,6 @@ function initZoomToggle() {
     });
   };
 
-  // Varsayılan %90 (A) açılış
   applyZoomLevel(levelIndex);
 
   document.addEventListener('click', (e) => {
@@ -334,9 +420,6 @@ function initZoomToggle() {
   });
 }
 
-/**
- * KLAVYE KISAYOLLARI (J, K, F, ?, ESC, Ctrl+K)
- */
 function initKeyboardShortcuts() {
   const shortcutsModal = document.getElementById('shortcuts-modal');
   const btnShortcuts = document.getElementById('btn-shortcuts-modal');
@@ -355,7 +438,6 @@ function initKeyboardShortcuts() {
   }
 
   document.addEventListener('keydown', (e) => {
-    // Ctrl + K veya Cmd + K
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
       const cmdModal = document.getElementById('command-palette-modal');
@@ -367,27 +449,23 @@ function initKeyboardShortcuts() {
       return;
     }
 
-    // ESC (Tüm Modalları Kapat)
     if (e.key === 'Escape') {
-      document.querySelectorAll('.cmd-modal-overlay, .onboarding-modal-overlay').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.cmd-modal-overlay, .onboarding-overlay').forEach(m => m.classList.add('hidden'));
       const searchBox = document.getElementById('search-results-box');
       if (searchBox) searchBox.classList.add('hidden');
       return;
     }
 
-    // İnput veya Textarea içindeyken kısayolları çalıştırma
     const activeEl = document.activeElement;
     if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
       return;
     }
 
-    // Kısayol: ? (Kısayol Modalı Aç)
     if (e.key === '?') {
       if (shortcutsModal) shortcutsModal.classList.toggle('hidden');
       return;
     }
 
-    // Ders İçi Kısayollar (J: Sonraki, K: Önceki, F: Favorile)
     if (window.location.hash.startsWith('#lesson/')) {
       if (e.key.toLowerCase() === 'j') {
         const nextBtn = document.getElementById('btn-next-lesson');
@@ -403,9 +481,6 @@ function initKeyboardShortcuts() {
   });
 }
 
-/**
- * DERS KONUSU OKUMA İLERLEME ÇUBUĞU (READING PROGRESS BAR)
- */
 function initReadingProgressBar() {
   window.addEventListener('scroll', () => {
     const progressBar = document.getElementById('reading-progress-bar');
@@ -484,50 +559,9 @@ function initMobileNavEvents() {
 }
 
 function checkOnboarding() {
-  if (Storage.isOnboarded()) return;
-
-  const modal = document.createElement('div');
-  modal.className = 'onboarding-modal-overlay';
-  modal.innerHTML = `
-    <div class="onboarding-modal">
-      <div class="onboarding-step" id="onboard-step-1">
-        <h2>👋 BP Rehberine Hoş Geldin!</h2>
-        <p>Bilgisayar Programcılığı dersleri, projeleri, quizleri ve sınav notları için hazırlanan özel eğitim platformundasın.</p>
-        <button class="btn btn-primary" id="btn-onboard-next-1">Devam Et ➔</button>
-      </div>
-
-      <div class="onboarding-step hidden" id="onboard-step-2">
-        <h2>📚 Dersler ve 11 Standart Katman</h2>
-        <p>Her ders konusunda anlatım, gerçek hayat örneği, kodlar, mantığı, <strong>Sınavda Bil</strong> vs <strong>Sektörde Bil</strong> ipuçları bulunur.</p>
-        <button class="btn btn-primary" id="btn-onboard-next-2">Devam Et ➔</button>
-      </div>
-
-      <div class="onboarding-step hidden" id="onboard-step-3">
-        <h2>💾 İlerleme Kaydı ve Yedekleme</h2>
-        <p>Tamamladığın konular tarayıcına kaydedilir. İlerlemeyi kaybetmemek için Ana Sayfa'daki <strong>"Yedeği İndir"</strong> butonunu kullanabilirsin.</p>
-        <button class="btn btn-success" id="btn-onboard-finish">Öğrenmeye Başla! 🚀</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  const step1 = modal.querySelector('#onboard-step-1');
-  const step2 = modal.querySelector('#onboard-step-2');
-  const step3 = modal.querySelector('#onboard-step-3');
-
-  modal.querySelector('#btn-onboard-next-1').onclick = () => {
-    step1.classList.add('hidden');
-    step2.classList.remove('hidden');
-  };
-
-  modal.querySelector('#btn-onboard-next-2').onclick = () => {
-    step2.classList.add('hidden');
-    step3.classList.remove('hidden');
-  };
-
-  modal.querySelector('#btn-onboard-finish').onclick = () => {
-    Storage.setOnboarded();
-    modal.remove();
-  };
+  if (!Storage.isOnboarded()) {
+    if (!window.location.hash || window.location.hash === '#' || window.location.hash === '#home' || window.location.hash === '#dashboard') {
+      Router.navigate('#onboarding');
+    }
+  }
 }

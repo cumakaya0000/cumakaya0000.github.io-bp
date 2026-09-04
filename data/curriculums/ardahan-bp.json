@@ -1,0 +1,217 @@
+{
+  "curriculumId": "ardahan-bp",
+  "universityId": "ardahan-universitesi",
+  "universityName": "Ardahan Üniversitesi",
+  "department": "Bilgisayar Programcılığı",
+  "program": "Önlisans (2 Yıllık)",
+  "totalCredits": 120,
+  "metadata": {
+    "source": "Ardahan Üniversitesi Teknik Bilimler MYO Müfredat Dokümanı",
+    "sourceUrl": "https://tbmyo.ardahan.edu.tr",
+    "lastUpdated": "2026-01-15",
+    "verified": true
+  },
+  "semesters": [
+    {
+      "id": 1,
+      "title": "1. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "programlama-temelleri",
+          "code": "BT103",
+          "name": "Programlama Temelleri",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Algoritmik düşünme, akış şemaları, değişkenler, karar yapıları, döngüler ve fonksiyonlar.",
+          "topics": ["Algoritma ve Akış Şemaları", "C# Temel Yapı ve Değişkenler", "Karar Yapıları (if-else, switch)", "Döngüler (for, while)", "Fonksiyonlar ve Metotlar"],
+          "weeklyPlan": [
+            { "week": 1, "topic": "Algoritma Mantığı ve Akış Diyagramları", "goal": "Problemi adımlara bölme becerisi kazanma" },
+            { "week": 2, "topic": "Değişkenler ve Veri Tipleri", "goal": "Bellek yönetimi ve int, string, bool kavramları" },
+            { "week": 3, "topic": "Operatörler ve Mantıksal İfadeler", "goal": "Aritmetik ve karşılaştırma operatörleri" },
+            { "week": 4, "topic": "Karar Yapıları (if - else - else if)", "goal": "Şartlı dallanma yapıları oluşturma" },
+            { "week": 5, "topic": "Switch-Case Yapısı", "goal": "Çoklu seçim kontrol blokları" },
+            { "week": 6, "topic": "Döngü Yapıları: For Döngüsü", "goal": "Tekrarlayan işleri otomatize etme" },
+            { "week": 7, "topic": "Döngü Yapıları: While & Do-While", "goal": "Şarta bağlı döngü kontrolü" },
+            { "week": 8, "topic": "Ara Sınav / Vize", "goal": "1-7. hafta konularının değerlendirilmesi" },
+            { "week": 9, "topic": "Tek Boyutlu Diziler (Arrays)", "goal": "Çoklu veri kümesi saklama" },
+            { "week": 10, "topic": "Çok Boyutlu Diziler & Matrisler", "goal": "İki boyutlu veri dizilimleri" },
+            { "week": 11, "topic": "Fonksiyonlar / Metotlar", "goal": "Modüler kod yazımı ve parametre kullanımı" },
+            { "week": 12, "topic": "Geriye Değer Döndüren Metotlar", "goal": "return ifadesi ve scope mantığı" },
+            { "week": 13, "topic": "String İşlemleri & Hazır Metotlar", "goal": "Metinsel verileri işleme teknikleri" },
+            { "week": 14, "topic": "Hata Yönetimi (Try-Catch)", "goal": "Çalışma zamanı hatalarını yakalama" }
+          ]
+        },
+        {
+          "id": "veri-tabani-1",
+          "code": "BT105",
+          "name": "Veri Tabanı I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Veritabanı",
+          "description": "İlişkisel veritabanı tasarımı, ER diyagramları ve SQL temel sorguları.",
+          "topics": ["İlişkisel Veritabanı Mantığı", "ER Diyagramları", "SQL SELECT ve WHERE Sorguları", "DML (INSERT, UPDATE, DELETE)", "Primary & Foreign Key"],
+          "weeklyPlan": [
+            { "week": 1, "topic": "Veritabanı Kavramı ve Veritabanı Yönetim Sistemleri (VTYS)", "goal": "Veritabanı temel ilkeleri" },
+            { "week": 2, "topic": "Varlık-İlişki (ER) Modeli ve Tasarım", "goal": "Tablo ilişkileri ve varlık tanımlama" },
+            { "week": 3, "topic": "İlişkisel Veri Modeli ve Normalizasyon (1NF, 2NF, 3NF)", "goal": "Veri tekrarını önleme" },
+            { "week": 4, "topic": "SQL Giriş ve Veri Tanımlama Dili (DDL)", "goal": "CREATE, ALTER, DROP komutları" },
+            { "week": 5, "topic": "Veri İşleme Dili (DML) - SELECT & WHERE", "goal": "Filtreli veri sorgulama" },
+            { "week": 6, "topic": "Sıralama ve Gruplama (ORDER BY, GROUP BY)", "goal": "Sonuçları kümeleme" },
+            { "week": 7, "topic": "Kümeleme Fonksiyonları (COUNT, SUM, AVG, MIN, MAX)", "goal": "İstatistiksel SQL işlemleri" },
+            { "week": 8, "topic": "Ara Sınav / Vize", "goal": "Değerlendirme" },
+            { "week": 9, "topic": "Veri Ekleme, Güncelleme, Silme (INSERT, UPDATE, DELETE)", "goal": "DML işlemleri" },
+            { "week": 10, "topic": "Tablo Birleştirme (INNER JOIN, LEFT JOIN, RIGHT JOIN)", "goal": "İlişkili tabloları sorgulama" },
+            { "week": 11, "topic": "Alt Sorgular (Subqueries)", "goal": "İç içe SQL sorguları yazma" },
+            { "week": 12, "topic": "Kısıtlamalar (Constraints): Primary Key, Foreign Key, Unique", "goal": "Veri bütünlüğü sağlama" },
+            { "week": 13, "topic": "Görünümler (Views)", "goal": "Sanal tablolar oluşturma" },
+            { "week": 14, "topic": "İndeksler ve Performans", "goal": "Sorgu hızlandırma teknikleri" }
+          ]
+        },
+        {
+          "id": "web-tasariminin-temelleri",
+          "code": "BT101",
+          "name": "Web Tasarımın Temelleri",
+          "tu": "2+1",
+          "akts": 4,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "HTML5 semantik yapısı, CSS3 biçimlendirme, Flexbox ve Grid duyarlı arayüz tasarımı.",
+          "topics": ["HTML5 Etiket Yapısı", "CSS3 Stil Oluşturma", "Flexbox & Grid Düzenleri", "Duyarlı (Responsive) Tasarım"],
+          "weeklyPlan": [
+            { "week": 1, "topic": "Web ve İnternet Nasıl Çalışır? HTTP / HTML Giriş", "goal": "İnternet altyapısı" },
+            { "week": 2, "topic": "HTML5 Semantik Yapı ve Metin Etiketleri", "goal": "Sayfa hiyerarşisi" },
+            { "week": 3, "topic": "Formlar, Bağlantılar ve Medya Etiketleri", "goal": "İnteraktif HTML öğeleri" },
+            { "week": 4, "topic": "CSS3 Giriş: Renkler, Yazı Tipleri ve Kutu Modeli (Box Model)", "goal": "Arayüz stillendirme" },
+            { "week": 5, "topic": "CSS Konumlandırma (Position, Display, Float)", "goal": "Yerleşim kontrolü" },
+            { "week": 6, "topic": "Modern CSS: Flexbox Düzen Modeli", "goal": "Esnek aydınlık tasarımlar" },
+            { "week": 7, "topic": "Modern CSS: Grid Düzen Modeli", "goal": "İki boyutlu ızgara tasarımı" },
+            { "week": 8, "topic": "Ara Sınav / Vize", "goal": "Değerlendirme" },
+            { "week": 9, "topic": "Media Queries ve Duyarlı (Responsive) Tasarım", "goal": "Mobil uyumlu siteler" },
+            { "week": 10, "topic": "CSS Animasyonlar ve Geçişler (Transitions)", "goal": "Arayüz hareket efektleri" },
+            { "week": 11, "topic": "UI/UX Tasarım İlkeleri ve Glassmorphism Mantığı", "goal": "Kullanıcı deneyimi" },
+            { "week": 12, "topic": "CSS Frameworks (Bootstrap / Tailwind Mantığı)", "goal": "Hazır stil kütüphaneleri" },
+            { "week": 13, "topic": "SEO ve Web Erişilebilirliği", "goal": "Arama motoru uyumu" },
+            { "week": 14, "topic": "Örnek Web Projesi Uygulaması", "goal": "Yayına hazırlama" }
+          ]
+        },
+        {
+          "id": "bilgisayar-donanimi",
+          "code": "BT107",
+          "name": "Bilgisayar Donanımı",
+          "tu": "2+0",
+          "akts": 3,
+          "type": "Zorunlu",
+          "category": "Sistem",
+          "description": "Anakart, işlemci, bellek birimleri, depolama ve çevre birimlerinin çalışma ilkeleri.",
+          "topics": ["İşlemci Mimarisi (CPU)", "RAM ve Depolama Teknolojileri", "Anakart ve Veri Yolları", "Donanım Arıza Teşhisi"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "2. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "nesne-tabanli-programlama-1",
+          "code": "BT104",
+          "name": "Nesne Tabanlı Programlama I",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Sınıflar, nesneler, kapsülleme, kalıtım ve çok biçimlilik (OOP ilkeleri).",
+          "topics": ["Sınıf (Class) ve Nesne (Object)", "Kapsülleme (Encapsulation)", "Kalıtım (Inheritance)", "Çok Biçimlilik (Polymorphism)"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "veri-tabani-2",
+          "code": "BT106",
+          "name": "Veri Tabanı II",
+          "tu": "2+1",
+          "akts": 4,
+          "type": "Zorunlu",
+          "category": "Veritabanı",
+          "description": "Saklı prosedürler (Stored Procedures), tetikleyiciler (Triggers) ve veritabanı güvenliği.",
+          "topics": ["Stored Procedures", "Triggers", "Transactions & ACID", "Veritabanı İndeksleme"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "ag-teknolojileri",
+          "code": "BT108",
+          "name": "Ağ Teknolojileri",
+          "tu": "2+0",
+          "akts": 3,
+          "type": "Zorunlu",
+          "category": "Sistem",
+          "description": "OSI modeli, TCP/IP protokolü, IP adresleme, alt ağlara bölme (Subnetting) ve ağ anahtarlama.",
+          "topics": ["OSI Katmanları", "TCP/IP Protokol Ailesi", "IPv4 & IPv6 Adresleme", "Router & Switch Yapılandırması"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "3. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "gorsel-programlama-1",
+          "code": "BT201",
+          "name": "Görsel Programlama I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Masaüstü form mimarisi, olay güdümlü programlama (Event-Driven) ve arayüz kontrolleri.",
+          "topics": ["Form Kontrolleri", "Olaylar (Events)", "Veri Bağlama (Data Binding)", "Masaüstü Veritabanı Entegrasyonu"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "internet-programciligi-1",
+          "code": "BT203",
+          "name": "İnternet Programcılığı I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "Sunucu taraflı web programlama, HTTP protokolü, dinamik sayfa oluşturma ve form işleme.",
+          "topics": ["Sunucu Taraflı Programlama", "HTTP İstek ve Yanıtlar", "Session & Cookie Yönetimi", "Form Doğrulama"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "4. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "internet-programciligi-2",
+          "code": "BT202",
+          "name": "İnternet Programcılığı II",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "Modern full-stack web geliştirme, REST API mimarisi ve SPA framework temelleri.",
+          "topics": ["RESTful API Tasarımı", "Asenkron JavaScript (Fetch/Async-Await)", "MVC Mimarisi", "Web Güvenliği (XSS, CSRF)"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "mobil-programlama",
+          "code": "BT204",
+          "name": "Mobil Programlama",
+          "tu": "2+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Mobil uygulama geliştirme ortamı, yaşam döngüsü, kullanıcı arayüzleri ve SQLite veritabanı.",
+          "topics": ["Mobil Yaşam Döngüsü", "Arayüz Tasarımı", "Yerel Veri Depolama", "API Entegrasyonu"],
+          "weeklyPlan": []
+        }
+      ]
+    }
+  ]
+}

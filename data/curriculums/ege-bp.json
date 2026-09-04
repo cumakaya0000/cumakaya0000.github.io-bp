@@ -1,0 +1,64 @@
+{
+  "curriculumId": "ege-bp",
+  "universityId": "ege-universitesi",
+  "universityName": "Ege Üniversitesi",
+  "department": "Bilgisayar Programcılığı",
+  "program": "Önlisans (2 Yıllık)",
+  "totalCredits": 120,
+  "metadata": {
+    "source": "Ege Üniversitesi Ege MYO Resmi Sayfası",
+    "sourceUrl": "https://egemyo.ege.edu.tr",
+    "lastUpdated": "2026-02-10",
+    "verified": false
+  },
+  "semesters": [
+    {
+      "id": 1,
+      "title": "1. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "programlama-temelleri",
+          "code": "BP101",
+          "name": "Programlama Temelleri",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Algoritmalar ve temel programlama yapıları.",
+          "topics": ["Algoritma", "Değişkenler", "Döngüler"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "veri-tabani-1",
+          "code": "BP103",
+          "name": "Veri Tabanı I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Veritabanı",
+          "description": "İlişkisel veritabanı tasarımı ve SQL.",
+          "topics": ["SQL", "ER Diyagramları"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "2. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "nesne-tabanli-programlama",
+          "code": "BP102",
+          "name": "Nesne Tabanlı Programlama",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Nesne yönelimli yazılım mantığı.",
+          "topics": ["OOP", "Sınıflar", "Kalıtım"],
+          "weeklyPlan": []
+        }
+      ]
+    }
+  ]
+}

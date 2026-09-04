@@ -1,0 +1,172 @@
+{
+  "curriculumId": "ataturk-bp",
+  "universityId": "ataturk-universitesi",
+  "universityName": "Atatürk Üniversitesi",
+  "department": "Bilgisayar Programcılığı",
+  "program": "Önlisans (2 Yıllık)",
+  "totalCredits": 120,
+  "metadata": {
+    "source": "Atatürk Üniversitesi Bilgi Paketi ve Ders Kataloğu (Obs)",
+    "sourceUrl": "https://obs.atauni.edu.tr",
+    "lastUpdated": "2026-02-01",
+    "verified": true
+  },
+  "semesters": [
+    {
+      "id": 1,
+      "title": "1. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "programlama-temelleri",
+          "code": "BPR101",
+          "name": "Programlama Temelleri",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Temel algoritma kavramları, veri tipleri, döngüler ve fonksiyonel programlamaya giriş.",
+          "topics": ["Algoritmalar", "Akış Şemaları", "C# İle Programlama", "Döngüler", "Diziler"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "veri-tabani-1",
+          "code": "BPR103",
+          "name": "Veri Tabanı Yönetim Sistemleri I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Veritabanı",
+          "description": "Veritabanı temel ilkeleri, ilişkisel modeller ve SQL DDL/DML dili.",
+          "topics": ["VTYS Giriş", "ER Diyagramı", "SQL Sorgulama", "İlişkiler"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "web-tasarimi",
+          "code": "BPR105",
+          "name": "Web Tasarımının Esasları",
+          "tu": "2+1",
+          "akts": 4,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "HTML5, CSS3, duyarlı web arayüz tasarımı ve yerleşim düzenleri.",
+          "topics": ["HTML5", "CSS3", "Responsive Web", "Flexbox"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "matematik-1",
+          "code": "MAT101",
+          "name": "Matematik I",
+          "tu": "2+0",
+          "akts": 3,
+          "type": "Zorunlu",
+          "category": "Genel",
+          "description": "Sayı sistemleri, fonksiyonlar, matrisler ve küme teorisi.",
+          "topics": ["Fonksiyonlar", "Matrisler", "Limit"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "2. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "nesne-tabanli-programlama",
+          "code": "BPR102",
+          "name": "Nesne Yönelimli Programlama",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Sınıflar, nesneler, encapsulation, inheritance ve polymorphism.",
+          "topics": ["OOP", "Classes", "Inheritance", "Polymorphism"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "gorsel-programlama",
+          "code": "BPR104",
+          "name": "Görsel Programlama",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Windows Form uygulamaları ve olay tabanlı programlama.",
+          "topics": ["WinForms", "Events", "GUI Design"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "ag-temelleri",
+          "code": "BPR106",
+          "name": "Ağ Temelleri",
+          "tu": "2+0",
+          "akts": 3,
+          "type": "Zorunlu",
+          "category": "Sistem",
+          "description": "Ağ topolojileri, OSI katmanları ve IP adresleme.",
+          "topics": ["OSI", "TCP/IP", "Subnetting"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "3. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "internet-programciligi-1",
+          "code": "BPR201",
+          "name": "İnternet Programcılığı I",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "Dinamik web sayfaları geliştirme, PHP / ASP.NET sunucu programlama.",
+          "topics": ["Sunucu Taraflı Programlama", "Form İşleme", "Database Integration"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "sistem-analizi",
+          "code": "BPR203",
+          "name": "Sistem Analizi ve Tasarımı",
+          "tu": "2+1",
+          "akts": 4,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Yazılım yaşam döngüsü, UML diyagramları ve gereksinim analizi.",
+          "topics": ["SDLC", "UML", "Requirements"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "4. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "internet-programciligi-2",
+          "code": "BPR202",
+          "name": "İnternet Programcılığı II",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "API entegrasyonu, modern JavaScript kütüphaneleri ve web servisleri.",
+          "topics": ["REST API", "JSON", "Modern JS Frameworks"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "mobil-programlama",
+          "code": "BPR204",
+          "name": "Mobil Programlama",
+          "tu": "2+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Mobil uygulama geliştirme ortamı ve Android/Flutter temelleri.",
+          "topics": ["Mobile UI", "SQLite", "API Consumption"],
+          "weeklyPlan": []
+        }
+      ]
+    }
+  ]
+}

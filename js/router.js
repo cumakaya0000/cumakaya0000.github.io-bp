@@ -1,5 +1,6 @@
 /**
  * BP Rehberi - Rotaya Göre Sayfa Yönlendirici (router.js)
+ * V2.0: Türkiye Geneli Yeni Rotalar ve Tam Uyumlu Geriye Dönük Destek
  */
 import { Storage } from './storage.js';
 import { Utils } from './utils.js';
@@ -14,19 +15,38 @@ export const Router = {
 
   async handleRoute() {
     let hash = window.location.hash || '#home';
-    if (hash === '#') hash = '#home';
+    if (hash === '#' || hash === '#dashboard') hash = '#home';
 
     this.currentHash = hash;
     Storage.setLastVisited(hash);
 
-    // Aktif sidebar ve mobil bottom nav linklerini vurgula
+    // Aktif sidebar ve mobil bottom nav linklerini ve sidebar profilini vurgula/güncelle
     this.updateActiveNavLinks(hash);
+    if (typeof window.updateSidebarProfileUI === 'function') {
+      window.updateSidebarProfileUI();
+    }
 
     const parts = hash.substring(1).split('/');
     const routeName = parts[0] || 'home';
 
-    if (routeName === 'home' && this.routes['home']) {
+    if ((routeName === 'home' || routeName === 'dashboard') && this.routes['home']) {
       await this.routes['home']();
+    } else if (routeName === 'onboarding' && this.routes['onboarding']) {
+      await this.routes['onboarding']();
+    } else if (routeName === 'universities' && this.routes['universities']) {
+      await this.routes['universities']();
+    } else if (routeName === 'curriculum' && this.routes['curriculum']) {
+      await this.routes['curriculum'](parts[1]);
+    } else if (routeName === 'weekly-plan' && this.routes['weekly-plan']) {
+      await this.routes['weekly-plan'](parts[1]);
+    } else if (routeName === 'compare' && this.routes['compare']) {
+      await this.routes['compare']();
+    } else if (routeName === 'cities' && this.routes['cities']) {
+      await this.routes['cities']();
+    } else if (routeName === 'exams' && this.routes['exams']) {
+      await this.routes['exams']();
+    } else if ((routeName === 'settings' || routeName === 'profile') && this.routes['settings']) {
+      await this.routes['settings']();
     } else if (routeName === 'courses' && this.routes['courses']) {
       await this.routes['courses']();
     } else if (routeName === 'course' && parts[1] && this.routes['course']) {
@@ -70,7 +90,7 @@ export const Router = {
     links.forEach(link => {
       link.classList.remove('active');
       const href = link.getAttribute('href');
-      if (href && (hash === href || (href !== '#home' && href !== '#' && hash.startsWith(href + '/')))) {
+      if (href && (hash === href || (href !== '#home' && href !== '#dashboard' && href !== '#' && hash.startsWith(href + '/')))) {
         link.classList.add('active');
       }
     });

@@ -6,6 +6,7 @@ import { CourseService } from './courses.js';
 import { Storage } from './storage.js';
 import { Utils } from './utils.js';
 import { QuizEngine } from './quiz.js';
+import { UniversityService } from './university.js';
 
 export const UI = {
   appContainer: null,
@@ -13,6 +14,1150 @@ export const UI = {
 
   init() {
     this.appContainer = document.getElementById('app-content');
+  },
+
+  /**
+   * V2.0: BÜTÜNLEŞİK DASHBOARD GÖRÜNÜMÜ (#dashboard / #home)
+   */
+  async renderDashboardView() {
+    this.renderSkeleton(this.appContainer);
+
+    const user = Storage.getUserProfile();
+    const uni = await UniversityService.getUniversityById(user.universityId);
+    const curr = await UniversityService.getCurriculumForUniversity(user.universityId);
+    const stats = Storage.getExamStats();
+    const recent = Storage.getRecentlyViewed();
+    const coursesInfo = await CourseService.loadCourses();
+
+    const totalLessons = await CourseService.getTotalV1LessonsCount();
+    const globalProgressPercent = Storage.getGlobalProgress(totalLessons, user.universityId);
+
+    const breadcrumbHTML = this.renderBreadcrumb([{ title: 'Dashboard', hash: '#dashboard' }]);
+
+    const lastItem = recent.length > 0 ? recent[0] : null;
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="dashboard-page-container">
+        <!-- KARŞILAMA VE PROFİL BANNER -->
+        <div class="dashboard-welcome-banner">
+          <div class="dashboard-user-info">
+            <h1>Merhaba, ${Utils.escapeHTML(user.name || 'Bilgisayar Programcısı')} 👋</h1>
+            <p>
+              <i data-lucide="building-2" style="width:20px; height:20px; color:var(--accent-primary);"></i>
+              <strong>${Utils.escapeHTML(user.university || 'Ardahan Üniversitesi')}</strong> — ${Utils.escapeHTML(user.department || 'Bilgisayar Programcılığı')} (${user.semester || 1}. Yarıyıl)
+            </p>
+          </div>
+          <div class="dashboard-banner-actions" style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="#universities" class="btn btn-outline btn-sm"><i data-lucide="refresh-cw"></i> Üniversite Değiştir</a>
+            <a href="#weekly-plan" class="btn btn-primary btn-sm"><i data-lucide="calendar"></i> Haftalık Plan</a>
+            <a href="#compare" class="btn btn-secondary btn-sm"><i data-lucide="git-compare"></i> Müfredat Karşılaştır</a>
+          </div>
+        </div>
+
+        <!-- İSTATİSTİK VE İLERLEME KARTLARI -->
+        <div class="dashboard-stats-grid">
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon"><i data-lucide="bar-chart-2"></i></div>
+            <div class="dash-stat-info">
+              <h3>%${globalProgressPercent}</h3>
+              <p>Genel Müfredat İlerlemesi</p>
+            </div>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon"><i data-lucide="file-check"></i></div>
+            <div class="dash-stat-info">
+              <h3>${stats.totalSolved} Sınav</h3>
+              <p>Başarı Oranı: %${stats.overallSuccessRate}</p>
+            </div>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon"><i data-lucide="award"></i></div>
+            <div class="dash-stat-info">
+              <h3>${Utils.escapeHTML(stats.strongestCourse)}</h3>
+              <p>En Güçlü Ders</p>
+            </div>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="dash-stat-icon"><i data-lucide="compass"></i></div>
+            <div class="dash-stat-info">
+              <h3>${curr ? (curr.semesters || []).reduce((acc, s) => acc + (s.courses || []).length, 0) : 12} Ders</h3>
+              <p>Aktif Müfredat Ders Sayısı</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- KALDIĞIN YERDEN DEVAM ET & HIZLI ERİŞİM -->
+        <div class="dashboard-content-grid" style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; margin-bottom:28px;">
+          <div class="dash-left-col">
+            ${lastItem ? `
+              <div class="card glass-card" style="padding:24px; margin-bottom:24px; border-left: 4px solid var(--accent-primary);">
+                <h3 style="margin-top:0; font-size:1.15rem; display:flex; align-items:center; gap:10px;">
+                  <i data-lucide="play-circle" style="color:var(--accent-primary);"></i> Kaldığın Yerden Devam Et
+                </h3>
+                <p style="color:var(--text-secondary); margin:8px 0;"><strong>${Utils.escapeHTML(lastItem.title)}</strong></p>
+                <a href="${lastItem.hash}" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:8px;">
+                  Derse Git →
+                </a>
+              </div>
+            ` : ''}
+
+            <!-- HIZLI AKSİYON KARTLARI -->
+            <h3 style="margin-bottom:16px; font-size:1.2rem;">🚀 Hızlı Öğrenme Araçları</h3>
+            <div class="quick-cards-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+              <a href="#curriculum" class="card glass-card hover-lift" style="padding:20px; text-decoration:none; color:inherit;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">📚</div>
+                <h4 style="margin:0 0 4px 0; color:var(--text-primary);">Müfredatım</h4>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Dönemlik ders yapısı & AKTS</p>
+              </a>
+
+              <a href="#weekly-plan" class="card glass-card hover-lift" style="padding:20px; text-decoration:none; color:inherit;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">📅</div>
+                <h4 style="margin:0 0 4px 0; color:var(--text-primary);">Haftalık Plan</h4>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">1-14 hafta konu çizelgesi</p>
+              </a>
+
+              <a href="#exams" class="card glass-card hover-lift" style="padding:20px; text-decoration:none; color:inherit;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">📝</div>
+                <h4 style="margin:0 0 4px 0; color:var(--text-primary);">Sınav Sistemi</h4>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Quiz, Vize & Final denemeleri</p>
+              </a>
+
+              <a href="#compare" class="card glass-card hover-lift" style="padding:20px; text-decoration:none; color:inherit;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">⚖️</div>
+                <h4 style="margin:0 0 4px 0; color:var(--text-primary);">Müfredat Karşılaştır</h4>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin:0;">Diğer üniversiteler ile kıyasla</p>
+              </a>
+            </div>
+          </div>
+
+          <!-- ENTEGRE ESKİ HOME SAĞ SÜTUN (DUYURULAR & REHBER İPUÇLARI) -->
+          <div class="dash-right-col">
+            <div class="card glass-card" style="padding:20px; margin-bottom:20px;">
+              <h4 style="margin-top:0; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="sparkles" style="color:var(--color-warning);"></i> Rehber İpucu
+              </h4>
+              <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.5;">
+                Bilgisayar Programcılığı 2 yıllık süreci hızla geçer. Derslerin yanı sıra <strong>Kod Laboratuvarı</strong> ve <strong>Proje Havuzu</strong> sayfalarından pratik yapmayı unutma!
+              </p>
+            </div>
+
+            <div class="card glass-card" style="padding:20px;">
+              <h4 style="margin-top:0; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="calendar" style="color:var(--accent-primary);"></i> Yaklaşan Sınavlar
+              </h4>
+              <ul style="padding-left:18px; margin:10px 0 0 0; font-size:0.88rem; color:var(--text-secondary);">
+                <li>Vize Dönemi Hatırlatıcısı</li>
+                <li>Final & Bütünleme Denemeleri</li>
+                <li>Staj Değerlendirme Takvimi</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+  },
+
+  /**
+   * V2.0: ONBOARDING / KARŞILAMA EKRANI (#onboarding)
+   */
+  async renderOnboardingView() {
+    this.renderSkeleton(this.appContainer);
+
+    const universities = await UniversityService.loadUniversities();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Karşılama & Üniversite Seçimi', hash: '#onboarding' }
+    ]);
+
+    const cities = Array.from(new Set(universities.map(u => u.city))).sort();
+    let cityOptions = cities.map(c => `<option value="${c}">${Utils.escapeHTML(c)}</option>`).join('');
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="onboarding-landing-container" style="max-width: 1200px; margin: 0 auto; padding: 20px 0;">
+        <!-- HERO KARŞILAMA BANNER -->
+        <div class="card glass-card" style="padding: 36px; text-align: center; margin-bottom: 32px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(16, 185, 129, 0.12)); border: 1px solid var(--border-color);">
+          <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; color: var(--text-primary);">
+            Merhaba Bilgisayar Programcısı 👋
+          </h1>
+          <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 760px; margin: 0 auto; line-height: 1.6;">
+            Türkiye genelindeki Bilgisayar Programcılığı dersleri, müfredatı, sınavları ve öğrenme yoluna erişmek için <strong>lütfen kendi üniversiteni seç:</strong>
+          </p>
+        </div>
+
+        <!-- ARAMA VE FİLTRELEME BAR -->
+        <div class="uni-filter-bar" style="margin-bottom: 28px;">
+          <div class="uni-search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="onboard-uni-search" placeholder="Üniversite veya şehir ara..." autocomplete="off">
+          </div>
+
+          <div class="uni-filter-group">
+            <select id="onboard-city-select" class="onboarding-select" style="min-width: 150px;">
+              <option value="">Tüm Şehirler</option>
+              ${cityOptions}
+            </select>
+
+            <div class="type-filter-buttons" style="display: flex; gap: 6px;">
+              <button class="btn btn-sm btn-primary active-type" data-type="all">Tümü</button>
+              <button class="btn btn-sm btn-outline" data-type="devlet">Devlet</button>
+              <button class="btn btn-sm btn-outline" data-type="vakif">Vakıf</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ÜNİVERSİTE LOGO & KARTLARI GRİDİ -->
+        <div class="uni-cards-grid" id="onboard-uni-cards-container">
+          <!-- Dinamik Render -->
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    const searchInput = document.getElementById('onboard-uni-search');
+    const citySelect = document.getElementById('onboard-city-select');
+    const container = document.getElementById('onboard-uni-cards-container');
+    let selectedType = 'all';
+
+    const filterAndRender = () => {
+      const query = (searchInput.value || '').toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+      const selectedCity = citySelect.value;
+
+      const filtered = universities.filter(u => {
+        const normName = u.name.toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+        const normCity = u.city.toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+
+        const matchesQuery = !query || normName.includes(query) || normCity.includes(query);
+        const matchesCity = !selectedCity || u.city === selectedCity;
+        const matchesType = selectedType === 'all' || u.type === selectedType;
+
+        return matchesQuery && matchesCity && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">Arama kriterlerine uygun üniversite bulunamadı.</div>`;
+        return;
+      }
+
+      let cardsHTML = filtered.map(u => {
+        const initials = u.name.split(' ').map(w => w[0]).join('').substring(0, 3);
+
+        return `
+          <div class="uni-card" style="cursor:pointer;" data-uni-id="${u.id}">
+            <div>
+              <div class="uni-card-header">
+                ${u.logo ? `<img src="${u.logo}" alt="${Utils.escapeHTML(u.name)}" style="width:60px; height:60px; object-fit:contain;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="uni-avatar-fallback" style="width:60px; height:60px; font-size:1.3rem; display:none;">${initials}</div>` : `<div class="uni-avatar-fallback" style="width:60px; height:60px; font-size:1.3rem;">${initials}</div>`}
+                <div class="uni-card-title">
+                  <h3 style="font-size:1.15rem; font-weight:700;">${Utils.escapeHTML(u.name)}</h3>
+                  <p style="font-size:0.9rem; color:var(--text-muted); margin-top:2px;">📍 ${Utils.escapeHTML(u.city)}</p>
+                </div>
+              </div>
+
+              <div class="uni-card-badges">
+                <span class="uni-badge ${u.type}">${u.type === 'devlet' ? '🏛️ Devlet' : '🎓 Vakıf'}</span>
+                <span class="uni-badge">💻 Bilgisayar Programcılığı</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-sm btn-choose-uni" data-uni-id="${u.id}" style="width:100%; margin-top:16px; font-weight:600; display:flex; justify-content:center; align-items:center; gap:8px;">
+              🏛️ Üniversiteyi Seç ➔
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = cardsHTML;
+
+      // Click handler for card or button
+      container.querySelectorAll('.uni-card').forEach(card => {
+        card.onclick = async () => {
+          const uId = card.getAttribute('data-uni-id');
+          const targetUni = universities.find(u => u.id === uId);
+          if (targetUni) {
+            Storage.setUserProfile({
+              universityId: targetUni.id,
+              university: targetUni.name,
+              department: 'Bilgisayar Programcılığı'
+            });
+            Storage.setOnboarded();
+
+            if (typeof window.updateSidebarProfileUI === 'function') {
+              await window.updateSidebarProfileUI();
+            }
+            window.location.hash = '#dashboard';
+          }
+        };
+      });
+    };
+
+    searchInput.oninput = filterAndRender;
+    citySelect.onchange = filterAndRender;
+
+    document.querySelectorAll('.type-filter-buttons button').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.type-filter-buttons button').forEach(b => {
+          b.classList.remove('btn-primary', 'active-type');
+          b.classList.add('btn-outline');
+        });
+        btn.classList.add('btn-primary', 'active-type');
+        btn.classList.remove('btn-outline');
+        selectedType = btn.getAttribute('data-type');
+        filterAndRender();
+      };
+    });
+
+    filterAndRender();
+  },
+
+  /**
+   * V2.0: ÜNİVERSİTE SEÇİM EKRANI (#universities)
+   */
+  async renderUniversitiesView() {
+    this.renderSkeleton(this.appContainer);
+
+    const universities = await UniversityService.loadUniversities();
+    const currentUser = Storage.getUserProfile();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Üniversite Seçimi', hash: '#universities' }
+    ]);
+
+    // Şehir listesi al
+    const cities = Array.from(new Set(universities.map(u => u.city))).sort();
+    let cityOptions = cities.map(c => `<option value="${c}">${Utils.escapeHTML(c)}</option>`).join('');
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="universities-page-container">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:8px;">🏛️ Türkiye Bilgisayar Programcılığı Üniversiteleri</h1>
+          <p style="color:var(--text-secondary);">Üniversiteni seçerek ilgili bölümün müfredatını, ders planını ve sınavlarını aktif hale getirebilirsin.</p>
+        </div>
+
+        <!-- ARAMA VE FİLTRE BAR BAR -->
+        <div class="uni-filter-bar">
+          <div class="uni-search-box">
+            <i data-lucide="search"></i>
+            <input type="text" id="uni-search-input" placeholder="Üniversite veya şehir ara... (Örn: Ardahan, Erzurum, Ege)" autocomplete="off">
+          </div>
+
+          <div class="uni-filter-group">
+            <select id="uni-city-select" class="onboarding-select" style="min-width:160px;">
+              <option value="">Tüm Şehirler</option>
+              ${cityOptions}
+            </select>
+
+            <div class="type-filter-buttons" style="display:flex; gap:6px;">
+              <button class="btn btn-sm btn-primary active-type" data-type="all">Tüm</button>
+              <button class="btn btn-sm btn-outline" data-type="devlet">Devlet</button>
+              <button class="btn btn-sm btn-outline" data-type="vakif">Vakıf</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ÜNİVERSİTE KARTLARI GRİDİ -->
+        <div class="uni-cards-grid" id="uni-cards-container">
+          <!-- Dinamik Render -->
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    const searchInput = document.getElementById('uni-search-input');
+    const citySelect = document.getElementById('uni-city-select');
+    const container = document.getElementById('uni-cards-container');
+    let selectedType = 'all';
+
+    const filterAndRender = () => {
+      const query = (searchInput.value || '').toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+      const selectedCity = citySelect.value;
+
+      const filtered = universities.filter(u => {
+        const normName = u.name.toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+        const normCity = u.city.toLowerCase().replace(/ı/g, 'i').replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ö/g, 'o').replace(/ç/g, 'c');
+
+        const matchesQuery = !query || normName.includes(query) || normCity.includes(query);
+        const matchesCity = !selectedCity || u.city === selectedCity;
+        const matchesType = selectedType === 'all' || u.type === selectedType;
+
+        return matchesQuery && matchesCity && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);">Arama kriterlerine uygun üniversite bulunamadı.</div>`;
+        return;
+      }
+
+      // Aktif olanı üstte tut
+      filtered.sort((a, b) => (a.id === currentUser.universityId ? -1 : b.id === currentUser.universityId ? 1 : 0));
+
+      let cardsHTML = filtered.map(u => {
+        const isActive = u.id === currentUser.universityId;
+        const initials = u.name.split(' ').map(w => w[0]).join('').substring(0, 3);
+
+        return `
+          <div class="uni-card ${isActive ? 'active-uni' : ''}">
+            <div>
+              <div class="uni-card-header">
+                ${u.logo ? `<img src="${u.logo}" alt="${Utils.escapeHTML(u.name)}" style="width:54px; height:54px; object-fit:contain;">` : `<div class="uni-avatar-fallback">${initials}</div>`}
+                <div class="uni-card-title">
+                  <h3>${Utils.escapeHTML(u.name)}</h3>
+                  <p>📍 ${Utils.escapeHTML(u.city)}</p>
+                </div>
+              </div>
+
+              <div class="uni-card-badges">
+                <span class="uni-badge ${u.type}">${u.type === 'devlet' ? '🏛️ Devlet' : '🎓 Vakıf'}</span>
+                <span class="uni-badge">💻 Bilgisayar Programcılığı</span>
+                ${isActive ? `<span class="uni-badge" style="background:var(--color-success); color:#fff;">✓ Aktif Seçim</span>` : ''}
+              </div>
+            </div>
+
+            <button class="btn ${isActive ? 'btn-success' : 'btn-primary'} btn-sm btn-select-uni" data-uni-id="${u.id}" style="width:100%; margin-top:16px;">
+              ${isActive ? '✓ Aktif Üniversiteniz' : 'Müfredatı Seç & Yükle ➔'}
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = cardsHTML;
+
+      // Click handler
+      container.querySelectorAll('.btn-select-uni').forEach(btn => {
+        btn.onclick = async () => {
+          const uId = btn.getAttribute('data-uni-id');
+          const targetUni = universities.find(u => u.id === uId);
+          if (targetUni) {
+            Storage.setUserProfile({
+              universityId: targetUni.id,
+              university: targetUni.name
+            });
+            Storage.setOnboarded();
+            if (typeof window.updateSidebarProfileUI === 'function') {
+              await window.updateSidebarProfileUI();
+            }
+            window.location.hash = '#dashboard';
+          }
+        };
+      });
+    };
+
+    searchInput.oninput = filterAndRender;
+    citySelect.onchange = filterAndRender;
+
+    document.querySelectorAll('.type-filter-buttons button').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.type-filter-buttons button').forEach(b => {
+          b.classList.remove('btn-primary', 'active-type');
+          b.classList.add('btn-outline');
+        });
+        btn.classList.add('btn-primary', 'active-type');
+        btn.classList.remove('btn-outline');
+        selectedType = btn.getAttribute('data-type');
+        filterAndRender();
+      };
+    });
+
+    filterAndRender();
+  },
+
+  /**
+   * V2.0: TÜRKİYE GENELİ MÜFREDAT EKRANI (#curriculum)
+   */
+  async renderCurriculumView(universityId) {
+    this.renderSkeleton(this.appContainer);
+
+    const user = Storage.getUserProfile();
+    const activeUniId = universityId || user.universityId || 'ardahan-universitesi';
+    const curr = await UniversityService.getCurriculumForUniversity(activeUniId);
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Müfredat', hash: '#curriculum' }
+    ]);
+
+    if (!curr) {
+      this.appContainer.innerHTML = `
+        ${breadcrumbHTML}
+        <div class="card glass-card" style="padding:40px; text-align:center;">
+          <h2>Müfredat Verisi Yüklenemedi</h2>
+          <p style="color:var(--text-secondary);">Seçilen üniversite için henüz resmi müfredat yüklenmemiş olabilir.</p>
+          <a href="#universities" class="btn btn-primary" style="margin-top:16px;">Farklı Üniversite Seç</a>
+        </div>
+      `;
+      return;
+    }
+
+    const meta = curr.metadata || {};
+    const isVerified = meta.verified === true;
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="curriculum-page-container">
+        <div class="page-header-box" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+          <div>
+            <h1 style="font-size:1.75rem; margin-bottom:6px;">📚 ${Utils.escapeHTML(curr.universityName)} Müfredatı</h1>
+            <p style="color:var(--text-secondary); margin:0;">${Utils.escapeHTML(curr.department)} — Toplam AKTS: ${curr.totalCredits || 120}</p>
+          </div>
+
+          <!-- DOĞRULAMA METADATA ETİKETİ -->
+          <div>
+            ${isVerified ? `
+              <span class="uni-badge" style="background:rgba(16,185,129,0.15); color:var(--color-success); border-color:var(--color-success); font-size:0.85rem; padding:6px 14px;">
+                ✓ Doğrulanmış Müfredat (${Utils.escapeHTML(meta.source || 'Resmi Kaynak')})
+              </span>
+            ` : `
+              <span class="uni-badge" style="background:rgba(245,158,11,0.15); color:var(--color-warning); border-color:var(--color-warning); font-size:0.85rem; padding:6px 14px;">
+                ⚠️ Veri doğrulama bekliyor
+              </span>
+            `}
+          </div>
+        </div>
+
+        <!-- DÖNEM DERSLERİ -->
+        <div class="semesters-container" style="display:flex; flex-direction:column; gap:28px;">
+    `;
+
+    (curr.semesters || []).forEach(sem => {
+      html += `
+        <div class="card glass-card" style="padding:24px;">
+          <h2 style="font-size:1.25rem; margin-top:0; margin-bottom:16px; color:var(--accent-primary); border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+            ${Utils.escapeHTML(sem.title)}
+          </h2>
+
+          <div class="courses-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px;">
+      `;
+
+      (sem.courses || []).forEach(c => {
+        html += `
+          <div class="course-mini-card" style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:0.75rem; font-weight:700; color:var(--accent-primary); background:rgba(59,130,246,0.12); padding:2px 8px; border-radius:4px;">${Utils.escapeHTML(c.code)}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">${c.type} • T+U: ${c.tu || '3+1'}</span>
+              </div>
+              <h4 style="margin:0 0 6px 0; font-size:1.05rem; color:var(--text-primary);">${Utils.escapeHTML(c.name)}</h4>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0 0 12px 0;">${Utils.escapeHTML(c.description || '')}</p>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-weight:600; color:var(--text-muted); border-top:1px dashed var(--border-color); padding-top:10px;">
+              <span>AKTS: ${c.akts}</span>
+              <a href="#weekly-plan" class="btn btn-outline btn-sm" style="font-size:0.75rem;">Haftalık Plan ➔</a>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+  },
+
+  /**
+   * V2.0: HAFTALIK DERS PLANISI (#weekly-plan)
+   */
+  async renderWeeklyPlanView(universityId) {
+    this.renderSkeleton(this.appContainer);
+
+    const user = Storage.getUserProfile();
+    const activeUniId = universityId || user.universityId || 'ardahan-universitesi';
+    const curr = await UniversityService.getCurriculumForUniversity(activeUniId);
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Haftalık Ders Planı', hash: '#weekly-plan' }
+    ]);
+
+    if (!curr) {
+      this.appContainer.innerHTML = `${breadcrumbHTML}<div class="card glass-card" style="padding:30px;">Haftalık ders planı bulunamadı.</div>`;
+      return;
+    }
+
+    // Haftalık planı olan ilk dersi bul
+    let activeCourse = null;
+    (curr.semesters || []).forEach(s => {
+      (s.courses || []).forEach(c => {
+        if (!activeCourse && c.weeklyPlan && c.weeklyPlan.length > 0) {
+          activeCourse = c;
+        }
+      });
+    });
+
+    if (!activeCourse && curr.semesters && curr.semesters[0] && curr.semesters[0].courses[0]) {
+      activeCourse = curr.semesters[0].courses[0];
+    }
+
+    const weeklyPlan = (activeCourse && activeCourse.weeklyPlan) ? activeCourse.weeklyPlan : [
+      { week: 1, topic: "Algoritma ve Akış Şemalarına Giriş", goal: "Problem çözme yaklaşımı" },
+      { week: 2, topic: "Değişkenler ve Veri Tipleri", goal: "Bellek kullanımı ve temel veri türleri" },
+      { week: 3, topic: "Koşul Yapıları (if-else)", goal: "Karar mekanizmaları oluşturma" },
+      { week: 4, topic: "Döngüler (for, while)", goal: "Tekrarlı kod yapıları" },
+      { week: 5, topic: "Diziler (Arrays)", goal: "Çoklu veri depolama" },
+      { week: 6, topic: "Fonksiyonlar ve Metotlar", goal: "Modüler kodlama" },
+      { week: 7, topic: "Sınav Öncesi Tekrar", goal: "Örnek soru çözümü" },
+      { week: 8, topic: "Ara Sınav / Vize", goal: "Değerlendirme" },
+      { week: 9, topic: "Veritabanı Entegrasyonu", goal: "SQL sorguları ile veriye erişim" },
+      { week: 10, topic: "Nesne Yönelimli Mantık", goal: "Class ve Object kavramları" },
+      { week: 11, topic: "Web Arayüz Tasarımı", goal: "HTML/CSS uygulamaları" },
+      { week: 12, topic: "Hata Yönetimi", goal: "Try-Catch yapıları" },
+      { week: 13, topic: "Proje Geliştirme", goal: "Uygulamalı çalışma" },
+      { week: 14, topic: "Genel Dönem Değerlendirmesi", goal: "Final hazırlığı" }
+    ];
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="weekly-plan-page">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:6px;">📅 1-14 Hafta İlerleme Planı</h1>
+          <p style="color:var(--text-secondary); margin:0;">${Utils.escapeHTML(user.university || curr.universityName || 'Bilgisayar Programcılığı')} — ${Utils.escapeHTML(activeCourse ? activeCourse.name : 'Ders Planı')}</p>
+        </div>
+
+        <div class="weekly-timeline">
+    `;
+
+    weeklyPlan.forEach(w => {
+      const weekNumStr = w.week < 10 ? `0${w.week}` : `${w.week}`;
+      const isCompleted = Storage.isLessonCompleted(activeCourse ? activeCourse.id : 'genel', `week_${w.week}`, activeUniId);
+
+      html += `
+        <div class="weekly-card" style="${isCompleted ? 'border-color:var(--color-success); background:rgba(16,185,129,0.03);' : ''}">
+          <div class="weekly-badge">${weekNumStr} Hafta</div>
+
+          <div class="weekly-content">
+            <h4>${Utils.escapeHTML(w.topic)}</h4>
+            <p>🎯 Target: ${Utils.escapeHTML(w.goal)}</p>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:12px;">
+            <a href="#exams" class="btn btn-outline btn-sm">Mini Quiz</a>
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.85rem; cursor:pointer;">
+              <input type="checkbox" class="weekly-check" data-course-id="${activeCourse ? activeCourse.id : 'genel'}" data-week="${w.week}" ${isCompleted ? 'checked' : ''}>
+              ${isCompleted ? 'Tamamlandı' : 'Tamamla'}
+            </label>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    this.appContainer.querySelectorAll('.weekly-check').forEach(chk => {
+      chk.onchange = () => {
+        const cId = chk.getAttribute('data-course-id');
+        const wNum = chk.getAttribute('data-week');
+        Storage.toggleLessonCompletion(cId, `week_${wNum}`, activeUniId);
+        this.renderWeeklyPlanView(activeUniId);
+      };
+    });
+  },
+
+  /**
+   * V2.0: MÜFREDAT KARŞILAŞTIRMA EKRANI (#compare)
+   */
+  async renderCompareView() {
+    this.renderSkeleton(this.appContainer);
+
+    const universities = await UniversityService.loadUniversities();
+    const currentUser = Storage.getUserProfile();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Müfredat Karşılaştır', hash: '#compare' }
+    ]);
+
+    // Varsayılan olarak mevcut üniversite + Atatürk Üniversitesi seçilsin
+    const defaultIds = [currentUser.universityId || 'ardahan-universitesi', 'ataturk-universitesi'];
+    const compData = await UniversityService.compareCurriculums(defaultIds);
+
+    let uniCheckboxesHTML = universities.map(u => {
+      const isChecked = defaultIds.includes(u.curriculumId);
+      return `
+        <label style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-input); padding:6px 12px; border-radius:8px; border:1px solid var(--border-color); font-size:0.85rem; cursor:pointer;">
+          <input type="checkbox" class="comp-uni-check" value="${u.curriculumId}" ${isChecked ? 'checked' : ''}>
+          ${Utils.escapeHTML(u.name)}
+        </label>
+      `;
+    }).join('');
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="compare-page-container">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:6px;">⚖️ Üniversite Müfredat Karşılaştırma</h1>
+          <p style="color:var(--text-secondary); margin:0;">İki veya daha fazla üniversiteyi seçerek ders çeşitliliği, AKTS ve zorunlu/seçmeli oranlarını kıyaslayabilirsin.</p>
+        </div>
+
+        <!-- ÜNİVERSİTE SEÇİCİ -->
+        <div class="card glass-card" style="padding:20px; margin-bottom:24px;">
+          <h4 style="margin-top:0; margin-bottom:12px;">Karşılaştırılacak Üniversiteleri Seç:</h4>
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            ${uniCheckboxesHTML}
+          </div>
+        </div>
+
+        <div id="compare-results-box">
+          ${this.renderCompareTablesHTML(compData)}
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    this.appContainer.querySelectorAll('.comp-uni-check').forEach(chk => {
+      chk.onchange = async () => {
+        const checkedVals = Array.from(this.appContainer.querySelectorAll('.comp-uni-check:checked')).map(c => c.value);
+        const newCompData = await UniversityService.compareCurriculums(checkedVals);
+        document.getElementById('compare-results-box').innerHTML = this.renderCompareTablesHTML(newCompData);
+      };
+    });
+  },
+
+  renderCompareTablesHTML(compData) {
+    if (!compData || !compData.summary || compData.summary.length === 0) {
+      return `<div class="card glass-card" style="padding:30px; text-align:center;">Karşılaştırmak için en az 1 üniversite seçmelisin.</div>`;
+    }
+
+    let html = `
+      <div class="compare-container">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Metrik / Üniversite</th>
+              ${compData.summary.map(s => `<th>${Utils.escapeHTML(s.universityName)}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Toplam Ders Sayısı</strong></td>
+              ${compData.summary.map(s => `<td>${s.totalCourses} Ders</td>`).join('')}
+            </tr>
+            <tr>
+              <td><strong>Toplam AKTS Yükü</strong></td>
+              ${compData.summary.map(s => `<td>${s.totalAKTS} AKTS</td>`).join('')}
+            </tr>
+            <tr>
+              <td><strong>Zorunlu / Seçmeli Oranı</strong></td>
+              ${compData.summary.map(s => `<td>${s.mandatoryCount} Zorunlu / ${s.electiveCount} Seçmeli</td>`).join('')}
+            </tr>
+            <tr>
+              <td><strong>Doğrulama Durumu</strong></td>
+              ${compData.summary.map(s => `<td>${s.metadata.verified ? '✓ Doğrulanmış' : '⚠️ Veri Doğrulama Bekliyor'}</td>`).join('')}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ORTAK DERSLER HAVUZU -->
+      <div class="card glass-card" style="padding:24px; margin-top:28px;">
+        <h3 style="margin-top:0; margin-bottom:12px; font-size:1.2rem; color:var(--accent-primary);">
+          🤝 Ortak Türkiye Müfredat Dersleri
+        </h3>
+        ${compData.commonCourses.length > 0 ? `
+          <ul style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:10px; padding:0; list-style:none;">
+            ${compData.commonCourses.map(cName => `<li style="background:var(--bg-input); padding:8px 14px; border-radius:8px; border:1px solid var(--border-color);">✔ ${Utils.escapeHTML(cName)}</li>`).join('')}
+          </ul>
+        ` : `
+          <p style="color:var(--text-muted); margin:0;">Bu ders için yeterli üniversite verisi bulunamadı.</p>
+        `}
+      </div>
+    `;
+
+    return html;
+  },
+
+  /**
+   * V2.0: TÜRKİYE BP ŞEHİR HARİTASI / KEŞİF (#cities)
+   */
+  async renderCitiesView() {
+    this.renderSkeleton(this.appContainer);
+
+    const cityGroups = await UniversityService.getCitiesWithUniversities();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Şehir Rehberi', hash: '#cities' }
+    ]);
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="cities-page-container">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:6px;">🗺️ Türkiye Bilgisayar Programcılığı Haritası</h1>
+          <p style="color:var(--text-secondary); margin:0;">Türkiye ➔ Şehir ➔ Üniversite ➔ Bilgisayar Programcılığı hiyerarşisi.</p>
+        </div>
+
+        <div class="cities-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap:20px;">
+    `;
+
+    cityGroups.forEach(group => {
+      html += `
+        <div class="card glass-card" style="padding:20px;">
+          <h3 style="margin-top:0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
+            📍 ${Utils.escapeHTML(group.cityName)}
+          </h3>
+          <ul style="padding-left:0; list-style:none; margin:12px 0 0 0; display:flex; flex-direction:column; gap:8px;">
+            ${group.universities.map(u => `
+              <li style="background:var(--bg-input); padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.9rem; font-weight:600;">${Utils.escapeHTML(u.name)}</span>
+                <a href="#curriculum/${u.id}" class="btn btn-outline btn-sm" style="font-size:0.75rem;">Müfredat</a>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+  },
+
+  /**
+   * V2.0: GENİŞLETİLMİŞ SINAV SİSTEMİ (#exams)
+   */
+  async renderExamsView() {
+    this.renderSkeleton(this.appContainer);
+
+    const stats = Storage.getExamStats();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Sınav Sistemi', hash: '#exams' }
+    ]);
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="exams-page-container">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:6px;">📝 Genişletilmiş BP Sınav Sistemi</h1>
+          <p style="color:var(--text-secondary); margin:0;">Quiz, Kısa Sınav, Vize, Final, Bütünleme ve Deneme Sınavları ile kendini test et.</p>
+        </div>
+
+        <!-- İSTATİSTİK ÖZET PANELİ -->
+        <div class="exam-stats-panel">
+          <h3 style="margin-top:0; margin-bottom:16px;">📊 Sınav İstatistiklerim</h3>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:16px;">
+            <div><span style="color:var(--text-muted); font-size:0.85rem;">Çözülen Sınav</span><h2 style="margin:4px 0 0 0;">${stats.totalSolved}</h2></div>
+            <div><span style="color:var(--text-muted); font-size:0.85rem;">Başarı Yüzdesi</span><h2 style="margin:4px 0 0 0; color:var(--color-success);">%${stats.overallSuccessRate}</h2></div>
+            <div><span style="color:var(--text-muted); font-size:0.85rem;">En Güçlü Ders</span><h2 style="margin:4px 0 0 0; font-size:1.2rem;">${Utils.escapeHTML(stats.strongestCourse)}</h2></div>
+            <div><span style="color:var(--text-muted); font-size:0.85rem;">Toplam Soru</span><h2 style="margin:4px 0 0 0;">${stats.totalQuestions} (${stats.totalCorrect} D / ${stats.totalWrong} Y)</h2></div>
+          </div>
+        </div>
+
+        <!-- SINAV FİLTRE TABLARI -->
+        <div class="exam-filter-bar">
+          <button class="btn btn-sm btn-primary active-exam-filter" data-type="all">Tüm Sınavlar</button>
+          <button class="btn btn-sm btn-outline" data-type="Quiz">Quiz</button>
+          <button class="btn btn-sm btn-outline" data-type="Kısa Sınav">Kısa Sınav</button>
+          <button class="btn btn-sm btn-outline" data-type="Vize">Vize</button>
+          <button class="btn btn-sm btn-outline" data-type="Final">Final</button>
+          <button class="btn btn-sm btn-outline" data-type="Bütünleme">Bütünleme</button>
+          <button class="btn btn-sm btn-outline" data-type="Deneme">Deneme Sınavı</button>
+        </div>
+
+        <!-- SINAV KARTLARI GRİDİ -->
+        <div class="exam-grid">
+          <div class="exam-card">
+            <div>
+              <span class="uni-badge" style="background:rgba(59,130,246,0.12); color:var(--accent-primary);">Vize Simülatörü</span>
+              <h3 style="margin:12px 0 8px 0;">Programlama Temelleri Vize Sınavı</h3>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">20 Soru • 30 Dakika • C# & Algoritma</p>
+            </div>
+            <button class="btn btn-primary btn-sm btn-start-exam" data-exam-title="Programlama Temelleri Vize" data-exam-type="Vize" style="margin-top:16px;">Sınavı Başlat ➔</button>
+          </div>
+
+          <div class="exam-card">
+            <div>
+              <span class="uni-badge" style="background:rgba(16,185,129,0.12); color:var(--color-success);">Quiz</span>
+              <h3 style="margin:12px 0 8px 0;">Veri Tabanı SQL Sorgu Quizi</h3>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">10 Soru • 15 Dakika • SELECT & JOIN</p>
+            </div>
+            <button class="btn btn-primary btn-sm btn-start-exam" data-exam-title="SQL Sorgu Quizi" data-exam-type="Quiz" style="margin-top:16px;">Sınavı Başlat ➔</button>
+          </div>
+
+          <div class="exam-card">
+            <div>
+              <span class="uni-badge" style="background:rgba(245,158,11,0.12); color:var(--color-warning);">Final</span>
+              <h3 style="margin:12px 0 8px 0;">Web Tasarımı Final Denemesi</h3>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin:0;">25 Soru • 40 Dakika • HTML/CSS/Flexbox</p>
+            </div>
+            <button class="btn btn-primary btn-sm btn-start-exam" data-exam-title="Web Tasarımı Final Denemesi" data-exam-type="Final" style="margin-top:16px;">Sınavı Başlat ➔</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    this.appContainer.querySelectorAll('.btn-start-exam').forEach(btn => {
+      btn.onclick = () => {
+        const title = btn.getAttribute('data-exam-title');
+        const type = btn.getAttribute('data-exam-type');
+        this.runSimulatedExam(title, type);
+      };
+    });
+  },
+
+  runSimulatedExam(title, type) {
+    const questions = [
+      { q: "C# dilinde tam sayı saklamak için hangi veri tipi kullanılır?", options: ["string", "int", "bool", "float"], ans: 1 },
+      { q: "SQL'de tablodan veri çekmek için hangi komut kullanılır?", options: ["UPDATE", "INSERT", "SELECT", "DELETE"], ans: 2 },
+      { q: "HTML'de en büyük başlık etiket hangisidir?", options: ["<h6>", "<head>", "<h1>", "<header>"], ans: 2 },
+      { q: "CSS'de esnek kutu düzeni sağlayan özellik hangisidir?", options: ["display: flex", "position: absolute", "float: left", "margin: auto"], ans: 0 },
+      { q: "Veritabanında benzersiz kimlik belirten anahtara ne ad verilir?", options: ["Foreign Key", "Primary Key", "Index", "Trigger"], ans: 1 }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    const renderQuestionModal = () => {
+      const q = questions[currentQ];
+      const modal = document.createElement('div');
+      modal.className = 'onboarding-overlay';
+
+      const progressPercent = Math.round(((currentQ + 1) / questions.length) * 100);
+
+      modal.innerHTML = `
+        <div class="quiz-modal-card">
+          <button class="quiz-close-btn" id="btn-close-quiz-modal" title="Kapat">&times;</button>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-right:32px;">
+            <span class="uni-badge" style="font-weight:600;">${type} — ${Utils.escapeHTML(title)}</span>
+            <span style="font-weight:700; font-size:0.9rem; color:var(--text-secondary);">Soru ${currentQ + 1} / ${questions.length}</span>
+          </div>
+
+          <div class="quiz-progress-track">
+            <div class="quiz-progress-fill" style="width: ${progressPercent}%;"></div>
+          </div>
+
+          <h3 style="margin-top:0; margin-bottom:20px; color:var(--text-primary); font-size:1.15rem; line-height:1.5;">${q.q}</h3>
+
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:10px;">
+            ${q.options.map((opt, idx) => `
+              <button class="quiz-option-btn" data-idx="${idx}">
+                <span class="quiz-opt-letter">${String.fromCharCode(65 + idx)}</span>
+                <span>${Utils.escapeHTML(opt)}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      const closeBtn = modal.querySelector('#btn-close-quiz-modal');
+      if (closeBtn) {
+        closeBtn.onclick = () => modal.remove();
+      }
+
+      modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+      };
+
+      modal.querySelectorAll('.quiz-option-btn').forEach(optBtn => {
+        optBtn.onclick = (e) => {
+          e.stopPropagation();
+          const chosenIdx = parseInt(optBtn.getAttribute('data-idx'), 10);
+          if (chosenIdx === q.ans) score++;
+          modal.remove();
+
+          if (currentQ + 1 < questions.length) {
+            currentQ++;
+            renderQuestionModal();
+          } else {
+            Storage.saveExamResult({
+              examType: type,
+              courseName: title,
+              totalQuestions: questions.length,
+              correctCount: score,
+              wrongCount: questions.length - score
+            });
+            renderResultModal();
+          }
+        };
+      });
+    };
+
+    const renderResultModal = () => {
+      const resultModal = document.createElement('div');
+      resultModal.className = 'onboarding-overlay';
+      const percent = Math.round((score / questions.length) * 100);
+      const isSuccess = percent >= 60;
+
+      resultModal.innerHTML = `
+        <div class="quiz-modal-card" style="text-align:center;">
+          <div style="font-size:3rem; margin-bottom:12px;">${isSuccess ? '🎉' : '📚'}</div>
+          <h2 style="margin:0 0 8px 0; color:var(--text-primary); font-size:1.5rem;">Sınav Tamamlandı!</h2>
+          <p style="color:var(--text-secondary); margin-bottom:20px;">${Utils.escapeHTML(title)} — ${type}</p>
+
+          <div style="background:var(--bg-secondary); padding:20px; border-radius:14px; border:1px solid var(--border-color); margin-bottom:24px;">
+            <div style="font-size:2.2rem; font-weight:800; color:var(--accent-primary); margin-bottom:4px;">%${percent}</div>
+            <div style="font-size:0.9rem; color:var(--text-muted); font-weight:600;">Başarı Oranı</div>
+            <div style="display:flex; justify-content:center; gap:20px; margin-top:16px; font-weight:600; font-size:0.95rem;">
+              <span style="color:#10b981;">✓ ${score} Doğru</span>
+              <span style="color:#ef4444;">✗ ${questions.length - score} Yanlış</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-md" id="btn-finish-quiz-modal" style="width:100%;">
+            Tamam
+          </button>
+        </div>
+      `;
+
+      document.body.appendChild(resultModal);
+
+      resultModal.querySelector('#btn-finish-quiz-modal').onclick = () => {
+        resultModal.remove();
+        this.renderExamsView();
+      };
+    };
+
+    renderQuestionModal();
+  },
+
+  /**
+   * V2.0: AYARLAR EKRANI (#settings)
+   */
+  async renderSettingsView() {
+    this.renderSkeleton(this.appContainer);
+
+    const user = Storage.getUserProfile();
+    const universities = await UniversityService.loadUniversities();
+
+    const breadcrumbHTML = this.renderBreadcrumb([
+      { title: 'Dashboard', hash: '#dashboard' },
+      { title: 'Ayarlar', hash: '#settings' }
+    ]);
+
+    let uniOptionsHTML = universities.map(u => `
+      <option value="${u.id}" ${u.id === user.universityId ? 'selected' : ''}>${Utils.escapeHTML(u.name)} (${Utils.escapeHTML(u.city)})</option>
+    `).join('');
+
+    let html = `
+      ${breadcrumbHTML}
+      <div class="settings-page-container">
+        <div class="page-header-box" style="margin-bottom:24px;">
+          <h1 style="font-size:1.75rem; margin-bottom:6px;">⚙️ Profil ve Uygulama Ayarları</h1>
+          <p style="color:var(--text-secondary); margin:0;">Kullanıcı bilgilerinizi düzenleyebilir, tema tercihinizi ve verilerinizi yönetebilirsiniz.</p>
+        </div>
+
+        <div class="settings-grid">
+          <!-- PROFİL DÜZENLEME KARTI -->
+          <div class="settings-card">
+            <h3>👤 Kullanıcı Profili</h3>
+            <form id="settings-profile-form">
+              <div class="onboarding-form-group">
+                <label>Ad / Kullanıcı Adı</label>
+                <input type="text" id="set-name" class="onboarding-input" value="${Utils.escapeHTML(user.name || '')}">
+              </div>
+
+              <div class="onboarding-form-group">
+                <label>Aktif Üniversite</label>
+                <select id="set-uni" class="onboarding-select">
+                  ${uniOptionsHTML}
+                </select>
+              </div>
+
+              <div class="onboarding-form-group">
+                <label>Sınıf / Yarıyıl</label>
+                <select id="set-semester" class="onboarding-select">
+                  <option value="1" ${user.semester == 1 ? 'selected' : ''}>1. Yarıyıl (Güz)</option>
+                  <option value="2" ${user.semester == 2 ? 'selected' : ''}>2. Yarıyıl (Bahar)</option>
+                  <option value="3" ${user.semester == 3 ? 'selected' : ''}>3. Yarıyıl (Güz)</option>
+                  <option value="4" ${user.semester == 4 ? 'selected' : ''}>4. Yarıyıl (Bahar)</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width:100%;">Değişiklikleri Kaydet</button>
+            </form>
+          </div>
+
+          <!-- YEDEKLEME VE VERİ YÖNETİMİ -->
+          <div class="settings-card">
+            <h3>💾 Veri Yönetimi ve İlerleme</h3>
+            <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:20px;">
+              Tüm öğrenme ilerlemenizi JSON olarak bilgisayarınıza indirebilir veya sıfırlayabilirsiniz. Üniversite değiştirdiğinizde verileriniz kaybolmaz.
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <button class="btn btn-outline" id="btn-export-backup">📥 Yedeği İndir (JSON)</button>
+              <button class="btn btn-danger" id="btn-reset-data">🗑️ Verileri Sıfırla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    this.appContainer.innerHTML = html;
+
+    const profileForm = document.getElementById('settings-profile-form');
+    if (profileForm) {
+      profileForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const newName = document.getElementById('set-name').value.trim() || 'Öğrenci';
+        const newUniId = document.getElementById('set-uni').value;
+        const newSem = parseInt(document.getElementById('set-semester').value, 10) || 1;
+
+        const uniObj = await UniversityService.getUniversityById(newUniId);
+
+        Storage.setUserProfile({
+          name: newName,
+          universityId: newUniId,
+          university: uniObj ? uniObj.name : 'Ardahan Üniversitesi',
+          semester: newSem
+        });
+        Storage.setOnboarded();
+
+        if (typeof window.updateSidebarProfileUI === 'function') {
+          await window.updateSidebarProfileUI();
+        }
+        alert('Profil bilgileri başarıyla güncellendi!');
+        window.location.hash = '#dashboard';
+      };
+    }
+
+    const exportBtn = document.getElementById('btn-export-backup');
+    if (exportBtn) exportBtn.onclick = () => Storage.exportData();
+
+    const resetBtn = document.getElementById('btn-reset-data');
+    if (resetBtn) {
+      resetBtn.onclick = async () => {
+        if (confirm('Tüm öğrenme ilerlemeniz, üniversite seçiminiz ve tüm kayıtlarınız sıfırlanacak. Devam etmek istiyor musunuz?')) {
+          localStorage.clear();
+          if (typeof window.updateSidebarProfileUI === 'function') {
+            await window.updateSidebarProfileUI();
+          }
+          window.location.hash = '#onboarding';
+        }
+      };
+    }
   },
 
   /**
@@ -123,16 +1268,17 @@ export const UI = {
    * 🦸 1. HERO ALANI (İlk Viewport'a Sığan Kompakt Rehber Hero)
    */
   renderHomeHero() {
+    const user = Storage.getUserProfile();
+    const uniName = user.university || 'Ardahan Üniversitesi';
     return `
       <section class="home-guide-hero compact-hero full-screen-section" id="hero-section">
         <div class="hero-card-container">
 
-
-          <h1 class="hero-main-title">Bilgisayar Programcılığı Rehberi</h1>
+          <h1 class="hero-main-title">${Utils.escapeHTML(uniName)} Bilgisayar Programcılığı Rehberi</h1>
 
           <div class="hero-body-content">
             <p class="hero-welcome-lead">
-              Ardahan Üniversitesi Bilgisayar Programcılığı bölümüne hoş geldin. 👋<br>
+              ${Utils.escapeHTML(uniName)} Bilgisayar Programcılığı bölümüne hoş geldin, ${Utils.escapeHTML(user.name || 'Öğrenci')} 👋<br>
               Bu web sitesi, 2 yıllık eğitim sürecinde ihtiyaç duyacağın ders içerikleri, öğrenme yolları, sınav ve staj süreçleri için hazırlanmış kapsamlı bir rehber olabilmesi için yapıldı.
             </p>
             <p class="hero-welcome-detail">
@@ -146,6 +1292,9 @@ export const UI = {
             </a>
             <a href="#roadmap" class="btn btn-secondary btn-md">
               Öğrenme Yolları
+            </a>
+            <a href="#universities" class="btn btn-outline btn-md">
+              Üniversite Değiştir 🔄
             </a>
           </div>
         </div>
@@ -208,6 +1357,8 @@ export const UI = {
   },
 
   renderHomeStats() {
+    const user = Storage.getUserProfile();
+    const uniName = user.university || 'Ardahan Üniversitesi';
     return `
       <section class="home-stats-strip-section full-screen-section" id="stats-section">
         <div class="section-header text-center" style="margin-bottom: 24px;">
@@ -245,7 +1396,7 @@ export const UI = {
                 <h4>2 Yıllık Örgün Ön Lisans Eğitimi</h4>
               </div>
               <p class="sdg-desc">
-                Ardahan Üniversitesi Teknik Bilimler MYO bünyesinde yürütülen 2 yıllık (4 yarıyıl) mesleki yükseköğretim programıdır. Mezunlar YÖK onaylı diplomayla <strong>"Bilgisayar Programcılığı Teknikeri"</strong> unvanı kazanır.
+                ${Utils.escapeHTML(uniName)} bünyesinde yürütülen 2 yıllık (4 yarıyıl) mesleki yükseköğretim programıdır. Mezunlar YÖK onaylı diplomayla <strong>"Bilgisayar Programcılığı Teknikeri"</strong> unvanı kazanır.
               </p>
               <div class="sdg-badge-list">
                 <span class="sdg-badge">Ön Lisans Diploması</span>
@@ -309,9 +1460,28 @@ export const UI = {
     `;
   },
 
-renderCurriculumPreview(coursesInfo) {
-    const semesterCourses = {
-      "1": [
+  async renderCurriculumPreview(coursesInfo) {
+    const user = Storage.getUserProfile();
+    const curr = await UniversityService.getCurriculumForUniversity(user.universityId);
+
+    let semesterCourses = null;
+    if (curr && curr.semesters && curr.semesters.length > 0) {
+      semesterCourses = {};
+      curr.semesters.forEach(sem => {
+        semesterCourses[sem.id.toString()] = (sem.courses || []).map(c => ({
+          id: c.id || c.code,
+          code: c.code,
+          title: c.name,
+          akts: c.akts,
+          type: c.type,
+          desc: c.description || (c.name + ' dersi müfredatı.')
+        }));
+      });
+    }
+
+    if (!semesterCourses) {
+      semesterCourses = {
+        "1": [
             {
                   "id": "programlama-temelleri",
                   "code": "BT103",
@@ -694,8 +1864,9 @@ renderCurriculumPreview(coursesInfo) {
                   "type": "Seçmeli",
                   "desc": "İlk Yardım, Ekoloji, E-Ticaret, Dijital Okuryazarlık vb. ortak dersler."
             }
-      ]
-};
+        ]
+      };
+    }
 
     let html = `
       <section class="section-block full-screen-section" id="curriculum-section">
@@ -1155,12 +2326,53 @@ async renderCoursesView() {
         <p>Bilgisayar Programcılığı 2 yıllık (4 yarıyıl) tüm ders müfredatı ve kategorileri.</p>
       </div>
 
-      <div class="filter-tabs">
+      <!-- DESKTOP YARIYIL FİLTRELEME TABLARI -->
+      <div class="filter-tabs desktop-only">
         <button class="filter-btn active" data-filter="all">Tüm Dersler</button>
         <button class="filter-btn" data-filter="sem-1">1. Yarıyıl</button>
         <button class="filter-btn" data-filter="sem-2">2. Yarıyıl</button>
         <button class="filter-btn" data-filter="sem-3">3. Yarıyıl</button>
         <button class="filter-btn" data-filter="sem-4">4. Yarıyıl</button>
+      </div>
+
+      <!-- MOBİL ÖZEL AÇILIR MENÜ (CUSTOM DROPDOWN MENU) -->
+      <div class="custom-dropdown-container mobile-only" id="semester-dropdown-container">
+        <button class="custom-dropdown-trigger" id="semester-dropdown-trigger" type="button" aria-expanded="false">
+          <div class="trigger-label-group">
+            <i data-lucide="filter" class="trigger-icon"></i>
+            <span class="trigger-title">Yarıyıl Seç / Filtrele:</span>
+            <strong class="trigger-selected-text" id="selected-semester-text">📚 Tüm Dersler</strong>
+          </div>
+          <i data-lucide="chevron-down" class="dropdown-chevron"></i>
+        </button>
+
+        <div class="custom-dropdown-menu" id="semester-dropdown-menu">
+          <button class="dropdown-option active" data-filter="all" data-label="📚 Tüm Dersler">
+            <span class="opt-icon">📚</span>
+            <span class="opt-text">Tüm Dersler <small>(Hepsini Göster)</small></span>
+            <i data-lucide="check" class="opt-check"></i>
+          </button>
+          <button class="dropdown-option" data-filter="sem-1" data-label="1️⃣ 1. Yarıyıl">
+            <span class="opt-icon">1️⃣</span>
+            <span class="opt-text">1. Yarıyıl <small>(Güz Dönemi - 1. Yıl)</small></span>
+            <i data-lucide="check" class="opt-check"></i>
+          </button>
+          <button class="dropdown-option" data-filter="sem-2" data-label="2️⃣ 2. Yarıyıl">
+            <span class="opt-icon">2️⃣</span>
+            <span class="opt-text">2. Yarıyıl <small>(Bahar Dönemi - 1. Yıl)</small></span>
+            <i data-lucide="check" class="opt-check"></i>
+          </button>
+          <button class="dropdown-option" data-filter="sem-3" data-label="3️⃣ 3. Yarıyıl">
+            <span class="opt-icon">3️⃣</span>
+            <span class="opt-text">3. Yarıyıl <small>(Güz Dönemi - 2. Yıl)</small></span>
+            <i data-lucide="check" class="opt-check"></i>
+          </button>
+          <button class="dropdown-option" data-filter="sem-4" data-label="4️⃣ 4. Yarıyıl">
+            <span class="opt-icon">4️⃣</span>
+            <span class="opt-text">4. Yarıyıl <small>(Bahar Dönemi - 2. Yıl)</small></span>
+            <i data-lucide="check" class="opt-check"></i>
+          </button>
+        </div>
       </div>
 
       <div class="courses-grid" id="catalog-grid">
@@ -1170,22 +2382,30 @@ async renderCoursesView() {
       const cat = coursesInfo.categories[c.category] || { badge: 'secondary', title: 'Genel' };
 
       html += `
-        <div class="course-card" data-sem="sem-${c.semester}">
-          <div class="course-card-header">
-            <div class="course-icon">${Utils.getIconSVG(c.icon || 'book-open')}</div>
-            <div>
-              <span class="badge badge-${cat.badge}">${c.code}</span>
-              <span class="badge badge-outline">${c.semester}. Yarıyıl</span>
+        <div class="course-card collapsible-course-card" data-sem="sem-${c.semester}">
+          <div class="course-card-header-trigger" role="button" tabindex="0">
+            <div class="course-card-main-info">
+              <div class="course-icon">${Utils.getIconSVG(c.icon || 'book-open')}</div>
+              <div class="course-title-group">
+                <h3 class="course-title">${Utils.escapeHTML(c.title)}</h3>
+                <div class="course-badges-inline">
+                  <span class="badge badge-${cat.badge}">${c.code}</span>
+                  <span class="badge badge-outline">${c.semester}. Yarıyıl</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <h3 class="course-title">${Utils.escapeHTML(c.title)}</h3>
-          <div class="course-card-meta">
-            <div class="meta-item"><strong>Kredi:</strong> ${c.akts || 3} AKTS (${c.credits || c.akts || 3} Kredi)</div>
-            <div class="meta-item"><strong>Dersi Veren:</strong> ${Utils.escapeHTML(c.instructor || 'Öğr. Gör. (TBMYO Akademik Kadro)')}</div>
+            <i data-lucide="chevron-down" class="course-card-chevron"></i>
           </div>
 
-          <div class="card-btn-group" style="margin-top:16px;">
-            <a href="#course/${c.id}" class="btn btn-primary" style="width:100%; justify-content:center;">Derse Git ➔</a>
+          <div class="course-card-collapsible-body">
+            <div class="course-card-meta">
+              <div class="meta-item"><strong>Kredi:</strong> ${c.akts || 3} AKTS (${c.credits || c.akts || 3} Kredi)</div>
+              <div class="meta-item"><strong>Dersi Veren:</strong> ${Utils.escapeHTML(c.instructor || 'Öğr. Gör. (TBMYO Akademik Kadro)')}</div>
+            </div>
+
+            <div class="card-btn-group" style="margin-top:16px;">
+              <a href="#course/${c.id}" class="btn btn-primary" style="width:100%; justify-content:center;">Derse Git ➔</a>
+            </div>
           </div>
         </div>
       `;
@@ -1194,23 +2414,85 @@ async renderCoursesView() {
     html += `</div>`;
     this.appContainer.innerHTML = html;
 
-    const filterBtns = this.appContainer.querySelectorAll('.filter-btn');
+    const desktopBtns = this.appContainer.querySelectorAll('.filter-btn');
+    const dropdownContainer = this.appContainer.querySelector('#semester-dropdown-container');
+    const dropdownTrigger = this.appContainer.querySelector('#semester-dropdown-trigger');
+    const selectedText = this.appContainer.querySelector('#selected-semester-text');
+    const dropdownOptions = this.appContainer.querySelectorAll('.dropdown-option');
     const cards = this.appContainer.querySelectorAll('#catalog-grid .course-card');
 
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-
-        const filter = e.target.getAttribute('data-filter');
-        cards.forEach(card => {
-          if (filter === 'all' || card.getAttribute('data-sem') === filter) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+    const applyCourseFilter = (filterVal) => {
+      desktopBtns.forEach(b => {
+        if (b.getAttribute('data-filter') === filterVal) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
       });
+
+      dropdownOptions.forEach(o => {
+        if (o.getAttribute('data-filter') === filterVal) {
+          o.classList.add('active');
+          if (selectedText) {
+            selectedText.textContent = o.getAttribute('data-label');
+          }
+        } else {
+          o.classList.remove('active');
+        }
+      });
+
+      cards.forEach(card => {
+        if (filterVal === 'all' || card.getAttribute('data-sem') === filterVal) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    };
+
+    desktopBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const filterVal = e.currentTarget.getAttribute('data-filter');
+        applyCourseFilter(filterVal);
+      });
+    });
+
+    if (dropdownTrigger && dropdownContainer) {
+      dropdownTrigger.onclick = (e) => {
+        e.stopPropagation();
+        dropdownContainer.classList.toggle('open');
+        const isOpen = dropdownContainer.classList.contains('open');
+        dropdownTrigger.setAttribute('aria-expanded', isOpen);
+      };
+
+      document.onclick = (e) => {
+        if (!dropdownContainer.contains(e.target)) {
+          dropdownContainer.classList.remove('open');
+          dropdownTrigger.setAttribute('aria-expanded', 'false');
+        }
+      };
+
+      dropdownOptions.forEach(opt => {
+        opt.onclick = (e) => {
+          e.stopPropagation();
+          const filterVal = opt.getAttribute('data-filter');
+          applyCourseFilter(filterVal);
+          dropdownContainer.classList.remove('open');
+          dropdownTrigger.setAttribute('aria-expanded', 'false');
+        };
+      });
+    }
+
+    // Mobil genişlikte (<= 768px) kartı aç/kapat dinleyicisi
+    this.appContainer.querySelectorAll('.course-card-header-trigger').forEach(trigger => {
+      trigger.onclick = (e) => {
+        if (window.innerWidth <= 768) {
+          const card = trigger.closest('.collapsible-course-card');
+          if (card) {
+            card.classList.toggle('open');
+          }
+        }
+      };
     });
   },
 
@@ -2083,13 +3365,23 @@ async renderCoursesView() {
 
   async renderUniversityView() {
     this.renderSkeleton(this.appContainer);
-    const breadcrumbHTML = this.renderBreadcrumb([{ title: 'Ana Sayfa', hash: '#home' }, { title: 'Üniversite', hash: '#university' }]);
+
+    const user = Storage.getUserProfile();
+    const uni = await UniversityService.getUniversityById(user.universityId) || {
+      name: 'Ardahan Üniversitesi',
+      city: 'Ardahan',
+      type: 'devlet',
+      website: 'https://www.ardahan.edu.tr',
+      ubysUrl: 'https://ubys.ardahan.edu.tr'
+    };
+
+    const breadcrumbHTML = this.renderBreadcrumb([{ title: 'Ana Sayfa', hash: '#home' }, { title: 'Üniversitem', hash: '#university' }]);
 
     let html = `
       ${breadcrumbHTML}
-      <div class="page-header">
-        <h1>Üniversite ve Akademik Bilgiler</h1>
-        <p>Ardahan Üniversitesi, Teknik Bilimler MYO, Öğrenci İşleri ve akademik yönetmelik rehberi.</p>
+      <div class="page-header" style="margin-bottom:24px;">
+        <h1 style="font-size:1.75rem; margin-bottom:6px;">🏛️ ${Utils.escapeHTML(uni.name)} Bilgisayar Programcılığı</h1>
+        <p style="color:var(--text-secondary); margin:0;">${Utils.escapeHTML(uni.city)} / ${uni.type === 'devlet' ? 'Devlet Üniversitesi' : 'Vakıf Üniversitesi'} — Kurumsal ve Akademik Bilgiler</p>
       </div>
 
       <div class="university-page-grid">
@@ -2098,11 +3390,6 @@ async renderCoursesView() {
           <h3>Kurumsal Bilgiler ve Akademik Birim</h3>
           <div class="uni-info-list">
             <div class="uni-info-item">
-              <strong>Ardahan Üniversitesi:</strong> 2008 yılında kurulan, Yenisey Kampüsü'nde modern eğitim tesisleriyle hizmet veren devlet üniversitesidir.
-            </div>
-            <div class="uni-info-item">
-              <strong>Fakülte / Yüksekokul:</strong> Teknik Bilimler Meslek Yüksekokulu (TBMYO).
-            </div>
             <div class="uni-info-item">
               <strong>Bağlı Bölüm:</strong> Bilgisayar Teknolojileri Bölümü — Bilgisayar Programcılığı Programı.
             </div>

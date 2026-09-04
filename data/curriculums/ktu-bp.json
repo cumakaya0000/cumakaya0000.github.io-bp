@@ -1,0 +1,124 @@
+{
+  "curriculumId": "ktu-bp",
+  "universityId": "karadeniz-teknik-universitesi",
+  "universityName": "Karadeniz Teknik Üniversitesi",
+  "department": "Bilgisayar Programcılığı",
+  "program": "Önlisans (2 Yıllık)",
+  "totalCredits": 120,
+  "metadata": {
+    "source": "KTÜ Trabzon MYO Bilgisayar Programcılığı Ders Kataloğu",
+    "sourceUrl": "https://www.ktu.edu.tr/tmyo",
+    "lastUpdated": "2026-01-20",
+    "verified": true
+  },
+  "semesters": [
+    {
+      "id": 1,
+      "title": "1. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "programlama-temelleri",
+          "code": "BPR1001",
+          "name": "Programlama Temelleri",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Algoritma geliştirme, mantıksal operatörler, akış şemaları ve C++ / C# temelleri.",
+          "topics": ["Algoritmalar", "Veri Tipleri", "Kontrol Deyimleri", "Döngüler", "Diziler"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "veri-tabani-1",
+          "code": "BPR1003",
+          "name": "Veri Tabanı Sistemleri",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Veritabanı",
+          "description": "İlişkisel veritabanları, SQL sorguları ve MSSQL / MySQL kullanımı.",
+          "topics": ["Relational DB", "SQL Queries", "Normalizasyon"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "web-tasarimi",
+          "code": "BPR1005",
+          "name": "Web Tasarımın Temelleri",
+          "tu": "2+1",
+          "akts": 4,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "HTML5, CSS3, arayüz yerleşimi ve responsive sayfa tasarımları.",
+          "topics": ["HTML5", "CSS3", "Grid & Flexbox"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "2. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "nesne-tabanli-programlama",
+          "code": "BPR1002",
+          "name": "Nesne Tabanlı Programlama",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Sınıflar, kalıtım, soyutlama ve kapsülleme mantığı.",
+          "topics": ["OOP", "Inheritance", "Polymorphism", "Interfaces"],
+          "weeklyPlan": []
+        },
+        {
+          "id": "gorsel-programlama",
+          "code": "BPR1004",
+          "name": "Görsel Programlama I",
+          "tu": "3+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Form mimarisi ve masaüstü arayüz geliştirme.",
+          "topics": ["Controls", "Events", "Database Connection"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "3. Yarıyıl (Güz)",
+      "courses": [
+        {
+          "id": "internet-programciligi-1",
+          "code": "BPR2001",
+          "name": "İnternet Programcılığı I",
+          "tu": "3+1",
+          "akts": 6,
+          "type": "Zorunlu",
+          "category": "Web",
+          "description": "Sunucu taraflı kodlama ve dinamik veritabanı bağlantılı web siteleri.",
+          "topics": ["Server-side JS / PHP", "Sessions", "Forms"],
+          "weeklyPlan": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "4. Yarıyıl (Bahar)",
+      "courses": [
+        {
+          "id": "mobil-programlama",
+          "code": "BPR2002",
+          "name": "Mobil Programlama",
+          "tu": "2+1",
+          "akts": 5,
+          "type": "Zorunlu",
+          "category": "Yazılım",
+          "description": "Mobil cihazlar için uygulama mimarisi.",
+          "topics": ["Android", "Flutter", "REST Integration"],
+          "weeklyPlan": []
+        }
+      ]
+    }
+  ]
+}
