@@ -3813,13 +3813,32 @@ async renderCoursesView() {
         <p>C#, SQL, JavaScript, Python ve HTML/CSS kodlarınızı canlı olarak test edin, örnek şablonları çalıştırın ve pratik yapın.</p>
       </div>
 
-      <!-- KATEGORİ VE DİL SEÇİM TABLARI -->
-      <div class="lab-tabs" id="lab-language-tabs">
+      <!-- KATEGORİ VE DİL SEÇİM TABLARI (DESKTOP) -->
+      <div class="lab-tabs desktop-only" id="lab-language-tabs">
         <button class="lab-tab-btn active" data-lang="html">🌐 HTML / CSS / JS (Live Sandbox)</button>
         <button class="lab-tab-btn" data-lang="js">⚡ JavaScript Console</button>
         <button class="lab-tab-btn" data-lang="csharp">🔷 C# Programlama</button>
         <button class="lab-tab-btn" data-lang="sql">🗄️ SQL Veritabanı</button>
         <button class="lab-tab-btn" data-lang="python">🐍 Python</button>
+      </div>
+
+      <!-- MOBİL DİL SEÇİM AÇILIR MENÜSÜ -->
+      <div class="custom-dropdown-container mobile-only" id="lab-dropdown-container" style="margin-bottom: 1.25rem;">
+        <button class="custom-dropdown-trigger" id="lab-dropdown-trigger" type="button" aria-expanded="false">
+          <div class="trigger-label-group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code trigger-icon"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            <span class="trigger-title">Dil / Ortam Seç:</span>
+            <strong class="trigger-selected-text" id="selected-lab-lang-text">🌐 HTML / CSS / JS (Live Sandbox)</strong>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down trigger-chevron"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <div class="custom-dropdown-menu" id="lab-dropdown-menu">
+          <div class="custom-dropdown-item active" data-lang="html">🌐 HTML / CSS / JS (Live Sandbox)</div>
+          <div class="custom-dropdown-item" data-lang="js">⚡ JavaScript Console</div>
+          <div class="custom-dropdown-item" data-lang="csharp">🔷 C# Programlama</div>
+          <div class="custom-dropdown-item" data-lang="sql">🗄️ SQL Veritabanı</div>
+          <div class="custom-dropdown-item" data-lang="python">🐍 Python</div>
+        </div>
       </div>
 
       <div class="lab-workspace-grid">
@@ -4035,13 +4054,66 @@ print(f"Harf Notunuz: {not_sonucu}")`
       setTimeout(() => copyBtn.textContent = '📋 Kopyala', 2000);
     };
 
+    const labDropdownTrigger = document.getElementById('lab-dropdown-trigger');
+    const labDropdownMenu = document.getElementById('lab-dropdown-menu');
+    const labDropdownContainer = document.getElementById('lab-dropdown-container');
+    const selectedLabLangText = document.getElementById('selected-lab-lang-text');
+
+    if (labDropdownTrigger && labDropdownContainer) {
+      labDropdownTrigger.onclick = (e) => {
+        e.stopPropagation();
+        labDropdownContainer.classList.toggle('open');
+        const isOpen = labDropdownContainer.classList.contains('open');
+        labDropdownTrigger.setAttribute('aria-expanded', isOpen);
+      };
+
+      document.addEventListener('click', (e) => {
+        if (!labDropdownContainer.contains(e.target)) {
+          labDropdownContainer.classList.remove('open');
+          labDropdownTrigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    const setLabLanguage = (lang) => {
+      currentLang = lang;
+
+      // Desktop sekmeleri güncelle
+      document.querySelectorAll('#lab-language-tabs .lab-tab-btn').forEach(b => {
+        if (b.getAttribute('data-lang') === lang) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+
+      // Mobil açılır menü öğelerini ve başlığı güncelle
+      document.querySelectorAll('#lab-dropdown-menu .custom-dropdown-item').forEach(item => {
+        if (item.getAttribute('data-lang') === lang) {
+          item.classList.add('active');
+          if (selectedLabLangText) selectedLabLangText.textContent = item.textContent.trim();
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      codeInput.value = templates[currentLang] || '';
+      updateView();
+    };
+
     document.querySelectorAll('#lab-language-tabs .lab-tab-btn').forEach(btn => {
       btn.onclick = () => {
-        document.querySelectorAll('#lab-language-tabs .lab-tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentLang = btn.getAttribute('data-lang');
-        codeInput.value = templates[currentLang] || '';
-        updateView();
+        const lang = btn.getAttribute('data-lang');
+        setLabLanguage(lang);
+      };
+    });
+
+    document.querySelectorAll('#lab-dropdown-menu .custom-dropdown-item').forEach(item => {
+      item.onclick = (e) => {
+        e.stopPropagation();
+        const lang = item.getAttribute('data-lang');
+        setLabLanguage(lang);
+        if (labDropdownContainer && labDropdownTrigger) {
+          labDropdownContainer.classList.remove('open');
+          labDropdownTrigger.setAttribute('aria-expanded', 'false');
+        }
       };
     });
 
@@ -4049,17 +4121,11 @@ print(f"Harf Notunuz: {not_sonucu}")`
       btn.onclick = () => {
         const type = btn.getAttribute('data-type');
         if (type === 'csharp-1') {
-          currentLang = 'csharp';
-          const tBtn = document.querySelector('#lab-language-tabs [data-lang="csharp"]');
-          if (tBtn) tBtn.click();
+          setLabLanguage('csharp');
         } else if (type === 'sql-1') {
-          currentLang = 'sql';
-          const tBtn = document.querySelector('#lab-language-tabs [data-lang="sql"]');
-          if (tBtn) tBtn.click();
+          setLabLanguage('sql');
         } else if (type === 'js-1') {
-          currentLang = 'js';
-          const tBtn = document.querySelector('#lab-language-tabs [data-lang="js"]');
-          if (tBtn) tBtn.click();
+          setLabLanguage('js');
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       };
