@@ -73,29 +73,18 @@ export async function updateSidebarProfileUI() {
   const profile = Storage.getUserProfile();
   const isOnboarded = Storage.isOnboarded();
 
-  // Kullanıcı üniversitesini seçip onaylamadığı sürece (<aside id="sidebar">) ve menü butonu tamamen gizli olmalıdır
   const sidebar = document.getElementById('sidebar');
   const headerToggleBtn = document.getElementById('sidebar-toggle-btn');
   const bottomNav = document.querySelector('.bottom-nav-bar');
   const headerChangeUniBtn = document.getElementById('btn-header-change-uni');
 
-  if (!isOnboarded) {
-    if (sidebar) sidebar.classList.add('hidden');
-    if (headerToggleBtn) {
-      headerToggleBtn.classList.add('hidden');
-      headerToggleBtn.style.setProperty('display', 'none', 'important');
-    }
-    if (bottomNav) bottomNav.style.setProperty('display', 'none', 'important');
-    if (headerChangeUniBtn) headerChangeUniBtn.style.display = 'none';
-  } else {
-    if (sidebar) sidebar.classList.remove('hidden');
-    if (headerToggleBtn) {
-      headerToggleBtn.classList.remove('hidden');
-      headerToggleBtn.style.removeProperty('display');
-    }
-    if (bottomNav) bottomNav.style.removeProperty('display');
-    if (headerChangeUniBtn) headerChangeUniBtn.style.display = 'inline-flex';
+  if (sidebar) sidebar.classList.remove('hidden');
+  if (headerToggleBtn) {
+    headerToggleBtn.classList.remove('hidden');
+    headerToggleBtn.style.removeProperty('display');
   }
+  if (bottomNav) bottomNav.style.removeProperty('display');
+  if (headerChangeUniBtn) headerChangeUniBtn.style.display = isOnboarded ? 'inline-flex' : 'none';
 
   const uniNameEl = document.getElementById('sidebar-uni-name');
   const deptNameEl = document.getElementById('sidebar-dept-name');
@@ -201,8 +190,13 @@ function initSidebarState() {
   const sidebar = document.getElementById('sidebar');
   if (sidebar) {
     if (window.innerWidth > 1024) {
-      sidebar.classList.remove('collapsed');
-      updateSidebarToggleUI(false);
+      const isCollapsed = Storage.isSidebarCollapsed();
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+      } else {
+        sidebar.classList.remove('collapsed');
+      }
+      updateSidebarToggleUI(isCollapsed);
     } else {
       sidebar.classList.remove('open');
     }
@@ -219,13 +213,21 @@ function initSidebarCollapseToggle() {
   if (!sidebar) return;
 
   const toggleSidebar = (e) => {
-    if (e) e.stopPropagation();
-    if (!Storage.isOnboarded()) {
-      return; // Kullanıcı üniversitesini seçmediği sürece menü toggle pasiftir
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
-    if (window.innerWidth <= 1024) {
-      sidebar.classList.toggle('open');
-      if (overlay) overlay.classList.toggle('open', sidebar.classList.contains('open'));
+    const isMobileTablet = window.innerWidth <= 1024;
+    if (isMobileTablet) {
+      const isCurrentlyOpen = sidebar.classList.contains('open');
+      if (isCurrentlyOpen) {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
+      } else {
+        sidebar.classList.add('open');
+        sidebar.classList.remove('hidden');
+        if (overlay) overlay.classList.add('open');
+      }
     } else {
       sidebar.classList.toggle('collapsed');
       const isNowCollapsed = sidebar.classList.contains('collapsed');

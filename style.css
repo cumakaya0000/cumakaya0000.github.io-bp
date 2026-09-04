@@ -3266,24 +3266,29 @@ a:hover {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .mobile-only { display: flex !important; }
   .desktop-only, .filter-tabs.desktop-only { display: none !important; }
   
   .sidebar {
+    position: fixed;
     width: 270px;
     max-width: 85vw;
-    top: 58px;
+    top: 64px;
     bottom: 0;
+    left: 0;
     z-index: 1000;
     background-color: var(--bg-card);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.3);
     transform: translateX(-100%);
-    overflow-x: hidden;
+    transition: transform var(--transition-normal);
+    overflow-y: auto;
   }
+
   .sidebar.open {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
+
   .main-content { margin-left: 0 !important; width: 100% !important; padding: var(--space-4); padding-bottom: 80px; }
   .site-usage-steps, .learning-roadmap-sequence, .exam-qa-grid, .academic-year-grid, .study-strategies-grid, .goc-years-grid, .goc-layout-container, .stats-strip-bar { flex-direction: column; grid-template-columns: 1fr; gap: 12px; }
   .ssb-divider { display: none; }
